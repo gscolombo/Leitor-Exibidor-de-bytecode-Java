@@ -35,3 +35,14 @@ int _32bswap(int n) {
             ((n<<8)&0xff0000) | // Change byte 2 with byte 1
             ((n<<24)&0xff000000); // Change byte 0 with byte 3
 }
+
+unsigned int num_digits(unsigned int n) {
+    if (n < 10) return 1;
+    
+    int r = 2;
+    while ((n /= 10) > 9) {
+        ++r;
+    }
+
+    return r;
+}

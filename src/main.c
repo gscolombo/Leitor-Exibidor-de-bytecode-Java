@@ -1,5 +1,6 @@
 #include "utils.h"
 #include "reader.h"
+#include "writer.h"
 
 int main(int argc, char *argv[]) {
     if (argc < 2) {
@@ -17,17 +18,8 @@ int main(int argc, char *argv[]) {
 
         ClassFile* cf = read_classfile(fptr);
         
-        // TODO: Implement writer
         if (cf != NULL) {
-            printf("Magic: %#X\n", cf->magic);
-            printf("Version: %u.%u\n", cf->major_version, cf->minor_version);
-            printf("Constant Pool count: %u\n", cf->constant_pool_count);
-            printf("Constant Pool:\n");
-
-            cp_info *cp, *_cp = cf->constant_pool;
-            for (cp = cf->constant_pool; cp < _cp + cf->constant_pool_count - 1; cp++) {
-                printf("Tag: %u\n", cp->tag);
-            }
+            show_classfile(cf);
         }
 
         free(cf);
