@@ -2,6 +2,7 @@
 #define __CLASSFILE_H__
 
 #include "types.h"
+#include "cp/constants.h"
 
 typedef struct ClassFile {
     u4 magic;

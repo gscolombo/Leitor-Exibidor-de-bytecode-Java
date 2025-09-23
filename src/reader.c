@@ -1,5 +1,4 @@
 #include "reader.h"
-#include "types.h"
 
 u1 read_u1(FILE* fptr) {
     u1 u;
@@ -12,7 +11,7 @@ u2 read_u2(FILE* fptr) {
     u2 u;
     fread(&u, sizeof (u2), 1, fptr);
 
-    if (LITTLE_ENDIAN) {
+    if (_LITTLE_ENDIAN) {
         u = _16bswap(u);
     }
 
@@ -23,7 +22,7 @@ u4 read_u4(FILE* fptr) {
     u4 u;
     fread(&u, sizeof (u4), 1, fptr);
 
-    if (LITTLE_ENDIAN) {
+    if (_LITTLE_ENDIAN) {
         u = _32bswap(u);
     }
 
@@ -60,6 +59,7 @@ ClassFile* read_classfile(FILE* fptr) {
         cf->minor_version = read_u2(fptr);
         cf->major_version = read_u2(fptr);
         cf->constant_pool_count = read_u2(fptr);
+        cf->constant_pool = parse_constant_pool(fptr, cf->constant_pool_count);
 
         fclose(fptr);
         return cf;

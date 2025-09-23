@@ -19,8 +19,10 @@ int main(int argc, char *argv[]) {
         
         if (cf != NULL) {
             printf("Magic: %#X\n", cf->magic);
-            printf("Version: %i.%i\n", cf->major_version, cf->minor_version);
-            printf("Constant Pool count: %i\n", cf->constant_pool_count);
+            printf("Version: %u.%u\n", cf->major_version, cf->minor_version);
+            printf("Constant Pool count: %u\n", cf->constant_pool_count);
+            printf("Constant Pool:\n");
+            printf("Tag: %u\n", cf->constant_pool[0].tag);
         }
 
         free(cf);

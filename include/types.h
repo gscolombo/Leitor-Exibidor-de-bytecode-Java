@@ -7,10 +7,6 @@ typedef uint8_t u1;
 typedef uint16_t u2;
 typedef uint32_t u4;
 
-typedef struct cp_info {
-    u1 tag;
-    u1 info[];
-} cp_info;
 
 typedef struct attribute_info {
     u2 attribute_name_index;
