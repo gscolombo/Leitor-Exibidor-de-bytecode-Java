@@ -13,17 +13,6 @@
 void getClassName(char*, char*);
 
 /**
- * @brief Determines if the system uses little-endian byte order.
- *
- * This function checks the endianness of the machine by storing the integer value 1
- * and then examining the first byte of its memory representation. If the first byte
- * is 1, the system is little-endian; otherwise, it is big-endian.
- *
- * @return int Returns 1 if the system is little-endian, 0 if big-endian.
- */
-int little_endian();
-
-/**
  * @brief Swaps the two bytes of a 16-bit integer.
  *
  * This function takes a 16-bit integer and swaps its lower and upper bytes.

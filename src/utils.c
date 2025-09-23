@@ -12,11 +12,6 @@ void getClassName(char* path, char* cls) {
     cls[i] = '\0';
 }
 
-int little_endian() {
-    int x = 1;
-    return *(char*)&x;
-}
-
 int _16bswap(int n) {
     return ((n>>8)&0xff) | // Change byte 0 with byte 1
             ((n<<8)&0xff00);  // Change byte 1 with byte 0
