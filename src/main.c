@@ -17,6 +17,7 @@ int main(int argc, char *argv[]) {
 
         ClassFile* cf = read_classfile(fptr);
         
+        // TODO: Implement writer
         if (cf != NULL) {
             printf("Magic: %#X\n", cf->magic);
             printf("Version: %u.%u\n", cf->major_version, cf->minor_version);
