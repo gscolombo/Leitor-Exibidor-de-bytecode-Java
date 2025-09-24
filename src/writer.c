@@ -23,9 +23,9 @@ void show_constant(u2 i, u2 count, cp_info* cp) {
     switch (cp->tag)
     {
     case CONSTANT_Class:
-        u2 name_index = cp->info.Class.name_index;
+        u2 cls_name_index = cp->info.Class.name_index;
         printf("%s#%u = Class\t\t\t#%u\t\t// %ls\n", 
-                pad, i, name_index, cp[name_index - i].info.UTF8.str);
+                pad, i, cls_name_index, cp[cls_name_index - i].info.UTF8.str);
         break;
     case CONSTANT_Fieldref:
     case CONSTANT_Methodref:
@@ -33,14 +33,15 @@ void show_constant(u2 i, u2 count, cp_info* cp) {
         char* ref = cp->tag == CONSTANT_Fieldref ? "Fieldref" : (cp->tag == CONSTANT_Methodref ? "Methodref": "InterfaceMethodref");
         u2 class_index = cp->info._Ref.class_index, name_and_type_index = cp->info._Ref.name_and_type_index;
         wchar_t *cls = cp[cp[class_index-i].info.Class.name_index - i].info.UTF8.str; 
-        wchar_t *name = cp[cp[name_and_type_index-i].info.NameAndType.name_index - i].info.UTF8.str;
-        wchar_t *type = cp[cp[name_and_type_index-i].info.NameAndType.descriptor_index - i].info.UTF8.str;
-        name = !wcscmp(name, (wchar_t*) L"<init>") ? L"\"<init>\"" : name;
+        wchar_t *cls_name = cp[cp[name_and_type_index-i].info.NameAndType.name_index - i].info.UTF8.str;
+        wchar_t *cls_type = cp[cp[name_and_type_index-i].info.NameAndType.descriptor_index - i].info.UTF8.str;
+        cls_name = !wcscmp(cls_name, (wchar_t*) L"<init>") ? L"\"<init>\"" : cls_name;
         
-        printf("%s#%u = %s\t\t\t#%u.#%u\t\t// %ls.%ls:%ls\n", pad, i, ref, class_index, name_and_type_index, cls, name, type);
+        printf("%s#%u = %s\t\t\t#%u.#%u\t\t// %ls.%ls:%ls\n", pad, i, ref, class_index, name_and_type_index, cls, cls_name, cls_type);
         break;
     case CONSTANT_String:
-        printf("%s#%u = String\n", pad, i);
+        u2 str_index = cp->info.String.string_index;
+        printf("%s#%u = String\t\t\t#%u\t\t// %ls\n", pad, i, str_index, cp[str_index-i].info.UTF8.str);
         break;
     case CONSTANT_Integer:
         printf("%s#%u = Integer\n", pad, i);
@@ -55,7 +56,12 @@ void show_constant(u2 i, u2 count, cp_info* cp) {
         printf("%s#%u = Double\n", pad, i);
         break;
     case CONSTANT_NameAndType:
-        printf("%s#%u = NameAndType\n", pad, i);
+        u2 name_index = cp->info.NameAndType.name_index, desc_index = cp->info.NameAndType.descriptor_index;
+        wchar_t *name = cp[name_index - i].info.UTF8.str;
+        wchar_t *desc = cp[desc_index - i].info.UTF8.str;
+        name = !wcscmp(name, (wchar_t*) L"<init>") ? L"\"<init>\"" : name;
+
+        printf("%s#%u = NameAndType\t\t#%u.#%u\t\t// %ls:%ls\n", pad, i, name_index, desc_index, name, desc);
         break;
     case CONSTANT_UTF8:
         printf("%s#%u = UTF-8\t\t\t%ls\n", pad, i, cp->info.UTF8.str);

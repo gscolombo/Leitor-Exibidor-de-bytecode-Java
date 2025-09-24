@@ -12,10 +12,6 @@ int main(int argc, char *argv[]) {
     fptr = open_classfile(argv[1]);
     
     if (fptr != NULL) {
-        char cls[255];
-        getClassName(argv[1], cls);
-        printf("Classfile for class %s\n\n", cls);
-
         ClassFile* cf = read_classfile(fptr);
         
         if (cf != NULL) {
