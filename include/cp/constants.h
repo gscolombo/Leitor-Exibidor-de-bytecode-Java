@@ -16,10 +16,18 @@ typedef union Constant {
     } String;
     struct {
         u4 bytes;
+        union {
+            int i;
+            float f;
+        } number;
     } _4Bn;
     struct {
         u4 high_bytes;
         u4 low_bytes;
+        union {
+            long l;
+            double d;
+        } number;
     } _8Bn;
     struct {
         u2 name_index;
