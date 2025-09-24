@@ -28,6 +28,7 @@ typedef union Constant {
     struct {
         u2 length;
         u1 *bytes;   
+        wchar_t *str;
     } UTF8;
     struct {
         u1 reference_kind;

@@ -46,7 +46,9 @@ cp_info* parse_constant_pool(FILE* fptr, u2 count) {
                 *b = read_u1(fptr);
             }
 
-            cp->info.UTF8.bytes = b - l;
+            b -= l;
+            cp->info.UTF8.bytes = b;
+            cp->info.UTF8.str = decode_modified_utf8_str(l, b);
             break;
         case CONSTANT_MethodHandle:
             cp->info.MethodHandle.reference_kind = read_u1(fptr);
@@ -67,4 +69,65 @@ cp_info* parse_constant_pool(FILE* fptr, u2 count) {
     }
 
     return cp - (count - 1);
+}
+
+wchar_t* decode_modified_utf8_str(u2 length, const u1* bytes) {
+    if (bytes == NULL) {
+        return NULL;
+    }
+
+    size_t buffer_size = 0, pos = 0;
+
+    // Define buffer size
+    while (pos < length) {
+        u1 x = bytes[pos];
+
+        if (x < 0x80) {
+            buffer_size++;
+            pos++;
+
+        // 2 byte code point
+        } else if ((x & 0xE0) == 0xC0) { // Check if high byte starts with 110 
+            if (pos + 1 >= length) return NULL; // Early return if truncated sequence
+            buffer_size++;
+            pos += 2;
+
+        // 3 byte code point
+        } else if ((x & 0xF0) == 0xE0) { // Check if high byte starts with 1110
+            if (pos + 2 >= length) return NULL; // Same as above
+            buffer_size++;
+            pos += 3;
+        } else {
+            return NULL;
+        }
+    }    
+
+    wchar_t* str = (wchar_t*) malloc((buffer_size + 1) * sizeof(wchar_t));
+    if (str == NULL) return NULL;
+
+    size_t i = pos = 0;
+
+    // Decode bytes
+    while (pos < length) {
+        u1 x = bytes[pos];
+
+        if (x < 0x80) {
+            str[i++] = (wchar_t) x;
+            pos++;
+        } else if ((x & 0xE0) == 0xC0) {
+            u1 y = bytes[pos + 1];
+            u2 code_point = ((x & 0x1F) << 6) | (y & 0x3F);
+            str[i++] = code_point == 0 ? L'0' : (wchar_t) code_point; // The null character is represent by two bytes (0xC0,0x80);
+            pos += 2;
+        } else if ((x & 0xF0) == 0xE0) {
+            u1 y = bytes[pos + 1];
+            u1 z = bytes[pos + 2];
+            u2 code_point = ((x & 0xF) << 12) | ((y & 0x3F) << 6) | (z & 0x3F);
+            str[i++] = (wchar_t) code_point;
+            pos += 3;
+        }
+    }
+
+    str[i] = L'\0';
+    return str;
 }

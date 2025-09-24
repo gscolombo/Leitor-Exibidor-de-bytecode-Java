@@ -10,8 +10,6 @@
 #include "tags.h"
 #include "utils.h"
 
-wchar_t* decode_modified_utf8_str(u2, const u1*);
-
 void show_constant(u2, u2, cp_info*);
 
 void show_classfile(ClassFile*);
