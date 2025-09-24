@@ -1,3 +1,6 @@
+#ifndef __UTILS_H__
+#define __UTILS_H__
+
 /**
  * @brief Get class identifier from a .class file
  * 
@@ -41,3 +44,5 @@ int _32bswap(int);
  * @return The number of digits of `n`.
  */
 unsigned int num_digits(unsigned int);
+
+#endif
