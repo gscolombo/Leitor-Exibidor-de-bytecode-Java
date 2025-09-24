@@ -30,6 +30,7 @@ cp_info* parse_constant_pool(FILE* fptr, u2 count) {
         case CONSTANT_Double:
             cp->info._8Bn.high_bytes = read_u4(fptr);
             cp->info._8Bn.low_bytes = read_u4(fptr);
+            cp++;
             break;
         case CONSTANT_NameAndType:
             cp->info.NameAndType.name_index = read_u2(fptr);
@@ -65,7 +66,7 @@ cp_info* parse_constant_pool(FILE* fptr, u2 count) {
             break;
         }
 
-        ++cp;
+        cp++;
     }
 
     return cp - (count - 1);
@@ -146,5 +147,29 @@ float decode_float_bytes(u4 b) {
         m = (e == 0) ? (b & 0x7FFFFF) << 1 : (b & 0x7FFFFF) | 0x800000;
 
         return s * m * (1 << (e - 150));
+    }
+}
+
+long decode_long_bytes(u4 hb, u4 lb) {
+    return ((long) hb << 32) | lb;
+}
+
+double decode_double_bytes(u4 hb, u4 lb) {
+    long b = decode_long_bytes(hb, lb);
+
+    if (b == 0x7FF0000000000000L)
+        return INFINITY;
+    else if (b == 0xFFF0000000000000L)
+        return -INFINITY;
+    else if (((0x7FF0000000000001L <= b) && (b <= 0x7FFFFFFFFFFFFFFFL)) 
+                || ((0xFFF0000000000001L <= b) && (b <= 0xFFFFFFFFFFFFFFFFL)))
+        return NAN;
+    else {
+        u4 s, e, m;
+        s = ((b >> 63) == 0) ? 1 : -1;
+        e = (int) ((b >> 52) & 0x7FFL);
+        m = (e == 0) ? (b & 0xFFFFFFFFFFFFFL) << 1 : (b & 0xFFFFFFFFFFFFFL) | 0x10000000000000L;
+
+        return s * m * (1 << (e - 1075));
     }
 }

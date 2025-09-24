@@ -14,4 +14,8 @@ wchar_t* decode_modified_utf8_str(u2, const u1*);
 
 float decode_float_bytes(u4);
 
+long decode_long_bytes(u4, u4);
+
+double decode_double_bytes(u4, u4);
+
 #endif
