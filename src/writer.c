@@ -23,16 +23,21 @@ void show_constant(u2 i, u2 count, cp_info* cp) {
     switch (cp->tag)
     {
     case CONSTANT_Class:
-        printf("%s#%u = Class\t\t\t#%u\n", pad, i, cp->info.Class.name_index);
+        u2 name_index = cp->info.Class.name_index;
+        printf("%s#%u = Class\t\t\t#%u\t\t// %ls\n", 
+                pad, i, name_index, cp[name_index - i].info.UTF8.str);
         break;
     case CONSTANT_Fieldref:
-        printf("%s#%u = Fieldref\t\t\t#%u.#%u\n", pad, i, cp->info._Ref.class_index, cp->info._Ref.name_and_type_index);
-        break;
-    case CONSTANT_Methodref: 
-        printf("%s#%u = Methodref\t\t\t#%u.#%u\n", pad, i, cp->info._Ref.class_index, cp->info._Ref.name_and_type_index);
-        break;
+    case CONSTANT_Methodref:
     case CONSTANT_InterfaceMethodref:
-        printf("%s#%u = InterfaceMethodref\t\t\t#%u.#%u\n", pad, i, cp->info._Ref.class_index, cp->info._Ref.name_and_type_index);
+        char* ref = cp->tag == CONSTANT_Fieldref ? "Fieldref" : (cp->tag == CONSTANT_Methodref ? "Methodref": "InterfaceMethodref");
+        u2 class_index = cp->info._Ref.class_index, name_and_type_index = cp->info._Ref.name_and_type_index;
+        wchar_t *cls = cp[cp[class_index-i].info.Class.name_index - i].info.UTF8.str; 
+        wchar_t *name = cp[cp[name_and_type_index-i].info.NameAndType.name_index - i].info.UTF8.str;
+        wchar_t *type = cp[cp[name_and_type_index-i].info.NameAndType.descriptor_index - i].info.UTF8.str;
+        name = !wcscmp(name, (wchar_t*) L"<init>") ? L"\"<init>\"" : name;
+        
+        printf("%s#%u = %s\t\t\t#%u.#%u\t\t// %ls.%ls:%ls\n", pad, i, ref, class_index, name_and_type_index, cls, name, type);
         break;
     case CONSTANT_String:
         printf("%s#%u = String\n", pad, i);

@@ -9,6 +9,8 @@
 #include "types.h"
 #include "tags.h"
 #include "utils.h"
+#include "wchar.h"
+
 
 void show_constant(u2, u2, cp_info*);
 
