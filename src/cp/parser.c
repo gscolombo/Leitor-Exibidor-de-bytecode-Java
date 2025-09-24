@@ -131,3 +131,20 @@ wchar_t* decode_modified_utf8_str(u2 length, const u1* bytes) {
     str[i] = L'\0';
     return str;
 }
+
+float decode_float_bytes(u4 b) {
+    if (b == 0x7F800000)
+        return INFINITY;
+    else if (b == 0xFF800000)
+        return -INFINITY;
+    else if (((0x7F800001 <= b) && (b <= 0x7FFFFFFF)) || ((0xFF800001 <= b) && (b <= 0xFFFFFFFF)))
+        return NAN;
+    else  {
+        u4 s, e, m;
+        s = ((b >> 31) == 0) ? 1 : -1;
+        e = ((b >> 23) & 0xFF);
+        m = (e == 0) ? (b & 0x7FFFFF) << 1 : (b & 0x7FFFFF) | 0x800000;
+
+        return s * m * (1 << (e - 150));
+    }
+}
