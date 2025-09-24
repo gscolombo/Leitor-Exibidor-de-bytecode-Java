@@ -24,12 +24,12 @@ cp_info* parse_constant_pool(FILE* fptr, u2 count) {
             break;
         case CONSTANT_Integer:
         case CONSTANT_Float:
-            u4 bytes = read_u4(fptr);
-            cp->info._4Bn.bytes = bytes;
+            u4 ibytes = read_u4(fptr);
+            cp->info._4Bn.bytes = ibytes;
             if (cp->tag == CONSTANT_Integer)
-                cp->info._4Bn.number.i = bytes;
+                cp->info._4Bn.number.i = ibytes;
             else
-                cp->info._4Bn.number.f = decode_float_bytes(bytes);
+                cp->info._4Bn.number.f = decode_float_bytes(ibytes);
             break;
         case CONSTANT_Long:
         case CONSTANT_Double:
@@ -171,10 +171,10 @@ double decode_double_bytes(u4 hb, u4 lb) {
 
     if (b == 0x7FF0000000000000L)
         return INFINITY;
-    else if (b == 0xFFF0000000000000L)
+    else if (b == (long) 0xFFF0000000000000L)
         return -INFINITY;
     else if (((0x7FF0000000000001L <= b) && (b <= 0x7FFFFFFFFFFFFFFFL)) 
-                || ((0xFFF0000000000001L <= b) && (b <= 0xFFFFFFFFFFFFFFFFL)))
+                || (((long) 0xFFF0000000000001L <= b) && (b <= (long) 0xFFFFFFFFFFFFFFFFL)))
         return NAN;
     else {
         u4 s, e, m;
