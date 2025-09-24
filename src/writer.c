@@ -44,16 +44,16 @@ void show_constant(u2 i, u2 count, cp_info* cp) {
         printf("%s#%u = String\t\t\t#%u\t\t// %ls\n", pad, i, str_index, cp[str_index-i].info.UTF8.str);
         break;
     case CONSTANT_Integer:
-        printf("%s#%u = Integer\n", pad, i);
+        printf("%s#%u = Integer\t\t\t%i\n", pad, i, cp->info._4Bn.number.i);
         break;
     case CONSTANT_Float:
-        printf("%s#%u = Float\n", pad, i);
+        printf("%s#%u = Float\t\t\t%f\n", pad, i, cp->info._4Bn.number.f);
         break;
     case CONSTANT_Long:
-        printf("%s#%u = Long\n", pad, i);
+        printf("%s#%u = Long\t\t\t%li\n", pad, i, cp->info._8Bn.number.l);
         break;
     case CONSTANT_Double:
-        printf("%s#%u = Double\n", pad, i);
+        printf("%s#%u = Double\t\t\t%f\n", pad, i, cp->info._8Bn.number.d);
         break;
     case CONSTANT_NameAndType:
         u2 name_index = cp->info.NameAndType.name_index, desc_index = cp->info.NameAndType.descriptor_index;
