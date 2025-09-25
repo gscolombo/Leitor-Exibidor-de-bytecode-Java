@@ -2,13 +2,17 @@
 
 void show_classfile(ClassFile *cf)
 {
-    printf("Magic: %#X\n", cf->magic);
-    printf("Version: %u.%u\n", cf->major_version, cf->minor_version);
+    cp_info *cp = cf->constant_pool;
+    u2 cls_name_index = cp[cf->this_class-1].info.Class.name_index;
+    wchar_t* classname = cp[cls_name_index-1].info.UTF8.str;
+    
+    printf("class %ls\n", classname);
+    printf("  Magic: %#X\n", cf->magic);
+    printf("  Version: %u.%u\n", cf->major_version, cf->minor_version);
+    printf("  this_class: #%u\n", cf->this_class);
     printf("Constant Pool (count = %u):\n", cf->constant_pool_count);
 
-    cp_info *cp = cf->constant_pool;
     u2 count = cf->constant_pool_count;
-
     for (u2 i = 1; i < count; i++, cp++)
     {
         show_constant(i, count, cp);
