@@ -11,9 +11,16 @@
 #include "utils.h"
 #include "wchar.h"
 
+struct RefInfo
+{
+    wchar_t *cls, *cls_name, *cls_type;
+    u2 cls_index, name_and_type_index;
+};
 
-void show_constant(u2, u2, cp_info*);
+void show_constant(u2, u2, cp_info *);
 
-void show_classfile(ClassFile*);
+void show_classfile(ClassFile *);
+
+struct RefInfo get_ref_info(const cp_info *, u2);
 
 #endif
