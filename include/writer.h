@@ -23,4 +23,6 @@ void show_classfile(ClassFile *);
 
 struct RefInfo get_ref_info(const cp_info *, u2);
 
+void show_class_access_flags(const ClassFile *);
+
 #endif
