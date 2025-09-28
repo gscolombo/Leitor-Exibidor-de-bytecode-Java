@@ -73,7 +73,19 @@ ClassFile *read_classfile(FILE *fptr)
         cf->access_flags = read_u2(fptr);
         cf->this_class = read_u2(fptr);
         cf->super_class = read_u2(fptr);
+        cf->interfaces_count = read_u2(fptr);
+        
+        cf->interfaces = NULL;
+        if (cf->interfaces_count > 0) {
+            u2 interfaces[cf->interfaces_count];
+            for (size_t i = 0; i < cf->interfaces_count; i++) {
+                cf->interfaces[i] = read_u2(fptr);
+            }
+            cf->interfaces = interfaces;
+        }
 
+
+            
         fclose(fptr);
         return cf;
     }
