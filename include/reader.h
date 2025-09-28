@@ -8,8 +8,10 @@
 
 #include "Classfile.h"
 #include "utils.h"
+#include "cp/parser.h"
+#include "types.h"
 
-#define LITTLE_ENDIAN (__BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__ ? 1 : 0)
+#define _LITTLE_ENDIAN (__BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__ ? 1 : 0)
 
 
 FILE* open_classfile(char *);

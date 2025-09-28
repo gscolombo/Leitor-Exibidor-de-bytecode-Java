@@ -1,3 +1,6 @@
+#ifndef __UTILS_H__
+#define __UTILS_H__
+
 /**
  * @brief Get class identifier from a .class file
  * 
@@ -33,3 +36,13 @@ int _16bswap(int);
  * @return The 32-bit integer with its bytes reversed.
  */
 int _32bswap(int);
+
+/**
+ * @brief Returns the number of digits of a non-negative integer.
+ * 
+ * @param n A non-negative integer.
+ * @return The number of digits of `n`.
+ */
+unsigned int num_digits(unsigned int);
+
+#endif
