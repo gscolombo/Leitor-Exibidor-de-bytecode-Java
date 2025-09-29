@@ -75,7 +75,8 @@ ClassFile read_classfile(FILE *fptr)
         cf.this_class = read_u2(fptr);
         cf.super_class = read_u2(fptr);
         cf.interfaces_count = read_u2(fptr);
-
+        cf.interfaces = NULL;
+        
         if (cf.interfaces_count > 0)
         {
             u2 *interfaces = (u2 *)calloc(cf.interfaces_count, sizeof(u2));
@@ -87,7 +88,8 @@ ClassFile read_classfile(FILE *fptr)
         }
 
         cf.fields_count = read_u2(fptr);
-
+        cf.fields = NULL;
+        
         if (cf.fields_count > 0)
         {
             field_info *fields = (field_info *)calloc(cf.fields_count, sizeof(field_info));

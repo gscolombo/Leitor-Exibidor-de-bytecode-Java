@@ -13,8 +13,7 @@ void free_classfile(ClassFile *cf)
         }
     }
     free(cf->constant_pool);
-
+    
     free(cf->interfaces);
     free(cf->fields);
-    free(cf->attributes);
 }
