@@ -15,7 +15,7 @@
 
 FILE *open_classfile(const char *);
 
-ClassFile *read_classfile(FILE *);
+ClassFile read_classfile(FILE *);
 
 u1 read_u1(FILE *);
 u2 read_u2(FILE *);

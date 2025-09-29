@@ -55,59 +55,62 @@ FILE *open_classfile(const char *path)
     return NULL;
 }
 
-ClassFile *read_classfile(FILE *fptr)
+ClassFile read_classfile(FILE *fptr)
 {
+    ClassFile cf;
+
     if (fseek(fptr, 0, SEEK_END) == 0)
     {
         const size_t fsize = ftell(fptr);
 
         printf("Size: %lu bytes.\n\n", fsize);
         fseek(fptr, 0, SEEK_SET);
-        ClassFile *cf = (ClassFile *)malloc(fsize);
 
-        cf->magic = read_u4(fptr);
-        cf->minor_version = read_u2(fptr);
-        cf->major_version = read_u2(fptr);
-        cf->constant_pool_count = read_u2(fptr);
-        cf->constant_pool = parse_constant_pool(fptr, cf->constant_pool_count);
-        cf->access_flags = read_u2(fptr);
-        cf->this_class = read_u2(fptr);
-        cf->super_class = read_u2(fptr);
-        cf->interfaces_count = read_u2(fptr);
+        cf.magic = read_u4(fptr);
+        cf.minor_version = read_u2(fptr);
+        cf.major_version = read_u2(fptr);
+        cf.constant_pool_count = read_u2(fptr);
+        cf.constant_pool = parse_constant_pool(fptr, cf.constant_pool_count);
+        cf.access_flags = read_u2(fptr);
+        cf.this_class = read_u2(fptr);
+        cf.super_class = read_u2(fptr);
+        cf.interfaces_count = read_u2(fptr);
 
-        if (cf->interfaces_count > 0)
+        if (cf.interfaces_count > 0)
         {
-            u2 interfaces[cf->interfaces_count];
-            for (size_t i = 0; i < cf->interfaces_count; i++)
+            u2 *interfaces = (u2 *)calloc(cf.interfaces_count, sizeof(u2));
+            for (size_t i = 0; i < cf.interfaces_count; i++)
             {
-                cf->interfaces[i] = read_u2(fptr);
+                interfaces[i] = read_u2(fptr);
             }
-            cf->interfaces = interfaces;
+            cf.interfaces = interfaces;
         }
 
-        cf->fields_count = read_u2(fptr);
+        cf.fields_count = read_u2(fptr);
 
-        if (cf->fields_count > 0)
+        if (cf.fields_count > 0)
         {
-            for (size_t i = 0; i < cf->fields_count; i++)
+            field_info *fields = (field_info *)calloc(cf.fields_count, sizeof(field_info));
+            for (size_t i = 0; i < cf.fields_count; i++)
             {
-                cf->fields[i].access_flags = read_u2(fptr);
-                cf->fields[i].name_index = read_u2(fptr);
-                cf->fields[i].descriptor_index = read_u2(fptr);
-                cf->fields[i].attributes_count = read_u2(fptr);
+                fields[i].access_flags = read_u2(fptr);
+                fields[i].name_index = read_u2(fptr);
+                fields[i].descriptor_index = read_u2(fptr);
+                fields[i].attributes_count = read_u2(fptr);
 
-                if (cf->fields[i].attributes_count > 0)
+                if (fields[i].attributes_count > 0)
                 {
-                    read_attributes(cf->constant_pool, cf->fields[i].attributes_count, fptr, cf->fields[i].attributes);
+                    attribute *attrs = (attribute *)calloc(fields[i].attributes_count, sizeof(attribute));
+                    read_attributes(cf.constant_pool, fields[i].attributes_count, fptr, attrs);
                 }
             }
+            cf.fields = fields;
         }
 
         fclose(fptr);
-        return cf;
     }
 
-    return NULL;
+    return cf;
 }
 
 void read_attributes(cp_info *cp, unsigned int n, FILE *fptr, attribute *attr)
@@ -150,4 +153,3 @@ void read_attributes(cp_info *cp, unsigned int n, FILE *fptr, attribute *attr)
             }
         }
 }
-

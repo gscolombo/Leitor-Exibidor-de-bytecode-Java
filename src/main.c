@@ -11,13 +11,9 @@ int main(const int argc, char *argv[]) {
     FILE *fptr = open_classfile(argv[1]);
     
     if (fptr != NULL) {
-        ClassFile* cf = read_classfile(fptr);
-        
-        if (cf != NULL) {
-            show_classfile(cf);
-        }
-        
-        free_classfile(cf);
+        ClassFile cf = read_classfile(fptr);
+        show_classfile(&cf);        
+        free_classfile(&cf);
     }
 
     return 0;
