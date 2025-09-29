@@ -16,8 +16,8 @@ cp_info* parse_constant_pool(FILE* fptr, u2 count) {
         case CONSTANT_Fieldref:
         case CONSTANT_Methodref:
         case CONSTANT_InterfaceMethodref:
-            cp->info._Ref.class_index = read_u2(fptr);
-            cp->info._Ref.name_and_type_index = read_u2(fptr);
+            cp->info.Ref.class_index = read_u2(fptr);
+            cp->info.Ref.name_and_type_index = read_u2(fptr);
             break;
         case CONSTANT_String:
             cp->info.String.string_index = read_u2(fptr);

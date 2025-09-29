@@ -1,5 +1,5 @@
-#ifndef __READER_H__
-#define __READER_H__
+#ifndef READER_H_
+#define READER_H_
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -11,9 +11,9 @@
 #include "cp/parser.h"
 #include "types.h"
 
-#define _LITTLE_ENDIAN (__BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__ ? 1 : 0)
+#define LE (__BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__ ? 1 : 0)
 
-FILE *open_classfile(char *);
+FILE *open_classfile(const char *);
 
 ClassFile *read_classfile(FILE *);
 

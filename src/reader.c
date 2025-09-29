@@ -13,9 +13,9 @@ u2 read_u2(FILE *fptr)
     u2 u;
     fread(&u, sizeof(u2), 1, fptr);
 
-    if (_LITTLE_ENDIAN)
+    if (LE)
     {
-        u = _16bswap(u);
+        u = u2swap(u);
     }
 
     return u;
@@ -26,23 +26,23 @@ u4 read_u4(FILE *fptr)
     u4 u;
     fread(&u, sizeof(u4), 1, fptr);
 
-    if (_LITTLE_ENDIAN)
+    if (LE)
     {
-        u = _32bswap(u);
+        u = u4swap(u);
     }
 
     return u;
 }
 
-FILE *open_classfile(char *path)
+FILE *open_classfile(const char *path)
 {
     size_t l;
 
     if ((l = strlen(path)) > 6)
     {
-        char *ext = &path[l - 6];
+        const char *ext = &path[l - 6];
 
-        if (strcmp(ext, ".class"))
+        if (strcmp(ext, ".class") != 0)
         {
             printf("Wrong file format. Give the path of a \".class\" file.\n");
             return NULL;
@@ -59,7 +59,7 @@ ClassFile *read_classfile(FILE *fptr)
 {
     if (fseek(fptr, 0, SEEK_END) == 0)
     {
-        size_t fsize = ftell(fptr);
+        const size_t fsize = ftell(fptr);
 
         printf("Size: %lu bytes.\n\n", fsize);
         fseek(fptr, 0, SEEK_SET);
@@ -75,7 +75,6 @@ ClassFile *read_classfile(FILE *fptr)
         cf->super_class = read_u2(fptr);
         cf->interfaces_count = read_u2(fptr);
 
-        cf->interfaces = NULL;
         if (cf->interfaces_count > 0)
         {
             u2 interfaces[cf->interfaces_count];
@@ -120,7 +119,7 @@ void read_attributes(cp_info *cp, unsigned int n, FILE *fptr, attribute *attr)
             attr[i].attribute_length = read_u4(fptr);
 
             const wchar_t *attr_name = cp[attr[i].attribute_name_index].info.UTF8.str;
-            attribute_name attr_type = *convert_attr_name(attr_name);
+            const attribute_name attr_type = *convert_attr_name(attr_name);
 
             switch (attr_type)
             {

@@ -101,8 +101,8 @@ void show_constant(u2 i, u2 count, cp_info *cp)
 
 struct RefInfo get_ref_info(const cp_info *cp, u2 i)
 {
-    u2 cls_index = cp->info._Ref.class_index;
-    u2 name_and_type_index = cp->info._Ref.name_and_type_index;
+    u2 cls_index = cp->info.Ref.class_index;
+    u2 name_and_type_index = cp->info.Ref.name_and_type_index;
     wchar_t *cls = cp[cp[cls_index - i].info.Class.name_index - i].info.UTF8.str;
     wchar_t *cls_name = cp[cp[name_and_type_index - i].info.NameAndType.name_index - i].info.UTF8.str;
     wchar_t *cls_type = cp[cp[name_and_type_index - i].info.NameAndType.descriptor_index - i].info.UTF8.str;

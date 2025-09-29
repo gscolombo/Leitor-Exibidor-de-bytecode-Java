@@ -1,5 +1,5 @@
-#ifndef __CLASSFILE_H__
-#define __CLASSFILE_H__
+#ifndef CLASSFILE_H_
+#define CLASSFILE_H_
 
 #include "types.h"
 #include "cp/constants.h"

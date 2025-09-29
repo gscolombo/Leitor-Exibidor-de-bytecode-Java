@@ -1,19 +1,5 @@
-#ifndef __UTILS_H__
-#define __UTILS_H__
-
-/**
- * @brief Get class identifier from a .class file
- * 
- * This function retrieves the class identifier from the .class file path.
- * It remove the ".class" at the end of the path and any trailing "/" or "."
- * at the beginning.
- * 
- * @param path String with the path for the .class file
- * @param cls String to store the class identifier
- * 
- * @return None. It changes the `cls` parameter inplace.
- */
-void getClassName(char*, char*);
+#ifndef UTILS_H_
+#define UTILS_H_
 
 /**
  * @brief Swaps the two bytes of a 16-bit integer.
@@ -24,7 +10,7 @@ void getClassName(char*, char*);
  * @param n The 16-bit integer to swap bytes.
  * @return The 16-bit integer with its bytes swapped.
  */
-int _16bswap(int);
+unsigned int u2swap(unsigned int);
 
 /**
  * @brief Swaps the byte order of a 32-bit integer.
@@ -35,7 +21,7 @@ int _16bswap(int);
  * @param n The 32-bit integer to swap.
  * @return The 32-bit integer with its bytes reversed.
  */
-int _32bswap(int);
+unsigned int u4swap(unsigned int);
 
 /**
  * @brief Returns the number of digits of a non-negative integer.

@@ -1,5 +1,5 @@
-#ifndef __ATTRIBUTES_H__
-#define __ATTRIBUTES_H__
+#ifndef ATTRIBUTES_H
+#define ATTRIBUTES_H
 
 #include <wchar.h>
 

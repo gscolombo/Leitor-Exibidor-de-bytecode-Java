@@ -1,5 +1,5 @@
-#ifndef __STACKMAP_H__
-#define __STACKMAP_H__
+#ifndef STACKMAP_H
+#define STACKMAP_H
 
 typedef union stack_map_frame
 {

@@ -1,5 +1,5 @@
-#ifndef __WRITER_H__
-#define __WRITER_H_
+#ifndef WRITER_H
+#define WRITER_H
 
 #include <stdlib.h>
 #include <string.h>

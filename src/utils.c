@@ -1,27 +1,15 @@
 #include "utils.h"
 
-void getClassName(char* path, char* cls) {
-    int j = path[0] == '.' ? 2 : 0;
-    int i = 0;
-
-    while (path[j] != '.') {
-        cls[i] = path[j] == '/' ? '.' : path[j];
-        i++;
-        j++;
-    }
-    cls[i] = '\0';
-}
-
-int _16bswap(int n) {
+unsigned int u2swap(const unsigned int n) {
     return ((n>>8)&0xff) | // Change byte 0 with byte 1
             ((n<<8)&0xff00);  // Change byte 1 with byte 0
 }
 
-int _32bswap(int n) {
+unsigned int u4swap(const unsigned int n) {
     /*
         In the expression below, the "|" operators concatenate
         the word (32 bits) byte segments, while the "&" operator
-        used with "0x..ff.." choose the byte to be moved.
+        used with "0x...ff..." choose the byte to be moved.
 
         Example: 
         n = 0x12345678
