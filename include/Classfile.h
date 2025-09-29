@@ -20,7 +20,7 @@ typedef struct ClassFile {
     u2 methods_count;
     method_info *methods;
     u2 attributes_count;
-    attribute_info *attributes;
+    attribute *attributes;
 } ClassFile;
 
 #endif
