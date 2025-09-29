@@ -1,10 +1,13 @@
 #ifndef CLASSFILE_H_
 #define CLASSFILE_H_
 
-#include "types.h"
-#include "cp/constants.h"
+#include <stdlib.h>
 
-typedef struct ClassFile {
+#include "types.h"
+#include "constants.h"
+
+typedef struct ClassFile
+{
     u4 magic;
     u2 minor_version;
     u2 major_version;
@@ -23,4 +26,5 @@ typedef struct ClassFile {
     attribute *attributes;
 } ClassFile;
 
+void free_classfile(ClassFile *);
 #endif

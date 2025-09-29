@@ -16,8 +16,8 @@ int main(const int argc, char *argv[]) {
         if (cf != NULL) {
             show_classfile(cf);
         }
-
-        free(cf);
+        
+        free_classfile(cf);
     }
 
     return 0;
