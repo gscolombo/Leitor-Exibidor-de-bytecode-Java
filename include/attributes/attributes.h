@@ -3,6 +3,7 @@
 
 #include <wchar.h>
 
+#include "uinteger.h"
 #include "stackmap.h"
 #include "annotation.h"
 
@@ -31,16 +32,53 @@ typedef enum attribute_name
     MethodParameters
 } attribute_name;
 
-static const struct
-{
-    attribute_name attr;
-    const char *str;
-} conversion[] = {
-    {ConstantValue, "ConstantValue"},
-    {Code, "Code"},
-    {StackMapTable, "StackMapTable"}};
-
 const attribute_name *convert_attr_name(const wchar_t *);
+
+typedef struct line_number_table
+{
+    u2 start_pc;
+    u2 line_number;
+} line_number_table;
+
+typedef struct exception_table
+{
+    u2 start_pc;
+    u2 end_pc;
+    u2 handler_pc;
+    u2 catch_type;
+} exception_table;
+
+typedef struct classes
+{
+    u2 inner_class_info_index;
+    u2 outer_class_info_index;
+    u2 inner_name_index;
+    u2 inner_class_access_flags;
+} classes;
+
+typedef struct local_variable_table
+{
+    u2 start_pc;
+    u2 length;
+    u2 name_index;
+    u2 descriptor_index;
+    u2 index;
+} local_variable_table;
+
+typedef struct local_variable_type_table
+{
+    u2 start_pc;
+    u2 length;
+    u2 name_index;
+    u2 signature_index;
+    u2 index;
+} local_variable_type_table;
+
+typedef struct parameter
+{
+    u2 name_index;
+    u2 access_flags;
+} parameter;
 
 typedef struct attribute_info
 {
@@ -59,13 +97,7 @@ typedef struct attribute_info
             u4 code_length;
             u1 *code;
             u2 exception_table_length;
-            struct
-            {
-                u2 start_pc;
-                u2 end_pc;
-                u2 handler_pc;
-                u2 catch_type;
-            } *exception_table;
+            exception_table *exception_table;
             u2 attributes_count;
             struct attribute_info *attributes;
         } Code;
@@ -82,13 +114,7 @@ typedef struct attribute_info
         struct
         {
             u2 number_of_classes;
-            struct
-            {
-                u2 inner_class_info_index;
-                u2 outer_class_info_index;
-                u2 inner_name_index;
-                u2 inner_class_access_flags;
-            } *classes;
+            classes *classes;
         } InnerClasses;
         struct
         {
@@ -110,35 +136,17 @@ typedef struct attribute_info
         struct
         {
             u2 line_number_table_length;
-            struct
-            {
-                u2 start_pc;
-                u2 line_number;
-            } *line_number_table;
+            line_number_table *line_number_table;
         } LineNumberTable;
         struct
         {
             u2 local_variable_table_length;
-            struct
-            {
-                u2 start_pc;
-                u2 length;
-                u2 name_index;
-                u2 descriptor_index;
-                u2 index;
-            } *local_variable_table;
+            local_variable_table *local_variable_table;
         } LocalVariableTable;
         struct
         {
             u2 local_variable_type_table_length;
-            struct
-            {
-                u2 start_pc;
-                u2 length;
-                u2 name_index;
-                u2 signature_index;
-                u2 index;
-            } *local_variable_type_table;
+            local_variable_type_table *local_variable_type_table;
         } LocalVariableTypeTable;
         struct
         {
@@ -171,11 +179,7 @@ typedef struct attribute_info
         struct
         {
             u1 parameters_count;
-            struct
-            {
-                u2 name_index;
-                u2 access_flags;
-            } *parameters;
+            parameter *parameters;
         } MethodParameters;
     } info;
 } attribute;

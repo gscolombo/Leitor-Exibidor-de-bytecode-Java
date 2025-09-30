@@ -1,11 +1,5 @@
-#ifndef TYPES_H_
-#define TYPES_H_
-
-#include <stdint.h>
-
-typedef uint8_t u1;
-typedef uint16_t u2;
-typedef uint32_t u4;
+#ifndef TYPES_REF_H
+#define TYPES_REF_H
 
 #include "attributes.h"
 

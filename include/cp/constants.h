@@ -1,7 +1,7 @@
 #ifndef CP_CONSTANTS_H
 #define CP_CONSTANTS_H
 
-#include "types.h"
+#include "uinteger.h"
 
 typedef union Constant {
     struct {

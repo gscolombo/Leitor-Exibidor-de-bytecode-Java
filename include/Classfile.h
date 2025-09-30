@@ -3,7 +3,8 @@
 
 #include <stdlib.h>
 
-#include "types.h"
+#include "uinteger.h"
+#include "ref.h"
 #include "constants.h"
 
 typedef struct ClassFile
@@ -27,4 +28,5 @@ typedef struct ClassFile
 } ClassFile;
 
 void free_classfile(ClassFile *);
+void free_attributes(cp_info*, u2, attribute*);
 #endif

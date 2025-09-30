@@ -6,7 +6,7 @@
 #include <stdio.h>
 
 #include "Classfile.h"
-#include "types.h"
+#include "ref.h"
 #include "tags.h"
 #include "utils.h"
 #include "wchar.h"
