@@ -23,6 +23,8 @@ void show_classfile(ClassFile *cf)
     {
         show_constant(i, count, cp);
     }
+
+    show_methods(cf);
 }
 
 void show_constant(u2 i, u2 count, cp_info *cp)
@@ -139,7 +141,7 @@ void show_class_access_flags(const ClassFile *cf)
     else
         n--;
 
-    l += (flags_str[1] != NULL ? (strlen(flags_str[1]) + + (l > 0 ? 2 : 0)) : 0); // Extra size for ", "
+    l += (flags_str[1] != NULL ? (strlen(flags_str[1]) + (l > 0 ? 2 : 0)) : 0); // Extra size for ", "
 
     n++;
     if ((flags & 0x0200) == 0x0200)
@@ -173,4 +175,96 @@ void show_class_access_flags(const ClassFile *cf)
 
     printf("  Flags: (%#.4x) %s\n", flags, str);
     free(str);
+}
+
+void show_methods(const ClassFile *cf)
+{
+    if (cf->constant_pool == NULL)
+        return;
+
+    cp_info *cp = cf->constant_pool;
+
+    u2 count = cf->methods_count;
+    char nl;
+    printf("{\n");
+    if (count > 0 && cf->methods != NULL)
+        for (size_t i = 0; i < count; i++)
+        {
+            nl = i == (size_t)(count - 1) ? ' ' : '\n';
+            method_info method = cf->methods[i];
+
+            u2 access_flags = method.access_flags;
+            wchar_t *method_name = cp[method.name_index - 1].info.UTF8.str;
+            wchar_t *method_desc = cp[method.descriptor_index - 1].info.UTF8.str;
+
+            if (!wcscmp(method_name, L"<init>"))
+            {
+                wchar_t *classname = cp[cp[cf->this_class - 1].info.Class.name_index - 1].info.UTF8.str;
+
+                for (wchar_t *wcptr = classname; wcptr < classname + wcslen(classname) - 1; wcptr++)
+                    if (*wcptr == L'/')
+                    {
+                        *wcptr = L'.';
+                        break;
+                    }
+
+                method_name = classname;
+            }
+
+            char *flags = get_method_access_flags_names(access_flags);
+            printf("  %ls();\n    descriptor: %ls\n    flags: (%#.4x) %s\n%c", method_name, method_desc, access_flags, flags, nl);
+            free(flags);
+        }
+    printf("}\n");
+}
+
+char *get_method_access_flags_names(u2 flags)
+{
+    const char *names[12] = {NULL};
+
+    struct
+    {
+        u2 flag;
+        const char *name;
+    } flag_map[12] = {
+        {0x0001, "ACC_PUBLIC"},
+        {0x0002, "ACC_PRIVATE"},
+        {0x0004, "ACC_PROTECTED"},
+        {0x0008, "ACC_STATIC"},
+        {0x0010, "ACC_FINAL"},
+        {0x0020, "ACC_SYNCHRONIZED"},
+        {0x0040, "ACC_BRIDGE"},
+        {0x0080, "ACC_VARARGS"},
+        {0x0100, "ACC_NATIVE"},
+        {0x0400, "ACC_ABSTRACT"},
+        {0x0800, "ACC_STRICT"},
+        {0x1000, "ACC_SYNTHETIC"}};
+
+    size_t l = 0;
+
+    for (size_t i = 0; i < 12; i++)
+    {
+        if (flags & flag_map[i].flag)
+        {
+            names[l] = flag_map[i].name;
+            l++;
+        }
+    }
+
+
+    char *flag_str = (char *)calloc(l + 1, sizeof(char *));
+    char *tmp = (char *)malloc(20);
+    for (size_t i = 0; i < l; i++)
+    {
+        if (i > 0) {
+            snprintf(tmp, strlen(names[i]) + 3, ", %s", names[i]);
+            strcat(flag_str, tmp);
+            continue;
+        }
+
+        snprintf(flag_str, strlen(names[i]) + 1, "%s", names[i]);
+    }
+
+    free(tmp);
+    return flag_str;
 }
