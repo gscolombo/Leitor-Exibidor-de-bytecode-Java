@@ -55,7 +55,7 @@ void show_constant(u2 i, u2 count, cp_info *cp)
 
         struct RefInfo r = get_ref_info(cp, i);
         printf("%s#%u = %s\t\t\t#%u.#%u\t\t// %ls.%ls:%ls\n",
-               pad, i, ref, r.cls_index, r.name_and_type_index, r.cls, r.cls_name, r.cls_type);
+               pad, i, ref, r.cls_index, r.name_and_type_index, r.cls, r.ref_name, r.ref_type);
         break;
     case CONSTANT_String:
         u2 str_index = cp->info.String.string_index;
@@ -106,14 +106,14 @@ struct RefInfo get_ref_info(const cp_info *cp, u2 i)
     u2 cls_index = cp->info.Ref.class_index;
     u2 name_and_type_index = cp->info.Ref.name_and_type_index;
     wchar_t *cls = cp[cp[cls_index - i].info.Class.name_index - i].info.UTF8.str;
-    wchar_t *cls_name = cp[cp[name_and_type_index - i].info.NameAndType.name_index - i].info.UTF8.str;
-    wchar_t *cls_type = cp[cp[name_and_type_index - i].info.NameAndType.descriptor_index - i].info.UTF8.str;
-    cls_name = !wcscmp(cls_name, (wchar_t *)L"<init>") ? L"\"<init>\"" : cls_name;
+    wchar_t *ref_name = cp[cp[name_and_type_index - i].info.NameAndType.name_index - i].info.UTF8.str;
+    wchar_t *ref_type = cp[cp[name_and_type_index - i].info.NameAndType.descriptor_index - i].info.UTF8.str;
+    ref_name = !wcscmp(ref_name, (wchar_t *)L"<init>") ? L"\"<init>\"" : ref_name;
 
     struct RefInfo ref_info = {
         .cls = cls,
-        .cls_name = cls_name,
-        .cls_type = cls_type,
+        .ref_name = ref_name,
+        .ref_type = ref_type,
         .cls_index = cls_index,
         .name_and_type_index = name_and_type_index};
 
