@@ -24,8 +24,10 @@ void show_classfile(ClassFile *);
 struct RefInfo get_ref_info(const cp_info *, u2);
 
 void show_class_access_flags(const ClassFile *);
-void show_methods(const ClassFile *);
 
+void show_methods(const ClassFile *);
 char *get_method_access_flags_names(u2);
+wchar_t *get_full_method_name(wchar_t *, const wchar_t *, u2, const ClassFile *);
+void parse_method_descriptors(wchar_t *, const wchar_t **, size_t *);
 
 #endif
