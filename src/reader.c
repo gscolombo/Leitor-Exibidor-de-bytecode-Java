@@ -75,10 +75,11 @@ ClassFile read_classfile(FILE *fptr)
         cf.access_flags = read_u2(fptr);
         cf.this_class = read_u2(fptr);
         cf.super_class = read_u2(fptr);
+
+        // Interfaces
         cf.interfaces_count = read_u2(fptr);
         cf.interfaces = NULL;
 
-        // Interfaces
         if (cf.interfaces_count > 0)
         {
             cf.interfaces = (u2 *)calloc(cf.interfaces_count, sizeof(u2));
@@ -94,19 +95,19 @@ ClassFile read_classfile(FILE *fptr)
 
         if (cf.fields_count > 0)
         {
-            field_info *fields = (field_info *)calloc(cf.fields_count, sizeof(field_info));
+            cf.fields = (field_info *)calloc(cf.fields_count, sizeof(field_info));
             for (size_t i = 0; i < cf.fields_count; i++)
             {
-                fields[i].access_flags = read_u2(fptr);
-                fields[i].name_index = read_u2(fptr);
-                fields[i].descriptor_index = read_u2(fptr);
-                fields[i].attributes_count = read_u2(fptr);
-                fields[i].attributes = NULL;
+                cf.fields[i].access_flags = read_u2(fptr);
+                cf.fields[i].name_index = read_u2(fptr);
+                cf.fields[i].descriptor_index = read_u2(fptr);
+                cf.fields[i].attributes_count = read_u2(fptr);
+                cf.fields[i].attributes = NULL;
 
-                if ((count = fields[i].attributes_count) > 0)
+                if ((count = cf.fields[i].attributes_count) > 0)
                 {
-                    fields[i].attributes = (attribute *)calloc(count, sizeof(attribute));
-                    read_attributes(cf.constant_pool, count, fptr, fields[i].attributes);
+                    cf.fields[i].attributes = (attribute *)calloc(count, sizeof(attribute));
+                    read_attributes(cf.constant_pool, count, fptr, cf.fields[i].attributes);
                 }
             }
         }
