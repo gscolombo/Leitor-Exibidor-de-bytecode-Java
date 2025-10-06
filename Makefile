@@ -3,7 +3,7 @@ CC = gcc
 DEBUG_MODE = false
 
 # Find all subdirectories in include (including nested ones)
-INCLUDE_DIRS = include $(shell find include -type d)
+INCLUDE_DIRS = $(shell find include -type d)
 CFLAGS = $(addprefix -I,$(INCLUDE_DIRS)) -Wall -Wextra
 DEBUG_FLAGS = -fsanitize=address -g
 LDFLAGS = -static-libasan
