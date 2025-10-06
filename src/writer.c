@@ -89,26 +89,3 @@ void show_class_access_flags(const ClassFile *cf)
     printf("  Flags: (%#.4x) %s\n", flags, str);
     free(str);
 }
-
-void show_fields(const ClassFile *cf)
-{
-    if (cf->constant_pool == NULL)
-        return;
-
-    cp_info *cp = cf->constant_pool;
-
-    u2 count = cf->fields_count;
-    char nl;
-    if (count > 0 && cf->fields != NULL)
-        for (size_t i = 0; i < count; i++)
-        {
-            nl = i == (size_t)(count - 1) ? ' ' : '\n';
-            field_info field = cf->fields[i];
-
-            u2 access_flags = field.access_flags;
-            wchar_t *field_name = cp[field.name_index - 1].info.UTF8.str;
-            wchar_t *field_desc = cp[field.descriptor_index - 1].info.UTF8.str;
-
-            printf("  %ls;\n    descriptor: %ls\n    flags: (0x%04x) \n%c", field_name, field_desc, access_flags, nl);
-        }
-}
