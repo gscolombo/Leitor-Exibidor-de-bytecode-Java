@@ -64,7 +64,7 @@ ClassFile read_classfile(FILE *fptr)
     {
         const size_t fsize = ftell(fptr);
 
-        printf("Size: %lu bytes.\n\n", fsize);
+        printf("Size: %lu bytes.\n", fsize);
         fseek(fptr, 0, SEEK_SET);
 
         cf.magic = read_u4(fptr);
@@ -136,6 +136,8 @@ ClassFile read_classfile(FILE *fptr)
         }
     }
 
+    printf("%lu bytes readed.\n\n", ftell(fptr));
+    fclose(fptr);
     return cf;
 }
 

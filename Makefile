@@ -24,28 +24,28 @@ all: $(BUILD_DIR) $(TARGET)
 
 # Create build directory
 $(BUILD_DIR):
-	mkdir -p $@
+	@mkdir -p $@
 
 # Link object files into the executable
 $(TARGET): $(OBJS)
 ifeq ($(DEBUG_MODE), true)
-	$(CC) $(OBJS) -o $@ $(DEBUG_FLAGS) $(LDFLAGS)
+	@$(CC) $(OBJS) -o $@ $(DEBUG_FLAGS) $(LDFLAGS)
 else
-	$(CC) $(OBJS) -o $@
+	@$(CC) $(OBJS) -o $@
 endif
 
 # Compile each source file to an object file
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(dir $@)
 ifeq ($(DEBUG_MODE), true)
-	$(CC) $(CFLAGS) $(DEBUG_FLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) $(DEBUG_FLAGS) -c $< -o $@
 else
-	$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) -c $< -o $@
 endif
 
 # Clean build artifacts
 clean:
-	rm -rf $(BUILD_DIR) $(TARGET)
+	@rm -rf $(BUILD_DIR) $(TARGET)
 
 # Rebuild from scratch
 rebuild: clean all
@@ -58,8 +58,9 @@ debug:
 	@echo "  "$(SRCS)
 	@echo "Object files:"
 	@echo "  "$(OBJS)"\n"
-	make rebuild -e "DEBUG_MODE=true" -e "TARGET=cjavap_debug"
-	cd .; ./cjavap_debug classfiles/Example/Main.class 
-	rm cjavap_debug
+	@make rebuild -e "DEBUG_MODE=true" -e "TARGET=cjavap_debug"
+	@echo "\n------------------------------------------------\n"
+	@cd .; ./cjavap_debug classfiles/Example/Main.class 
+	@rm cjavap_debug
 
 .PHONY: all clean rebuild debug
