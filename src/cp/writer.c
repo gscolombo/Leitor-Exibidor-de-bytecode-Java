@@ -30,13 +30,13 @@ void show_constants(u2 count, cp_info *_cp)
                 ref = "InterfaceMethodref";
 
             // Índices das estruturas de referência
-            u2 cls_index = cp->info.Ref.class_index - i;
-            u2 name_and_type_index = cp->info.Ref.name_and_type_index - i;
+            u2 cls_index = cp->info.Ref.class_index;
+            u2 name_and_type_index = cp->info.Ref.name_and_type_index;
 
             // Recuperação as strings para exibição
-            wchar_t *cls = cp[cp[cls_index].info.Class.name_index - i].info.UTF8.str;
-            wchar_t *ref_name = cp[cp[name_and_type_index].info.NameAndType.name_index - i].info.UTF8.str;
-            wchar_t *ref_type = cp[cp[name_and_type_index].info.NameAndType.descriptor_index - i].info.UTF8.str;
+            wchar_t *cls = cp[cp[cls_index - i].info.Class.name_index - i].info.UTF8.str;
+            wchar_t *ref_name = cp[cp[name_and_type_index - i].info.NameAndType.name_index - i].info.UTF8.str;
+            wchar_t *ref_type = cp[cp[name_and_type_index - i].info.NameAndType.descriptor_index - i].info.UTF8.str;
 
             // Inclusão de aspas na função <init> para conformidade com saída do javap
             ref_name = !wcscmp(ref_name, (wchar_t *)L"<init>") ? L"\"<init>\"" : ref_name;
@@ -62,12 +62,12 @@ void show_constants(u2 count, cp_info *_cp)
             break;
         case CONSTANT_NameAndType:
             // Índices das strings de nome e descritor
-            u2 name_index = cp->info.NameAndType.name_index - i;
-            u2 desc_index = cp->info.NameAndType.descriptor_index - i;
+            u2 name_index = cp->info.NameAndType.name_index;
+            u2 desc_index = cp->info.NameAndType.descriptor_index;
 
             // Recuperação das strings
-            wchar_t *name = cp[name_index].info.UTF8.str;
-            wchar_t *desc = cp[desc_index].info.UTF8.str;
+            wchar_t *name = cp[name_index - i].info.UTF8.str;
+            wchar_t *desc = cp[desc_index - i].info.UTF8.str;
 
             // Inclusão de aspas no método <init> para conformidade com saída do javap
             name = !wcscmp(name, (wchar_t *)L"<init>") ? L"\"<init>\"" : name;

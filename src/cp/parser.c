@@ -130,7 +130,7 @@ wchar_t* decode_modified_utf8_str(u2 length, const u1* bytes) {
         } else if ((x & 0xE0) == 0xC0) {
             u1 y = bytes[pos + 1];
             u2 code_point = ((x & 0x1F) << 6) | (y & 0x3F);
-            str[i++] = code_point == 0 ? L'0' : (wchar_t) code_point; // The null character is represent by two bytes (0xC0,0x80);
+            str[i++] = code_point == 0 ? L'\0' : (wchar_t) code_point; // The null character is represent by two bytes (0xC0,0x80);
             pos += 2;
         } else if ((x & 0xF0) == 0xE0) {
             u1 y = bytes[pos + 1];
