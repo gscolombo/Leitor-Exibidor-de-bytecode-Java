@@ -19,11 +19,10 @@ void show_classfile(ClassFile *cf)
     printf("Constant Pool (count = %u):\n", cf->constant_pool_count);
 
     u2 count = cf->constant_pool_count;
-    for (u2 i = 1; i < count; i++, cp++)
-    {
-        show_constant(i, count, cp);
-    }
-    printf("{\n");
+    show_constants(count, cp);
+
+    if (count > 0)
+        printf("{\n");
 
     show_fields(cf);
     if (cf->fields_count > 0)
