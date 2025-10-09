@@ -16,6 +16,9 @@ void show_classfile(ClassFile *cf)
     show_class_access_flags(cf);
     printf("  this_class: #%u\t\t\t// %ls\n", cf->this_class, classname);
     printf("  super_class: #%u\t\t\t// %ls\n", cf->super_class, super_classname);
+    printf("  interfaces: %u, fields: %u, methods: %u, attributes: %u\n",
+            cf->interfaces_count, cf->fields_count, cf->methods_count, cf->attributes_count);
+
     printf("Constant Pool (count = %u):\n", cf->constant_pool_count);
 
     u2 count = cf->constant_pool_count;
