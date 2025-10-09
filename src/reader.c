@@ -134,6 +134,8 @@ ClassFile read_classfile(FILE *fptr)
                 }
             }
         }
+
+        cf.attributes_count = read_u2(fptr);
     }
 
     printf("%lu bytes readed.\n\n", ftell(fptr));
