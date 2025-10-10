@@ -1,5 +1,5 @@
-#ifndef __CP_PARSER_H__
-#define __CP_PARSER_H_
+#ifndef CP_PARSER_H
+#define CP_PARSER_H
 
 #include <stdio.h>
 #include <stdlib.h>

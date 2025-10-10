@@ -1,5 +1,5 @@
-#ifndef __CP_TAGS_H__
-#define __CP_TAGS_H__
+#ifndef CP_TAGS_H
+#define CP_TAGS_H
 
 #define CONSTANT_Class 7
 #define CONSTANT_Fieldref 9

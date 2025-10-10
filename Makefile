@@ -1,9 +1,12 @@
 # Compiler and flags
 CC = gcc
+DEBUG_MODE = false
 
 # Find all subdirectories in include (including nested ones)
-INCLUDE_DIRS = include $(shell find include -type d)
-CFLAGS = $(addprefix -I,$(INCLUDE_DIRS)) -Wall -Wextra # add -g for debugging
+INCLUDE_DIRS = $(shell find include -type d)
+CFLAGS = $(addprefix -I,$(INCLUDE_DIRS)) -Wall -Wextra
+DEBUG_FLAGS = -fsanitize=address -g
+LDFLAGS = -static-libasan
 
 # Directories
 SRC_DIR = src
@@ -21,20 +24,28 @@ all: $(BUILD_DIR) $(TARGET)
 
 # Create build directory
 $(BUILD_DIR):
-	mkdir -p $@
+	@mkdir -p $@
 
 # Link object files into the executable
 $(TARGET): $(OBJS)
-	$(CC) $(OBJS) -o $@
+ifeq ($(DEBUG_MODE), true)
+	@$(CC) $(OBJS) -o $@ $(DEBUG_FLAGS) $(LDFLAGS)
+else
+	@$(CC) $(OBJS) -o $@
+endif
 
 # Compile each source file to an object file
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) -c $< -o $@
+ifeq ($(DEBUG_MODE), true)
+	@$(CC) $(CFLAGS) $(DEBUG_FLAGS) -c $< -o $@
+else
+	@$(CC) $(CFLAGS) -c $< -o $@
+endif
 
 # Clean build artifacts
 clean:
-	rm -rf $(BUILD_DIR) $(TARGET)
+	@rm -rf $(BUILD_DIR) $(TARGET)
 
 # Rebuild from scratch
 rebuild: clean all
@@ -42,10 +53,14 @@ rebuild: clean all
 # Debug target to see what's being included
 debug:
 	@echo "Include directories:"
-	@echo $(INCLUDE_DIRS)
+	@echo "  "$(INCLUDE_DIRS)
 	@echo "Source files:"
-	@echo $(SRCS)
+	@echo "  "$(SRCS)
 	@echo "Object files:"
-	@echo $(OBJS)
+	@echo "  "$(OBJS)"\n"
+	@make rebuild -e "DEBUG_MODE=true" -e "TARGET=cjavap_debug"
+	@echo "\n------------------------------------------------\n"
+	@cd .; ./cjavap_debug classfiles/Example/Main.class 
+	@rm cjavap_debug
 
 .PHONY: all clean rebuild debug

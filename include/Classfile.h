@@ -1,10 +1,14 @@
-#ifndef __CLASSFILE_H__
-#define __CLASSFILE_H__
+#ifndef CLASSFILE_H_
+#define CLASSFILE_H_
 
-#include "types.h"
-#include "cp/constants.h"
+#include <stdlib.h>
 
-typedef struct ClassFile {
+#include "uinteger.h"
+#include "ref.h"
+#include "constants.h"
+
+typedef struct ClassFile
+{
     u4 magic;
     u2 minor_version;
     u2 major_version;
@@ -20,7 +24,9 @@ typedef struct ClassFile {
     u2 methods_count;
     method_info *methods;
     u2 attributes_count;
-    attribute_info *attributes;
+    attribute *attributes;
 } ClassFile;
 
+void free_classfile(ClassFile *);
+void free_attributes(cp_info*, u2, attribute*);
 #endif

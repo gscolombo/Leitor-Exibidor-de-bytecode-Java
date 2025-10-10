@@ -1,7 +1,7 @@
-#ifndef __CP_CONSTANTS_H__
-#define __CP_CONSTANTS_H__
+#ifndef CP_CONSTANTS_H
+#define CP_CONSTANTS_H
 
-#include "types.h"
+#include "uinteger.h"
 
 typedef union Constant {
     struct {
@@ -10,7 +10,7 @@ typedef union Constant {
     struct {
         u2 class_index;
         u2 name_and_type_index;
-    } _Ref;
+    } Ref;
     struct {
         u2 string_index;
     } String;

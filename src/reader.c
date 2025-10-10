@@ -13,9 +13,9 @@ u2 read_u2(FILE *fptr)
     u2 u;
     fread(&u, sizeof(u2), 1, fptr);
 
-    if (_LITTLE_ENDIAN)
+    if (LE)
     {
-        u = _16bswap(u);
+        u = u2swap(u);
     }
 
     return u;
@@ -26,23 +26,23 @@ u4 read_u4(FILE *fptr)
     u4 u;
     fread(&u, sizeof(u4), 1, fptr);
 
-    if (_LITTLE_ENDIAN)
+    if (LE)
     {
-        u = _32bswap(u);
+        u = u4swap(u);
     }
 
     return u;
 }
 
-FILE *open_classfile(char *path)
+FILE *open_classfile(const char *path)
 {
     size_t l;
 
     if ((l = strlen(path)) > 6)
     {
-        char *ext = &path[l - 6];
+        const char *ext = &path[l - 6];
 
-        if (strcmp(ext, ".class"))
+        if (strcmp(ext, ".class") != 0)
         {
             printf("Wrong file format. Give the path of a \".class\" file.\n");
             return NULL;
@@ -55,28 +55,169 @@ FILE *open_classfile(char *path)
     return NULL;
 }
 
-ClassFile *read_classfile(FILE *fptr)
+ClassFile read_classfile(FILE *fptr)
 {
+    ClassFile cf;
+    u2 count;
+
     if (fseek(fptr, 0, SEEK_END) == 0)
     {
-        size_t fsize = ftell(fptr);
+        const size_t fsize = ftell(fptr);
 
-        printf("Size: %lu bytes.\n\n", fsize);
+        printf("Size: %lu bytes.\n", fsize);
         fseek(fptr, 0, SEEK_SET);
-        ClassFile *cf = (ClassFile *)malloc(fsize);
 
-        cf->magic = read_u4(fptr);
-        cf->minor_version = read_u2(fptr);
-        cf->major_version = read_u2(fptr);
-        cf->constant_pool_count = read_u2(fptr);
-        cf->constant_pool = parse_constant_pool(fptr, cf->constant_pool_count);
-        cf->access_flags = read_u2(fptr);
-        cf->this_class = read_u2(fptr);
-        cf->super_class = read_u2(fptr);
+        cf.magic = read_u4(fptr);
+        cf.minor_version = read_u2(fptr);
+        cf.major_version = read_u2(fptr);
+        cf.constant_pool_count = read_u2(fptr);
+        cf.constant_pool = parse_constant_pool(fptr, cf.constant_pool_count);
+        cf.access_flags = read_u2(fptr);
+        cf.this_class = read_u2(fptr);
+        cf.super_class = read_u2(fptr);
 
-        fclose(fptr);
-        return cf;
+        // Interfaces
+        cf.interfaces_count = read_u2(fptr);
+        cf.interfaces = NULL;
+
+        if (cf.interfaces_count > 0)
+        {
+            cf.interfaces = (u2 *)calloc(cf.interfaces_count, sizeof(u2));
+            for (size_t i = 0; i < cf.interfaces_count; i++)
+            {
+                cf.interfaces[i] = read_u2(fptr);
+            }
+        }
+
+        // Fields
+        cf.fields_count = read_u2(fptr);
+        cf.fields = NULL;
+
+        if (cf.fields_count > 0)
+        {
+            cf.fields = (field_info *)calloc(cf.fields_count, sizeof(field_info));
+            for (size_t i = 0; i < cf.fields_count; i++)
+            {
+                cf.fields[i].access_flags = read_u2(fptr);
+                cf.fields[i].name_index = read_u2(fptr);
+                cf.fields[i].descriptor_index = read_u2(fptr);
+                cf.fields[i].attributes_count = read_u2(fptr);
+                cf.fields[i].attributes = NULL;
+
+                if ((count = cf.fields[i].attributes_count) > 0)
+                {
+                    cf.fields[i].attributes = (attribute *)calloc(count, sizeof(attribute));
+                    read_attributes(cf.constant_pool, count, fptr, cf.fields[i].attributes);
+                }
+            }
+        }
+
+        // Methods
+        cf.methods_count = read_u2(fptr);
+        cf.methods = NULL;
+
+        if (cf.methods_count > 0)
+        {
+            cf.methods = (method_info *)calloc(cf.methods_count, sizeof(method_info));
+            for (size_t i = 0; i < cf.methods_count; i++)
+            {
+                cf.methods[i].access_flags = read_u2(fptr);
+                cf.methods[i].name_index = read_u2(fptr);
+                cf.methods[i].descriptor_index = read_u2(fptr);
+                cf.methods[i].attributes_count = read_u2(fptr);
+                cf.methods[i].attributes = NULL;
+
+                if ((count = cf.methods[i].attributes_count) > 0)
+                {
+                    cf.methods[i].attributes = (attribute *)calloc(count, sizeof(attribute));
+                    read_attributes(cf.constant_pool, count, fptr, cf.methods[i].attributes);
+                }
+            }
+        }
+
+        cf.attributes_count = read_u2(fptr);
     }
 
-    return NULL;
+    printf("%lu bytes readed.\n\n", ftell(fptr));
+    fclose(fptr);
+    return cf;
+}
+
+void read_attributes(cp_info *cp, u2 n, FILE *fptr, attribute *attr)
+{
+    u2 c;
+
+    if (attr != NULL)
+        for (size_t i = 0; i < n; i++)
+        {
+            attr[i].attribute_name_index = read_u2(fptr);
+            attr[i].attribute_length = read_u4(fptr);
+
+            const wchar_t *attr_name = cp[attr[i].attribute_name_index - 1].info.UTF8.str;
+
+            const attribute_name attr_type = *convert_attr_name(attr_name);
+
+            switch (attr_type)
+            {
+            case ConstantValue:
+                attr[i].info.ConstantValue.constantvalue_index = read_u2(fptr);
+                break;
+            case Code:
+                attr[i].info.Code.max_stack = read_u2(fptr);
+                attr[i].info.Code.max_locals = read_u2(fptr);
+                c = attr[i].info.Code.code_length = read_u4(fptr);
+                attr[i].info.Code.code = NULL;
+
+                if (c > 0)
+                {
+                    attr[i].info.Code.code = (u1 *)malloc(c);
+                    if (attr[i].info.Code.code != NULL)
+                        fread(attr[i].info.Code.code, sizeof(u1), c, fptr);
+                }
+
+                c = attr[i].info.Code.exception_table_length = read_u2(fptr);
+                attr[i].info.Code.exception_table = NULL;
+
+                if (c > 0)
+                {
+                    attr[i].info.Code.exception_table = (exception_table *)calloc(c, sizeof(exception_table));
+                    if (attr[i].info.Code.exception_table != NULL)
+                        for (size_t j = 0; j < c; j++)
+                        {
+                            attr[i].info.Code.exception_table[j].start_pc = read_u2(fptr);
+                            attr[i].info.Code.exception_table[j].end_pc = read_u2(fptr);
+                            attr[i].info.Code.exception_table[j].handler_pc = read_u2(fptr);
+                            attr[i].info.Code.exception_table[j].catch_type = read_u2(fptr);
+                        }
+                }
+
+                c = attr[i].info.Code.attributes_count = read_u2(fptr);
+                attr[i].info.Code.attributes = NULL;
+
+                if (c > 0)
+                {
+                    attr[i].info.Code.attributes = (attribute *)calloc(c, sizeof(attribute));
+                    if (attr[i].info.Code.attributes != NULL)
+                        read_attributes(cp, c, fptr, attr[i].info.Code.attributes);
+                }
+                break;
+            case LineNumberTable:
+                c = attr[i].info.LineNumberTable.line_number_table_length = read_u2(fptr);
+                attr[i].info.LineNumberTable.line_number_table = NULL;
+
+                if (c > 0)
+                {
+                    attr[i].info.LineNumberTable.line_number_table = (line_number_table *)calloc(c, sizeof(line_number_table));
+                    if (attr[i].info.LineNumberTable.line_number_table != NULL)
+                        for (size_t j = 0; j < c; j++)
+                        {
+                            attr[i].info.LineNumberTable.line_number_table[j].start_pc = read_u2(fptr);
+                            attr[i].info.LineNumberTable.line_number_table[j].line_number = read_u2(fptr);
+                        }
+                }
+                break;
+            default:
+                break;
+            }
+        }
 }
