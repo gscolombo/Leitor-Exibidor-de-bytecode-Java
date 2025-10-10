@@ -4,8 +4,9 @@
 #include <stdlib.h>
 
 #include "uinteger.h"
-#include "ref.h"
+#include "member.h"
 #include "constants.h"
+#include "utils.h"
 
 typedef struct ClassFile
 {
@@ -20,9 +21,9 @@ typedef struct ClassFile
     u2 interfaces_count;
     u2 *interfaces;
     u2 fields_count;
-    field_info *fields;
+    member_info *fields;
     u2 methods_count;
-    method_info *methods;
+    member_info *methods;
     u2 attributes_count;
     attribute *attributes;
 } ClassFile;

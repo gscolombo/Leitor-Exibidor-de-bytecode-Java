@@ -9,7 +9,8 @@
 #include "Classfile.h"
 #include "utils.h"
 #include "parser.h"
-#include "ref.h"
+#include "uinteger.h"
+#include "member.h"
 
 #define LE (__BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__ ? 1 : 0)
 
@@ -21,6 +22,8 @@ u1 read_u1(FILE *);
 u2 read_u2(FILE *);
 u4 read_u4(FILE *);
 
-void read_attributes(cp_info *, u2, FILE *, attribute *);
+void read_member(const cp_info *, u2, member_info *, FILE *);
+
+void read_attributes(const cp_info *, u2, FILE *, attribute *);
 
 #endif

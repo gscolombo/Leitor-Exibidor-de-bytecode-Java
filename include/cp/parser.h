@@ -6,7 +6,6 @@
 #include <math.h>
 
 #include "constants.h"
-#include "tags.h"
 
 cp_info* parse_constant_pool(FILE*, u2);
 

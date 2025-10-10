@@ -1,5 +1,4 @@
 #include "Classfile.h"
-#include "tags.h"
 
 void free_classfile(ClassFile *cf)
 {
@@ -29,20 +28,21 @@ void free_attributes(cp_info *cp, u2 count, attribute *attr)
     if (count > 0)
         for (size_t i = 0; i < count; i++)
         {
-            attribute_name attr_name = *convert_attr_name(cp[attr[i].attribute_name_index - 1].info.UTF8.str);
-            switch (attr_name)
-            {
-            case Code:
-                free(attr[i].info.Code.code);
-                free(attr[i].info.Code.exception_table);
-                free_attributes(cp, attr[i].info.Code.attributes_count, attr[i].info.Code.attributes);
-                break;
-            case LineNumberTable:
-                free(attr[i].info.LineNumberTable.line_number_table);
-            default:
-                break;
-            }
+            const attribute_name *attr_name = convert_attr_name(cp[attr[i].attribute_name_index - 1].info.UTF8.str);
+            if (attr_name != NULL)
+                switch (*attr_name)
+                {
+                case Code:
+                    free(attr[i].info.Code.code);
+                    free(attr[i].info.Code.exception_table);
+                    free_attributes(cp, attr[i].info.Code.attributes_count, attr[i].info.Code.attributes);
+                    break;
+                case LineNumberTable:
+                    free(attr[i].info.LineNumberTable.line_number_table);
+                default:
+                    break;
+                }
         }
-    
+
     free(attr);
 }

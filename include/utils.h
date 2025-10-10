@@ -6,6 +6,8 @@
 #include <string.h>
 
 #include "uinteger.h"
+#include "attributes.h"
+#include "member.h"
 
 /**
  * @brief Troca os dois bytes de um inteiro de 16 bits.
@@ -31,18 +33,16 @@ unsigned int u4swap(unsigned int);
 
 /**
  * @brief Retorna o número de dígitos de um inteiro não negativo.
- * 
+ *
  * @param n Um inteiro não negativo.
  * @return O número de dígitos de `n`.
  */
 unsigned int num_digits(unsigned int);
 
-typedef struct FlagMap
-{
-    u2 flag;
-    const char* name;
-} FlagMap;
-
 char *get_access_flags(u2, size_t, const FlagMap[]);
+
+const attribute_name *convert_attr_name(const wchar_t *);
+
+wchar_t *parse_descriptor(const wchar_t *, wchar_t *);
 
 #endif

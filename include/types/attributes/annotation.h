@@ -1,5 +1,5 @@
-#ifndef ANNOTATION_H
-#define ANNOTATION_H
+#ifndef TYPES_ATTRIBUTES_ANNOTATION_H
+#define TYPES_ATTRIBUTES_ANNOTATION_H
 
 typedef struct annotation
 {

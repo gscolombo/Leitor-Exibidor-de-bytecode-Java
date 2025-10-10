@@ -27,7 +27,7 @@ void show_methods(const ClassFile *cf)
         for (size_t i = 0; i < count; i++)
         {
             nl = i == (size_t)(count - 1) ? ' ' : '\n';
-            method_info method = cf->methods[i];
+            member_info method = cf->methods[i];
 
             u2 access_flags = method.access_flags;
             wchar_t *method_name = cp[method.name_index - 1].info.UTF8.str;
@@ -38,7 +38,8 @@ void show_methods(const ClassFile *cf)
             char *flags = get_access_flags(access_flags, 12, flag_map);
 
             if (full_method_name != NULL && flags != NULL)
-                printf("  %ls;\n    descriptor: %ls\n    flags: (0x%04x) %s\n%c", full_method_name, method_desc, access_flags, flags, nl);
+                printf("  %ls;\n    descriptor: %ls\n    flags: (0x%04x) %s\n%c", 
+                    full_method_name, method_desc, access_flags, flags, nl);
 
             free(flags);
             free(full_method_name);
@@ -90,96 +91,36 @@ wchar_t *get_full_method_name(wchar_t *method_name, const wchar_t *method_desc, 
             wcscat(full_method_name, L"abstract ");
 
         // Parse descriptor
-        size_t dim = 0;
         const wchar_t *buf = method_desc;
 
-        //// Parse parameters descriptor
-        wchar_t *params = (wchar_t *)calloc(buffer_size, sizeof(wchar_t));
-        parse_method_descriptors(params, &buf, &dim);
+        // Get parameters descriptor length
+        size_t l = 2;
         while (*(++buf) != L')')
-        {
-            parse_method_descriptors(params, &buf, &dim);
-            if (buf > method_desc && *(buf + 1) != L')' && *buf != L'[')
-                wcsncat(params, L", ", 2);
-        }
+            l++;
 
-        wcsncat(params, buf, 1);
+        wchar_t *params = (wchar_t *)calloc(buffer_size, sizeof(wchar_t));
+        wcsncpy(params, method_desc, l);
+        wchar_t *params_str = parse_descriptor(params, L",");
 
-        //// Parse return descriptor
+        // Parse return descriptor
         if (!is_init)
         {
             wchar_t *ret = (wchar_t *)calloc(buffer_size, sizeof(wchar_t));
-            while (buf++ < method_desc + wcslen(method_desc) - 1)
-                parse_method_descriptors(ret, &buf, &dim);
-            wcscat(ret, L" ");
+            wcsncpy(ret, method_desc + l, wcslen(method_desc) - l);
+            wchar_t *ret_str = parse_descriptor(ret, NULL);
 
-            wcscat(full_method_name, ret);
-            free(ret);
+            wcsncat(full_method_name, ret_str, wcslen(ret_str));
+
+            free(ret_str), free(ret);
         }
 
-        wcscat(full_method_name, method_name);
-        wcscat(full_method_name, params);
+        wcsncat(full_method_name, method_name, wcslen(method_name));
+        wcsncat(full_method_name, params_str, wcslen(params_str));
 
-        free(params);
+        free(params), free(params_str);
 
         return full_method_name;
     }
 
     return NULL;
-}
-
-static const struct
-{
-    wchar_t base_type;
-    wchar_t *type;
-} base_type_map[9] = {
-    {L'B', L"byte"},
-    {L'C', L"char"},
-    {L'D', L"double"},
-    {L'F', L"float"},
-    {L'I', L"int"},
-    {L'J', L"long"},
-    {L'S', L"short"},
-    {L'Z', L"boolean"},
-    {L'V', L"void"}};
-
-void parse_method_descriptors(wchar_t *dest_str, const wchar_t **buf, size_t *dim)
-{
-    if (**buf == L'[')
-        (*dim)++;
-    else
-    {
-        switch (**buf)
-        {
-        case L'(':
-            wcsncat(dest_str, L"(", 1);
-            break;
-        case L'L':
-            wchar_t *cls = (wchar_t *)calloc(256, sizeof(wchar_t));
-            if (cls != NULL)
-            {
-                wchar_t *cls_ptr = cls;
-                while (*(++(*buf)) != L';')
-                {
-                    *cls_ptr = **buf == L'/' ? L'.' : **buf;
-                    cls_ptr++;
-                }
-                *cls_ptr = L'\0';
-                wcscat(dest_str, cls);
-            }
-            free(cls);
-            break;
-        default:
-            for (size_t i = 0; i < sizeof(base_type_map) / sizeof(base_type_map[0]); i++)
-                if (**buf == base_type_map[i].base_type)
-                    wcscat(dest_str, base_type_map[i].type);
-            break;
-        }
-        if (*dim > 0)
-            while (*dim > 0)
-            {
-                wcscat(dest_str, L"[]");
-                (*dim)--;
-            }
-    }
 }

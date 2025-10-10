@@ -58,7 +58,6 @@ FILE *open_classfile(const char *path)
 ClassFile read_classfile(FILE *fptr)
 {
     ClassFile cf;
-    u2 count;
 
     if (fseek(fptr, 0, SEEK_END) == 0)
     {
@@ -91,49 +90,15 @@ ClassFile read_classfile(FILE *fptr)
 
         // Fields
         cf.fields_count = read_u2(fptr);
-        cf.fields = NULL;
-
-        if (cf.fields_count > 0)
-        {
-            cf.fields = (field_info *)calloc(cf.fields_count, sizeof(field_info));
-            for (size_t i = 0; i < cf.fields_count; i++)
-            {
-                cf.fields[i].access_flags = read_u2(fptr);
-                cf.fields[i].name_index = read_u2(fptr);
-                cf.fields[i].descriptor_index = read_u2(fptr);
-                cf.fields[i].attributes_count = read_u2(fptr);
-                cf.fields[i].attributes = NULL;
-
-                if ((count = cf.fields[i].attributes_count) > 0)
-                {
-                    cf.fields[i].attributes = (attribute *)calloc(count, sizeof(attribute));
-                    read_attributes(cf.constant_pool, count, fptr, cf.fields[i].attributes);
-                }
-            }
-        }
+        cf.fields = (member_info *)calloc(cf.fields_count, sizeof(member_info));
+        if (cf.fields != NULL)
+            read_member(cf.constant_pool, cf.fields_count, cf.fields, fptr);
 
         // Methods
         cf.methods_count = read_u2(fptr);
-        cf.methods = NULL;
-
-        if (cf.methods_count > 0)
-        {
-            cf.methods = (method_info *)calloc(cf.methods_count, sizeof(method_info));
-            for (size_t i = 0; i < cf.methods_count; i++)
-            {
-                cf.methods[i].access_flags = read_u2(fptr);
-                cf.methods[i].name_index = read_u2(fptr);
-                cf.methods[i].descriptor_index = read_u2(fptr);
-                cf.methods[i].attributes_count = read_u2(fptr);
-                cf.methods[i].attributes = NULL;
-
-                if ((count = cf.methods[i].attributes_count) > 0)
-                {
-                    cf.methods[i].attributes = (attribute *)calloc(count, sizeof(attribute));
-                    read_attributes(cf.constant_pool, count, fptr, cf.methods[i].attributes);
-                }
-            }
-        }
+        cf.methods = (member_info *)calloc(cf.methods_count, sizeof(member_info));
+        if (cf.methods != NULL)
+            read_member(cf.constant_pool, cf.methods_count, cf.methods, fptr);
 
         cf.attributes_count = read_u2(fptr);
     }
@@ -143,7 +108,27 @@ ClassFile read_classfile(FILE *fptr)
     return cf;
 }
 
-void read_attributes(cp_info *cp, u2 n, FILE *fptr, attribute *attr)
+void read_member(const cp_info *cp, u2 count, member_info *info, FILE *fptr)
+{
+    u2 attr_count;
+
+    for (size_t i = 0; i < count; i++)
+    {
+        info[i].access_flags = read_u2(fptr);
+        info[i].name_index = read_u2(fptr);
+        info[i].descriptor_index = read_u2(fptr);
+        info[i].attributes_count = attr_count = read_u2(fptr);
+
+        if (attr_count > 0)
+        {
+            info[i].attributes = (attribute *)calloc(attr_count, sizeof(attribute));
+            if (info[i].attributes != NULL)
+                read_attributes(cp, attr_count, fptr, info[i].attributes);
+        }
+    }
+}
+
+void read_attributes(const cp_info *cp, u2 n, FILE *fptr, attribute *attr)
 {
     u2 c;
 
@@ -155,69 +140,70 @@ void read_attributes(cp_info *cp, u2 n, FILE *fptr, attribute *attr)
 
             const wchar_t *attr_name = cp[attr[i].attribute_name_index - 1].info.UTF8.str;
 
-            const attribute_name attr_type = *convert_attr_name(attr_name);
+            const attribute_name *attr_type = convert_attr_name(attr_name);
 
-            switch (attr_type)
-            {
-            case ConstantValue:
-                attr[i].info.ConstantValue.constantvalue_index = read_u2(fptr);
-                break;
-            case Code:
-                attr[i].info.Code.max_stack = read_u2(fptr);
-                attr[i].info.Code.max_locals = read_u2(fptr);
-                c = attr[i].info.Code.code_length = read_u4(fptr);
-                attr[i].info.Code.code = NULL;
-
-                if (c > 0)
+            if (attr_type != NULL)
+                switch (*attr_type)
                 {
-                    attr[i].info.Code.code = (u1 *)malloc(c);
-                    if (attr[i].info.Code.code != NULL)
-                        fread(attr[i].info.Code.code, sizeof(u1), c, fptr);
+                case ConstantValue:
+                    attr[i].info.ConstantValue.constantvalue_index = read_u2(fptr);
+                    break;
+                case Code:
+                    attr[i].info.Code.max_stack = read_u2(fptr);
+                    attr[i].info.Code.max_locals = read_u2(fptr);
+                    c = attr[i].info.Code.code_length = read_u4(fptr);
+                    attr[i].info.Code.code = NULL;
+
+                    if (c > 0)
+                    {
+                        attr[i].info.Code.code = (u1 *)malloc(c);
+                        if (attr[i].info.Code.code != NULL)
+                            fread(attr[i].info.Code.code, sizeof(u1), c, fptr);
+                    }
+
+                    c = attr[i].info.Code.exception_table_length = read_u2(fptr);
+                    attr[i].info.Code.exception_table = NULL;
+
+                    if (c > 0)
+                    {
+                        attr[i].info.Code.exception_table = (exception_table *)calloc(c, sizeof(exception_table));
+                        if (attr[i].info.Code.exception_table != NULL)
+                            for (size_t j = 0; j < c; j++)
+                            {
+                                attr[i].info.Code.exception_table[j].start_pc = read_u2(fptr);
+                                attr[i].info.Code.exception_table[j].end_pc = read_u2(fptr);
+                                attr[i].info.Code.exception_table[j].handler_pc = read_u2(fptr);
+                                attr[i].info.Code.exception_table[j].catch_type = read_u2(fptr);
+                            }
+                    }
+
+                    c = attr[i].info.Code.attributes_count = read_u2(fptr);
+                    attr[i].info.Code.attributes = NULL;
+
+                    if (c > 0)
+                    {
+                        attr[i].info.Code.attributes = (attribute *)calloc(c, sizeof(attribute));
+                        if (attr[i].info.Code.attributes != NULL)
+                            read_attributes(cp, c, fptr, attr[i].info.Code.attributes);
+                    }
+                    break;
+                case LineNumberTable:
+                    c = attr[i].info.LineNumberTable.line_number_table_length = read_u2(fptr);
+                    attr[i].info.LineNumberTable.line_number_table = NULL;
+
+                    if (c > 0)
+                    {
+                        attr[i].info.LineNumberTable.line_number_table = (line_number_table *)calloc(c, sizeof(line_number_table));
+                        if (attr[i].info.LineNumberTable.line_number_table != NULL)
+                            for (size_t j = 0; j < c; j++)
+                            {
+                                attr[i].info.LineNumberTable.line_number_table[j].start_pc = read_u2(fptr);
+                                attr[i].info.LineNumberTable.line_number_table[j].line_number = read_u2(fptr);
+                            }
+                    }
+                    break;
+                default:
+                    break;
                 }
-
-                c = attr[i].info.Code.exception_table_length = read_u2(fptr);
-                attr[i].info.Code.exception_table = NULL;
-
-                if (c > 0)
-                {
-                    attr[i].info.Code.exception_table = (exception_table *)calloc(c, sizeof(exception_table));
-                    if (attr[i].info.Code.exception_table != NULL)
-                        for (size_t j = 0; j < c; j++)
-                        {
-                            attr[i].info.Code.exception_table[j].start_pc = read_u2(fptr);
-                            attr[i].info.Code.exception_table[j].end_pc = read_u2(fptr);
-                            attr[i].info.Code.exception_table[j].handler_pc = read_u2(fptr);
-                            attr[i].info.Code.exception_table[j].catch_type = read_u2(fptr);
-                        }
-                }
-
-                c = attr[i].info.Code.attributes_count = read_u2(fptr);
-                attr[i].info.Code.attributes = NULL;
-
-                if (c > 0)
-                {
-                    attr[i].info.Code.attributes = (attribute *)calloc(c, sizeof(attribute));
-                    if (attr[i].info.Code.attributes != NULL)
-                        read_attributes(cp, c, fptr, attr[i].info.Code.attributes);
-                }
-                break;
-            case LineNumberTable:
-                c = attr[i].info.LineNumberTable.line_number_table_length = read_u2(fptr);
-                attr[i].info.LineNumberTable.line_number_table = NULL;
-
-                if (c > 0)
-                {
-                    attr[i].info.LineNumberTable.line_number_table = (line_number_table *)calloc(c, sizeof(line_number_table));
-                    if (attr[i].info.LineNumberTable.line_number_table != NULL)
-                        for (size_t j = 0; j < c; j++)
-                        {
-                            attr[i].info.LineNumberTable.line_number_table[j].start_pc = read_u2(fptr);
-                            attr[i].info.LineNumberTable.line_number_table[j].line_number = read_u2(fptr);
-                        }
-                }
-                break;
-            default:
-                break;
-            }
         }
 }

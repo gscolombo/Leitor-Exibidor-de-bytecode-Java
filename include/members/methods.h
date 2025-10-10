@@ -6,7 +6,8 @@
 #include <stdio.h>
 
 #include "Classfile.h"
-#include "ref.h"
+#include "uinteger.h"
+#include "member.h"
 #include "utils.h"
 #include "wchar.h"
 
@@ -27,14 +28,5 @@ void show_methods(const ClassFile *);
  * @return `wchar_t*` Ponteiro para o buffer contendo o nome completo do método.
  */
 wchar_t *get_full_method_name(wchar_t *, const wchar_t *, u2, const ClassFile *);
-
-/**
- * Analisa e interpreta os descritores de um método.
- *
- * @param wchar_t* Buffer onde os descritores analisados serão armazenados.
- * @param const wchar_t** Array de strings contendo os descritores.
- * @param size_t* Tamanho do array de descritores.
- */
-void parse_method_descriptors(wchar_t *, const wchar_t **, size_t *);
 
 #endif
