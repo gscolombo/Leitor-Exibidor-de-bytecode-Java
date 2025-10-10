@@ -1,5 +1,19 @@
 #include "methods.h"
 
+static const FlagMap flag_map[12] = {
+    {0x0001, "ACC_PUBLIC"},
+    {0x0002, "ACC_PRIVATE"},
+    {0x0004, "ACC_PROTECTED"},
+    {0x0008, "ACC_STATIC"},
+    {0x0010, "ACC_FINAL"},
+    {0x0020, "ACC_SYNCHRONIZED"},
+    {0x0040, "ACC_BRIDGE"},
+    {0x0080, "ACC_VARARGS"},
+    {0x0100, "ACC_NATIVE"},
+    {0x0400, "ACC_ABSTRACT"},
+    {0x0800, "ACC_STRICT"},
+    {0x1000, "ACC_SYNTHETIC"}};
+
 void show_methods(const ClassFile *cf)
 {
     if (cf->constant_pool == NULL)
@@ -21,7 +35,7 @@ void show_methods(const ClassFile *cf)
 
             wchar_t *full_method_name = get_full_method_name(method_name, method_desc, access_flags, cf);
 
-            char *flags = get_method_access_flags_names(access_flags);
+            char *flags = get_access_flags(access_flags, 12, flag_map);
 
             if (full_method_name != NULL && flags != NULL)
                 printf("  %ls;\n    descriptor: %ls\n    flags: (0x%04x) %s\n%c", full_method_name, method_desc, access_flags, flags, nl);
@@ -29,63 +43,6 @@ void show_methods(const ClassFile *cf)
             free(flags);
             free(full_method_name);
         }
-}
-
-char *get_method_access_flags_names(u2 flags)
-{
-    const char *names[12] = {NULL};
-
-    struct
-    {
-        u2 flag;
-        const char *name;
-    } flag_map[12] = {
-        {0x0001, "ACC_PUBLIC"},
-        {0x0002, "ACC_PRIVATE"},
-        {0x0004, "ACC_PROTECTED"},
-        {0x0008, "ACC_STATIC"},
-        {0x0010, "ACC_FINAL"},
-        {0x0020, "ACC_SYNCHRONIZED"},
-        {0x0040, "ACC_BRIDGE"},
-        {0x0080, "ACC_VARARGS"},
-        {0x0100, "ACC_NATIVE"},
-        {0x0400, "ACC_ABSTRACT"},
-        {0x0800, "ACC_STRICT"},
-        {0x1000, "ACC_SYNTHETIC"}};
-
-    size_t l = 0;
-
-    for (size_t i = 0; i < 12; i++)
-    {
-        if (flags & flag_map[i].flag)
-        {
-            names[l] = flag_map[i].name;
-            l++;
-        }
-    }
-
-    char *flag_str = (char *)calloc(l + 1, sizeof(char *));
-    char *tmp = (char *)malloc(20);
-
-    if (flag_str != NULL && tmp != NULL)
-    {
-        for (size_t i = 0; i < l; i++)
-        {
-            if (i > 0)
-            {
-                snprintf(tmp, strlen(names[i]) + 3, ", %s", names[i]);
-                strcat(flag_str, tmp);
-                continue;
-            }
-
-            snprintf(flag_str, strlen(names[i]) + 1, "%s", names[i]);
-        }
-
-        free(tmp);
-        return flag_str;
-    }
-
-    return NULL;
 }
 
 wchar_t *get_full_method_name(wchar_t *method_name, const wchar_t *method_desc, u2 flags, const ClassFile *cf)

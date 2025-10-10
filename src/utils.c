@@ -39,3 +39,42 @@ unsigned int num_digits(unsigned int n)
 
     return r;
 }
+
+char *get_access_flags(u2 flags, size_t length, const FlagMap flag_map[])
+{
+    const char *names[length];
+
+    size_t l = 0;
+
+    for (size_t i = 0; i < length; i++)
+    {
+        if (flags & flag_map[i].flag)
+        {
+            names[l] = flag_map[i].name;
+            l++;
+        }
+    }
+
+    char *flag_str = (char *)calloc(l + 1, sizeof(char *));
+    char *tmp = (char *)malloc(20);
+
+    if (flag_str != NULL && tmp != NULL)
+    {
+        for (size_t i = 0; i < l; i++)
+        {
+            if (i > 0)
+            {
+                snprintf(tmp, strlen(names[i]) + 3, ", %s", names[i]);
+                strcat(flag_str, tmp);
+                continue;
+            }
+
+            snprintf(flag_str, strlen(names[i]) + 1, "%s", names[i]);
+        }
+
+        free(tmp);
+        return flag_str;
+    }
+
+    return NULL;
+}

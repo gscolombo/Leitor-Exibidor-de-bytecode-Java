@@ -1,6 +1,12 @@
 #ifndef UTILS_H_
 #define UTILS_H_
 
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+
+#include "uinteger.h"
+
 /**
  * @brief Troca os dois bytes de um inteiro de 16 bits.
  *
@@ -30,5 +36,13 @@ unsigned int u4swap(unsigned int);
  * @return O número de dígitos de `n`.
  */
 unsigned int num_digits(unsigned int);
+
+typedef struct FlagMap
+{
+    u2 flag;
+    const char* name;
+} FlagMap;
+
+char *get_access_flags(u2, size_t, const FlagMap[]);
 
 #endif

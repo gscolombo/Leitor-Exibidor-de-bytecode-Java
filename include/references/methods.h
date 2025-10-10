@@ -18,14 +18,6 @@
 void show_methods(const ClassFile *);
 
 /**
- * Retorna os nomes das flags de acesso de um método.
- *
- * @param u2 Valor das flags de acesso do método.
- * @return `char*` String contendo os nomes das flags de acesso.
- */
-char *get_method_access_flags_names(u2);
-
-/**
  * Obtém o nome completo de um método.
  *
  * @param wchar_t* Buffer onde o nome completo será armazenado.
