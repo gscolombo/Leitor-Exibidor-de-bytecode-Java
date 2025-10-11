@@ -1,5 +1,5 @@
-#ifndef REFERENCES_METHODS_H
-#define REFERENCES_METHODS_H
+#ifndef MEMBERS_METHODS_H
+#define MEMBERS_METHODS_H
 
 #include <stdlib.h>
 #include <string.h>
