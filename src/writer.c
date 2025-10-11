@@ -32,18 +32,23 @@ void show_classfile(ClassFile *cf)
 
     printf("Constant Pool (count = %u):\n", cf->constant_pool_count);
 
-    u2 count = cf->constant_pool_count;
-    show_constants(count, cp);
-
-    if (count > 0)
+    if (cf->constant_pool_count > 0)
+    {
+        show_constants(cf->constant_pool_count, cp);
         printf("{\n");
+    }
 
-    show_fields(cf);
     if (cf->fields_count > 0)
+    {
+        show_fields(cf);
         printf("\n");
-    show_methods(cf);
+    }
 
-    printf("}\n");
+    if (cf->methods_count > 0)
+    {
+        show_methods(cf);
+        printf("}\n");
+    }
 
     free(class_access_flags);
 }
