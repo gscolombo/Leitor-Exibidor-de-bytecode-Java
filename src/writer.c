@@ -19,7 +19,7 @@ void show_classfile(ClassFile *cf)
 
     wchar_t *classname = cp[cls_name_index - 1].info.UTF8.str;
     wchar_t *super_classname = cp[super_cls_name_index - 1].info.UTF8.str;
-    char *class_access_flags = get_access_flags(cf->access_flags, 8, class_flag_map);
+    char *class_access_flags = parse_flags(cf->access_flags, 8, ", ", class_flag_map);
 
     printf("class %ls\n", classname);
     printf("  Magic: %#X\n", cf->magic);

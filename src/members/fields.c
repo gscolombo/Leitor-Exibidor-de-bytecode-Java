@@ -41,39 +41,8 @@ void show_fields(const ClassFile *cf)
 
             wchar_t *field_desc_str = parse_descriptor(field_desc, NULL);
 
-            char *flags = get_access_flags(access_flags, 9, flag_map);
-
-            size_t buffer_size = 256;
-            char *kws = malloc(buffer_size);
-            if (kws != NULL)
-            {
-                char *ptr = kws;
-
-                for (size_t i = 0; i < 7; i++)
-                {
-                    if (access_flags & flag_kw_map[i].flag)
-                    {
-                        size_t l = strlen(flag_kw_map[i].name);
-
-                        if (buffer_size > l + 2)
-                        {
-                            strcpy(ptr, flag_kw_map[i].name);
-                            ptr += l;
-                            buffer_size -= l;
-                            *ptr++ = ' ';
-                            buffer_size--;
-                        }
-                    }
-                }
-
-                if (ptr > kws)
-                    ptr--; // Remove trailing space
-                *ptr = '\0';
-
-                char *tmp = realloc(kws, buffer_size);
-                if (tmp)
-                    kws = tmp;
-            }
+            char *flags = parse_flags(access_flags, 9, ", ", flag_map);
+            char *kws = parse_flags(access_flags, 7, " ", flag_kw_map);
 
             printf(" %s %ls%ls;\n    descriptor: %ls\n    flags: (0x%04x) %s\n%c",
                    kws, field_desc_str, field_name, field_desc,

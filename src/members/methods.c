@@ -35,7 +35,7 @@ void show_methods(const ClassFile *cf)
 
             wchar_t *full_method_name = get_full_method_name(method_name, method_desc, access_flags, cf);
 
-            char *flags = get_access_flags(access_flags, 12, flag_map);
+            char *flags = parse_flags(access_flags, 12, ", ", flag_map);
 
             if (full_method_name != NULL && flags != NULL)
                 printf("  %ls;\n    descriptor: %ls\n    flags: (0x%04x) %s\n%c", 

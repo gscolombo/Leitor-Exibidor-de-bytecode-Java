@@ -39,7 +39,7 @@ unsigned int u4swap(unsigned int);
  */
 unsigned int num_digits(unsigned int);
 
-char *get_access_flags(u2, size_t, const FlagMap[]);
+char *parse_flags(u2, size_t, const char *, const FlagMap[]);
 
 const attribute_name *convert_attr_name(const wchar_t *);
 

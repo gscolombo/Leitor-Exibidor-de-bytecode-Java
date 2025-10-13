@@ -40,43 +40,44 @@ unsigned int num_digits(unsigned int n)
     return r;
 }
 
-char *get_access_flags(u2 flags, size_t length, const FlagMap flag_map[])
+char *parse_flags(u2 flags, size_t n, const char *sep, const FlagMap flag_map[])
 {
-    const char *names[length];
+    size_t sep_len = strlen(sep);
+    size_t buffer_size = 256;
 
-    size_t l = 0;
-
-    for (size_t i = 0; i < length; i++)
+    char *flag_str = malloc(buffer_size);
+    if (flag_str)
     {
-        if (flags & flag_map[i].flag)
-        {
-            names[l] = flag_map[i].name;
-            l++;
-        }
-    }
+        char *ptr = flag_str;
 
-    char *flag_str = (char *)calloc(l + 1, sizeof(char *));
-    char *tmp = (char *)malloc(20);
-
-    if (flag_str != NULL && tmp != NULL)
-    {
-        for (size_t i = 0; i < l; i++)
+        for (size_t i = 0; i < n; i++)
         {
-            if (i > 0)
+            if (flags & flag_map[i].flag)
             {
-                snprintf(tmp, strlen(names[i]) + 3, ", %s", names[i]);
-                strcat(flag_str, tmp);
-                continue;
-            }
+                size_t l = strlen(flag_map[i].name);
 
-            snprintf(flag_str, strlen(names[i]) + 1, "%s", names[i]);
+                if (buffer_size > l + 2)
+                {
+                    strcpy(ptr, flag_map[i].name);
+                    ptr += l;
+                    buffer_size -= l;
+                    strcpy(ptr, sep);
+                    ptr += sep_len;
+                    buffer_size -= sep_len;
+                }
+            }
         }
 
-        free(tmp);
-        return flag_str;
+        if (ptr > flag_str)
+            ptr -= sep_len; // Remove extra separator
+        *ptr = '\0';
     }
 
-    return NULL;
+    char *tmp = realloc(flag_str, buffer_size);
+    if (tmp)
+        flag_str = tmp;
+
+    return flag_str;
 }
 
 static const struct
