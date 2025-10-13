@@ -10,6 +10,14 @@ static const FlagMap class_flag_map[8] = {
     {0x2000, "ACC_ANNOTATION"},
     {0x4000, "ACC_ENUM"}};
 
+static const FlagMap class_flag_kw_map[6] = {
+    {0x0001, "public"},
+    {0x0010, "final"},
+    {0x0200, "interface"},
+    {0x0400, "abstract"},
+    {0x2000, "@interface"},
+    {0x4000, "enum"}};
+
 void show_classfile(ClassFile *cf)
 {
     cp_info *cp = cf->constant_pool;
@@ -20,8 +28,9 @@ void show_classfile(ClassFile *cf)
     wchar_t *classname = cp[cls_name_index - 1].info.UTF8.str;
     wchar_t *super_classname = cp[super_cls_name_index - 1].info.UTF8.str;
     char *class_access_flags = parse_flags(cf->access_flags, 8, ", ", class_flag_map);
+    char *class_kws_flags = parse_flags(cf->access_flags, 6, " ", class_flag_kw_map);
 
-    printf("class %ls\n", classname);
+    printf("%s class %ls\n", class_kws_flags, classname);
     printf("  Magic: %#X\n", cf->magic);
     printf("  Version: %u.%u\n", cf->major_version, cf->minor_version);
     printf("  Flags: (%#.4x) %s\n", cf->access_flags, class_access_flags);
@@ -51,4 +60,5 @@ void show_classfile(ClassFile *cf)
     }
 
     free(class_access_flags);
+    free(class_kws_flags);
 }
