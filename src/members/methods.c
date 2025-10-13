@@ -14,6 +14,17 @@ static const FlagMap flag_map[12] = {
     {0x0800, "ACC_STRICT"},
     {0x1000, "ACC_SYNTHETIC"}};
 
+static const FlagMap flag_kw_map[9] = {
+    {0x0001, "public"},
+    {0x0002, "private"},
+    {0x0004, "protected"},
+    {0x0008, "static"},
+    {0x0010, "final"},
+    {0x0020, "synchronized"},
+    {0x0100, "native"},
+    {0x0400, "abstract"},
+    {0x0800, "strictfp"}};
+
 void show_methods(const ClassFile *cf)
 {
     if (cf->constant_pool == NULL)
@@ -33,94 +44,60 @@ void show_methods(const ClassFile *cf)
             wchar_t *method_name = cp[method.name_index - 1].info.UTF8.str;
             wchar_t *method_desc = cp[method.descriptor_index - 1].info.UTF8.str;
 
-            wchar_t *full_method_name = get_full_method_name(method_name, method_desc, access_flags, cf);
-
-            char *flags = parse_flags(access_flags, 12, ", ", flag_map);
-
-            if (full_method_name != NULL && flags != NULL)
-                printf("  %ls;\n    descriptor: %ls\n    flags: (0x%04x) %s\n%c", 
-                    full_method_name, method_desc, access_flags, flags, nl);
-
-            free(flags);
-            free(full_method_name);
-        }
-}
-
-wchar_t *get_full_method_name(wchar_t *method_name, const wchar_t *method_desc, u2 flags, const ClassFile *cf)
-{
-    if (cf == NULL)
-        return NULL;
-
-    cp_info *cp = cf->constant_pool;
-
-    // Handle <init> method
-    int is_init = !wcscmp(method_name, L"<init>");
-    if (is_init)
-    {
-        wchar_t *classname = cp[cp[cf->this_class - 1].info.Class.name_index - 1].info.UTF8.str;
-
-        for (wchar_t *wcptr = classname; wcptr < classname + wcslen(classname) - 1; wcptr++)
-            if (*wcptr == L'/')
+            // Handle <init> method
+            int is_init = !wcscmp(method_name, L"<init>");
+            if (is_init)
             {
-                *wcptr = L'.';
-                break;
+                wchar_t *classname = cp[cp[cf->this_class - 1].info.Class.name_index - 1].info.UTF8.str;
+
+                for (wchar_t *wcptr = classname; wcptr < classname + wcslen(classname) - 1; wcptr++)
+                    if (*wcptr == L'/')
+                    {
+                        *wcptr = L'.';
+                        break;
+                    }
+
+                method_name = classname;
             }
 
-        method_name = classname;
-    }
+            // Get parameters descriptor length
+            wchar_t *params_end = wcschr(method_desc, L')') + 1;
 
-    // Include modifiers
-    size_t buffer_size = 256;
-    wchar_t *full_method_name = (wchar_t *)calloc(buffer_size, sizeof(wchar_t));
-    if (full_method_name != NULL)
-    {
-        if (flags & 0x0001)
-            wcscat(full_method_name, L"public ");
-        if (flags & 0x0002)
-            wcscat(full_method_name, L"private ");
-        if (flags & 0x0004)
-            wcscat(full_method_name, L"protected ");
+            size_t params_desc_len = params_end - method_desc;
+            size_t ret_desc_len = wcslen(params_end);
 
-        if (flags & 0x0008)
-            wcscat(full_method_name, L"static ");
-        if (flags & 0x0010)
-            wcscat(full_method_name, L"final ");
-        if (flags & 0x0020)
-            wcscat(full_method_name, L"synchronized ");
-        if (flags & 0x0400)
-            wcscat(full_method_name, L"abstract ");
+            // Split descriptor
+            wchar_t *params_desc = (wchar_t *)calloc(params_desc_len + 1, sizeof(wchar_t));
+            if (params_desc)
+            {
+                wcsncpy(params_desc, method_desc, params_desc_len);
+                params_desc[params_desc_len] = L'\0';
+            }
 
-        // Parse descriptor
-        const wchar_t *buf = method_desc;
+            wchar_t *ret_desc = (wchar_t *)calloc(ret_desc_len + 1, sizeof(wchar_t));
+            if (ret_desc)
+            {
+                wcsncpy(ret_desc, params_end, ret_desc_len);
+                ret_desc[ret_desc_len] = L'\0';
+            }
 
-        // Get parameters descriptor length
-        size_t l = 2;
-        while (*(++buf) != L')')
-            l++;
+            // Parse descriptors
+            wchar_t *params_str = NULL, *ret_str = NULL;
 
-        wchar_t *params = (wchar_t *)calloc(buffer_size, sizeof(wchar_t));
-        wcsncpy(params, method_desc, l);
-        wchar_t *params_str = parse_descriptor(params, L",");
+            if (!is_init)
+                ret_str = parse_descriptor(ret_desc, NULL);
 
-        // Parse return descriptor
-        if (!is_init)
-        {
-            wchar_t *ret = (wchar_t *)calloc(buffer_size, sizeof(wchar_t));
-            wcsncpy(ret, method_desc + l, wcslen(method_desc) - l);
-            wchar_t *ret_str = parse_descriptor(ret, NULL);
+            params_str = parse_descriptor(params_desc, L",");
 
-            wcsncat(full_method_name, ret_str, wcslen(ret_str));
+            // Parse flags
+            char *flags = parse_flags(access_flags, 12, ", ", flag_map);
+            char *kws = parse_flags(access_flags, 9, " ", flag_kw_map);
 
-            free(ret_str), free(ret);
+            printf(" %s %ls%ls%ls;\n    descriptor: %ls\n    flags: (0x%04x) %s\n%c",
+                   kws, ret_str ? ret_str : L"", method_name, params_str, method_desc, access_flags, flags, nl);
+
+            free(flags), free(kws);
+            free(params_desc), free(ret_desc);
+            free(params_str), free(ret_str);
         }
-
-        wcsncat(full_method_name, method_name, wcslen(method_name));
-        wcsncat(full_method_name, params_str, wcslen(params_str));
-
-        free(params), free(params_str);
-
-        return full_method_name;
-    }
-
-    return NULL;
 }
