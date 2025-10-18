@@ -6,8 +6,7 @@
 #include <stdio.h>
 
 #include "constants.h"
-#include "ref.h"
-#include "tags.h"
+#include "uinteger.h"
 #include "utils.h"
 #include "wchar.h"
 

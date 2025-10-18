@@ -1,5 +1,23 @@
 #include "writer.h"
 
+static const FlagMap class_flag_map[8] = {
+    {0x0001, "ACC_PUBLIC"},
+    {0x0010, "ACC_FINAL"},
+    {0x0020, "ACC_SUPER"},
+    {0x0200, "ACC_INTERFACE"},
+    {0x0400, "ACC_ABSTRACT"},
+    {0x1000, "ACC_SYNTHETIC"},
+    {0x2000, "ACC_ANNOTATION"},
+    {0x4000, "ACC_ENUM"}};
+
+static const FlagMap class_flag_kw_map[6] = {
+    {0x0001, "public"},
+    {0x0010, "final"},
+    {0x0200, "interface"},
+    {0x0400, "abstract"},
+    {0x2000, "@interface"},
+    {0x4000, "enum"}};
+
 void show_classfile(ClassFile *cf)
 {
     cp_info *cp = cf->constant_pool;
@@ -9,85 +27,38 @@ void show_classfile(ClassFile *cf)
 
     wchar_t *classname = cp[cls_name_index - 1].info.UTF8.str;
     wchar_t *super_classname = cp[super_cls_name_index - 1].info.UTF8.str;
+    char *class_access_flags = parse_flags(cf->access_flags, 8, ", ", class_flag_map);
+    char *class_kws_flags = parse_flags(cf->access_flags, 6, " ", class_flag_kw_map);
 
-    printf("class %ls\n", classname);
+    printf("%s class %ls\n", class_kws_flags, classname);
     printf("  Magic: %#X\n", cf->magic);
     printf("  Version: %u.%u\n", cf->major_version, cf->minor_version);
-    show_class_access_flags(cf);
+    printf("  Flags: (%#.4x) %s\n", cf->access_flags, class_access_flags);
     printf("  this_class: #%u\t\t\t// %ls\n", cf->this_class, classname);
     printf("  super_class: #%u\t\t\t// %ls\n", cf->super_class, super_classname);
     printf("  interfaces: %u, fields: %u, methods: %u, attributes: %u\n",
-            cf->interfaces_count, cf->fields_count, cf->methods_count, cf->attributes_count);
+           cf->interfaces_count, cf->fields_count, cf->methods_count, cf->attributes_count);
 
     printf("Constant Pool (count = %u):\n", cf->constant_pool_count);
 
-    u2 count = cf->constant_pool_count;
-    show_constants(count, cp);
-
-    if (count > 0)
+    if (cf->constant_pool_count > 0)
+    {
+        show_constants(cf->constant_pool_count, cp);
         printf("{\n");
+    }
 
-    show_fields(cf);
     if (cf->fields_count > 0)
+    {
+        show_fields(cf);
         printf("\n");
-    show_methods(cf);
-
-    printf("}\n");
-}
-
-void show_class_access_flags(const ClassFile *cf)
-{
-    u2 flags = cf->access_flags, n = 0;
-    char *flags_str[4] = {NULL};
-    size_t l = 0;
-
-    if ((flags & 0x0001) == 0x0001)
-    {
-        flags_str[0] = "ACC_PUBLIC";
-        l += strlen(flags_str[0]);
-        n++;
     }
 
-    n++;
-    if ((flags & 0x0010) == 0x0010)
-        flags_str[1] = "ACC_FINAL";
-    else if ((flags & 0x0020) == 0x0020)
-        flags_str[1] = "ACC_SUPER";
-    else
-        n--;
-
-    l += (flags_str[1] != NULL ? (strlen(flags_str[1]) + (l > 0 ? 2 : 0)) : 0); // Extra size for ", "
-
-    n++;
-    if ((flags & 0x0200) == 0x0200)
-        flags_str[2] = "ACC_INTERFACE";
-    else if ((flags & 0x0400) == 0x0400)
-        flags_str[2] = "ACC_ABSTRACT";
-    else
-        n--;
-
-    l += (flags_str[2] != NULL ? (strlen(flags_str[2]) + (l > 0 ? 2 : 0)) : 0);
-
-    n++;
-    if ((flags & 0x1000) == 0x1000)
-        flags_str[3] = "ACC_SYNTHETIC";
-    else if ((flags & 0x2000) == 0x2000)
-        flags_str[3] = "ACC_ANNOTATION";
-    else if ((flags & 0x4000) == 0x4000)
-        flags_str[3] = "ACC_ENUM";
-    else
-        n--;
-
-    l += flags_str[3] != NULL ? strlen(flags_str[3]) : 0;
-
-    char *str = (char *)calloc((l + 1), sizeof(char));
-    for (int i = 0; i < n; i++)
+    if (cf->methods_count > 0)
     {
-        if (i)
-            strncat(str, ", ", 2 + 1);
-        strncat(str, flags_str[i], strlen(flags_str[i]) + 1);
+        show_methods(cf);
+        printf("}\n");
     }
 
-    printf("  Flags: (%#.4x) %s\n", flags, str);
-    free(str);
+    free(class_access_flags);
+    free(class_kws_flags);
 }

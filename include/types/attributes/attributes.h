@@ -1,5 +1,5 @@
-#ifndef ATTRIBUTES_H
-#define ATTRIBUTES_H
+#ifndef TYPES_ATTRIBUTES_ATTRIBUTES_H
+#define TYPES_ATTRIBUTES_ATTRIBUTES_H
 
 #include <wchar.h>
 
@@ -31,8 +31,6 @@ typedef enum attribute_name
     BootstrapMethods,
     MethodParameters
 } attribute_name;
-
-const attribute_name *convert_attr_name(const wchar_t *);
 
 typedef struct line_number_table
 {
@@ -80,7 +78,7 @@ typedef struct parameter
     u2 access_flags;
 } parameter;
 
-typedef struct attribute_info
+typedef struct attribute
 {
     u2 attribute_name_index;
     u4 attribute_length;
@@ -99,7 +97,7 @@ typedef struct attribute_info
             u2 exception_table_length;
             exception_table *exception_table;
             u2 attributes_count;
-            struct attribute_info *attributes;
+            struct attribute *attributes;
         } Code;
         struct
         {
