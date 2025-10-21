@@ -7,37 +7,16 @@
 #include "attributes.h"
 
 /**
- * Estrutura geral de um atributo.
+ * @brief Estrutura geral de um atributo.
  */
 typedef struct attribute
 {
+    /// @brief Índice do nome do atributo no pool de constantes.
     u2 attribute_name_index;
+    /// @brief Tamanho em bytes do atributo.
     u4 attribute_length;
-    union
-    {
-        _ConstantValue ConstantValue;
-        struct
-        {
-            _Code fields;
-            u2 attributes_count;
-            struct attribute *attributes;
-        } Code;
-        _StackMapTable StackMapTable;
-        _Exceptions Exceptions;
-        _InnerClasses InnerClasses;
-        _EnclosingMethod EnclosingMethod;
-        _Signature Signature;
-        _SourceFile SourceFile;
-        _SourceDebugExtension SourceDebugExtension;
-        _LineNumberTable LineNumberTable;
-        _LocalVariableTable LocalVariableTable;
-        _LocalVariableTypeTable LocalVariableTypeTable;
-        _RuntimeAnnotation RuntimeVisibleAnnotations, RuntimeInvisibleAnnotations;
-        _RuntimeParemeterAnnotations RuntimeVisibleParameterAnnotations, RuntimeInvisibleParameterAnnotations;
-        _AnnotationDefault AnnotationDefault;
-        _BootstrapMethod BootstrapMethods;
-        _MethodParameters MethodParameters;
-    } info;
+    /// @brief Informação do atributo.
+    attribute_info info;
 } attribute;
 
 #endif

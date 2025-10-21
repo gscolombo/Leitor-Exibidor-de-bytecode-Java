@@ -20,7 +20,7 @@
 #include "uinteger.h"
 
 /**
- * Tipo para união dos diferentes
+ * União dos diferentes
  * tipos de constantes apresentados
  * na especificação da JVM 8.
  */

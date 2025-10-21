@@ -8,7 +8,7 @@
 #include "constants.h"
 #include "utils.h"
 
-// Representa um arquivo .class, de acordo com a especificação JVM 8
+// Representa um arquivo .class, de acordo com a especificação da JVM 8.
 typedef struct ClassFile
 {
     u4 magic;
@@ -31,17 +31,17 @@ typedef struct ClassFile
 
 /**
  * @brief Libera a memória alocada para uma estrutura `ClassFile`.
- * 
+ *
  * @param cf Ponteiro para uma estrutura `ClassFile`
  */
 void free_classfile(ClassFile *);
 
 /**
  * @brief Libera a memória alocada para uma estrutura `attribute`.
- * 
+ *
  * @param cp Ponteiro para uma estrutura `cp_info` contendo o pool de constantes.
  * @param count Número de atributos.
  * @param attr Ponteiro para uma estrutura `attribute`.
  */
-void free_attributes(cp_info*, u2, attribute*);
+void free_attributes(cp_info *, u2, attribute *);
 #endif

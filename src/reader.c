@@ -149,31 +149,31 @@ void read_attributes(const cp_info *cp, u2 n, FILE *fptr, attribute *attr)
                     attr[i].info.ConstantValue.constantvalue_index = read_u2(fptr);
                     break;
                 case Code:
-                    attr[i].info.Code.fields.max_stack = read_u2(fptr);
-                    attr[i].info.Code.fields.max_locals = read_u2(fptr);
-                    c = attr[i].info.Code.fields.code_length = read_u4(fptr);
-                    attr[i].info.Code.fields.code = NULL;
+                    attr[i].info.Code.max_stack = read_u2(fptr);
+                    attr[i].info.Code.max_locals = read_u2(fptr);
+                    c = attr[i].info.Code.code_length = read_u4(fptr);
+                    attr[i].info.Code.code = NULL;
 
                     if (c > 0)
                     {
-                        attr[i].info.Code.fields.code = (u1 *)malloc(c);
-                        if (attr[i].info.Code.fields.code != NULL)
-                            fread(attr[i].info.Code.fields.code, sizeof(u1), c, fptr);
+                        attr[i].info.Code.code = (u1 *)malloc(c);
+                        if (attr[i].info.Code.code != NULL)
+                            fread(attr[i].info.Code.code, sizeof(u1), c, fptr);
                     }
 
-                    c = attr[i].info.Code.fields.exception_table_length = read_u2(fptr);
-                    attr[i].info.Code.fields.exception_table = NULL;
+                    c = attr[i].info.Code.exception_table_length = read_u2(fptr);
+                    attr[i].info.Code.exception_table = NULL;
 
                     if (c > 0)
                     {
-                        attr[i].info.Code.fields.exception_table = (exception_table *)calloc(c, sizeof(exception_table));
-                        if (attr[i].info.Code.fields.exception_table != NULL)
+                        attr[i].info.Code.exception_table = (exception_table *)calloc(c, sizeof(exception_table));
+                        if (attr[i].info.Code.exception_table != NULL)
                             for (size_t j = 0; j < c; j++)
                             {
-                                attr[i].info.Code.fields.exception_table[j].start_pc = read_u2(fptr);
-                                attr[i].info.Code.fields.exception_table[j].end_pc = read_u2(fptr);
-                                attr[i].info.Code.fields.exception_table[j].handler_pc = read_u2(fptr);
-                                attr[i].info.Code.fields.exception_table[j].catch_type = read_u2(fptr);
+                                attr[i].info.Code.exception_table[j].start_pc = read_u2(fptr);
+                                attr[i].info.Code.exception_table[j].end_pc = read_u2(fptr);
+                                attr[i].info.Code.exception_table[j].handler_pc = read_u2(fptr);
+                                attr[i].info.Code.exception_table[j].catch_type = read_u2(fptr);
                             }
                     }
 

@@ -33,8 +33,8 @@ void free_attributes(cp_info *cp, u2 count, attribute *attr)
                 switch (*attr_name)
                 {
                 case Code:
-                    free(attr[i].info.Code.fields.code);
-                    free(attr[i].info.Code.fields.exception_table);
+                    free(attr[i].info.Code.code);
+                    free(attr[i].info.Code.exception_table);
                     free_attributes(cp, attr[i].info.Code.attributes_count, attr[i].info.Code.attributes);
                     break;
                 case LineNumberTable:
