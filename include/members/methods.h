@@ -14,7 +14,7 @@
 /**
  * Exibe os métodos de uma estrutura ClassFile.
  *
- * @param ClassFile* Ponteiro para a estrutura ClassFile que contém os métodos.
+ * @param cf Ponteiro para a estrutura ClassFile que contém os métodos.
  */
 void show_methods(const ClassFile *);
 

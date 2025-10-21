@@ -1,7 +1,7 @@
 #ifndef TYPES_CP_CONSTANTS_H
 #define TYPES_CP_CONSTANTS_H
 
-// Constant tags
+/* Tags de constantes */
 #define CONSTANT_Class 7
 #define CONSTANT_Fieldref 9
 #define CONSTANT_Methodref 10
@@ -19,6 +19,11 @@
 
 #include "uinteger.h"
 
+/**
+ * Tipo para união dos diferentes
+ * tipos de constantes apresentados
+ * na especificação da JVM 8.
+ */
 typedef union Constant
 {
     struct
@@ -80,6 +85,10 @@ typedef union Constant
     } InvokeDynamic;
 } Constant;
 
+/**
+ * Estrutura para representação de uma
+ * constante no pool de constantes.
+ */
 typedef struct cp_info
 {
     u1 tag;

@@ -15,8 +15,8 @@
  *
  * Esta função recupera e exibe as constante do pool de constantes.
  *
- * @param u2 O número de constantes no pool de constantes.
- * @param cp_info Um ponteiro para o array do pool de constantes.
+ * @param count O número de constantes no pool de constantes.
+ * @param _cp Um ponteiro para o array do pool de constantes.
  */
 void show_constants(u2, cp_info *);
 

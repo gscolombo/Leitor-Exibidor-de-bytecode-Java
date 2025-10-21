@@ -12,9 +12,9 @@
 #include "wchar.h"
 
 /**
- * Exibe os campos de uma estrutura ClassFile.
+ * Exibe os campos (fields) de uma estrutura ClassFile.
  *
- * @param ClassFile* Ponteiro para a estrutura ClassFile que contém os métodos.
+ * @param cf Ponteiro para a estrutura ClassFile que contém os métodos.
  */
 void show_fields(const ClassFile *);
 

@@ -14,9 +14,9 @@
 #include "fields.h"
 
 /**
- * @brief Exibe as informações de um ClassFile.
+ * @brief Exibe as informações de um `ClassFile`.
  *
- * @param ClassFile* Ponteiro para a estrutura ClassFile que será exibida.
+ * @param cf Ponteiro para a estrutura `ClassFile` que será exibida.
  */
 void show_classfile(ClassFile *);
 

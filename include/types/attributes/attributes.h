@@ -1,185 +1,121 @@
 #ifndef TYPES_ATTRIBUTES_ATTRIBUTES_H
 #define TYPES_ATTRIBUTES_ATTRIBUTES_H
 
-#include <wchar.h>
-
 #include "uinteger.h"
-#include "stackmap.h"
-#include "annotation.h"
+#include "inner_fields.h"
 
-typedef enum attribute_name
-{
-    ConstantValue,
-    Code,
-    StackMapTable,
-    Exceptions,
-    InnerClasses,
-    EnclosingMethod,
-    Synthetic,
-    Signature,
-    SourceFile,
-    SourceDebugExtension,
-    LineNumberTable,
-    LocalVariableTable,
-    LocalVariableTypeTable,
-    Deprecated,
-    RuntimeVisibleAnnotations,
-    RuntimeInvisibleAnnotations,
-    RuntimeVisibleParameterAnnotations,
-    RuntimeInvisibleParameterAnnotations,
-    AnnotationDefault,
-    BootstrapMethods,
-    MethodParameters
-} attribute_name;
+/**
+ * Estruturas de atributos específicos,
+ * de acordo com a especificação da JVM 8.
+ */
 
-typedef struct line_number_table
+typedef struct
 {
-    u2 start_pc;
-    u2 line_number;
-} line_number_table;
+    u2 constantvalue_index;
+} _ConstantValue;
 
-typedef struct exception_table
+/**
+ * Para lidar com a referência circular, os campos de atributos
+ * do atributo Code são declarados na estrutura geral de um atributo.
+ */
+typedef struct
 {
-    u2 start_pc;
-    u2 end_pc;
-    u2 handler_pc;
-    u2 catch_type;
-} exception_table;
+    u2 max_stack;
+    u2 max_locals;
+    u4 code_length;
+    u1 *code;
+    u2 exception_table_length;
+    exception_table *exception_table;
+} _Code;
 
-typedef struct classes
+typedef struct
 {
-    u2 inner_class_info_index;
-    u2 outer_class_info_index;
-    u2 inner_name_index;
-    u2 inner_class_access_flags;
-} classes;
+    u2 number_of_entries;
+    stack_map_frame *entries;
+} _StackMapTable;
 
-typedef struct local_variable_table
+typedef struct
 {
-    u2 start_pc;
-    u2 length;
-    u2 name_index;
-    u2 descriptor_index;
-    u2 index;
-} local_variable_table;
+    u2 number_of_exceptions;
+    u2 *exception_index_table;
+} _Exceptions;
 
-typedef struct local_variable_type_table
+typedef struct
 {
-    u2 start_pc;
-    u2 length;
-    u2 name_index;
+    u2 number_of_classes;
+    classes *classes;
+} _InnerClasses;
+
+typedef struct
+{
+    u2 class_index;
+    u2 method_index;
+} _EnclosingMethod;
+
+typedef struct
+{
     u2 signature_index;
-    u2 index;
-} local_variable_type_table;
+} _Signature;
 
-typedef struct parameter
+typedef struct
 {
-    u2 name_index;
-    u2 access_flags;
-} parameter;
+    u2 sourcefile_index;
+} _SourceFile;
 
-typedef struct attribute
+typedef struct
 {
-    u2 attribute_name_index;
-    u4 attribute_length;
-    union
+    u1 *debug_extension;
+} _SourceDebugExtension;
+
+typedef struct
+{
+    u2 line_number_table_length;
+    line_number_table *line_number_table;
+} _LineNumberTable;
+
+typedef struct
+{
+    u2 local_variable_table_length;
+    local_variable_table *local_variable_table;
+} _LocalVariableTable;
+
+typedef struct
+{
+    u2 local_variable_type_table_length;
+    local_variable_type_table *local_variable_type_table;
+} _LocalVariableTypeTable;
+
+typedef struct
+{
+    u2 num_annotations;
+    annotation *annotations;
+} _RuntimeAnnotation;
+
+typedef struct
+{
+    u2 num_parameters;
+    struct
     {
-        struct
-        {
-            u2 constantvalue_index;
-        } ConstantValue;
-        struct
-        {
-            u2 max_stack;
-            u2 max_locals;
-            u4 code_length;
-            u1 *code;
-            u2 exception_table_length;
-            exception_table *exception_table;
-            u2 attributes_count;
-            struct attribute *attributes;
-        } Code;
-        struct
-        {
-            u2 number_of_entries;
-            stack_map_frame *entries;
-        } StackMapTable;
-        struct
-        {
-            u2 number_of_exceptions;
-            u2 *exception_index_table;
-        } Exceptions;
-        struct
-        {
-            u2 number_of_classes;
-            classes *classes;
-        } InnerClasses;
-        struct
-        {
-            u2 class_index;
-            u2 method_index;
-        } EnclosingMethod;
-        struct
-        {
-            u2 signature_index;
-        } Signature;
-        struct
-        {
-            u2 sourcefile_index;
-        } SourceFile;
-        struct
-        {
-            u1 *debug_extension;
-        } SourceDebugExtension;
-        struct
-        {
-            u2 line_number_table_length;
-            line_number_table *line_number_table;
-        } LineNumberTable;
-        struct
-        {
-            u2 local_variable_table_length;
-            local_variable_table *local_variable_table;
-        } LocalVariableTable;
-        struct
-        {
-            u2 local_variable_type_table_length;
-            local_variable_type_table *local_variable_type_table;
-        } LocalVariableTypeTable;
-        struct
-        {
-            u2 num_annotations;
-            annotation *annotations;
-        } RuntimeVisibleAnnotations, RuntimeInvisibleAnnotations;
-        struct
-        {
-            u2 num_parameters;
-            struct
-            {
-                u2 num_annotations;
-                annotation *annotation;
-            } *parameter_annotations;
-        } RuntimeVisibleParameterAnnotations, RuntimeInvisibleParameterAnnotations;
-        struct
-        {
-            element_value default_value;
-        } AnnotationDefault;
-        struct
-        {
-            u2 num_bootstrap_methods;
-            struct
-            {
-                u2 bootstrap_method_ref;
-                u2 num_bootstrap_arguments;
-                u2 *bootstrap_arguments;
-            } *bootstrap_methods;
-        } BootstrapMethods;
-        struct
-        {
-            u1 parameters_count;
-            parameter *parameters;
-        } MethodParameters;
-    } info;
-} attribute;
+        u2 num_annotations;
+        annotation *annotation;
+    } *parameter_annotations;
+} _RuntimeParemeterAnnotations;
+
+typedef struct
+{
+    element_value default_value;
+} _AnnotationDefault;
+
+typedef struct
+{
+    u2 num_bootstrap_methods;
+    bootstrap_method *bootstrap_methods;
+} _BootstrapMethod;
+
+typedef struct
+{
+    u1 parameters_count;
+    parameter *parameters;
+} _MethodParameters;
 
 #endif

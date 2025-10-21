@@ -2,7 +2,7 @@
 #define TYPES_INFO_H
 
 #include "uinteger.h"
-#include "attributes.h"
+#include "attribute_info.h"
 
 typedef struct FlagMap
 {
