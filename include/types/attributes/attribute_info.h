@@ -7,15 +7,18 @@
 #include "attributes.h"
 
 /**
- * @brief Estrutura geral de um atributo.
+ * @brief Estrutura geral de um atributo em arquivos .class Java.
  */
 typedef struct attribute
 {
-    /// @brief Índice do nome do atributo no pool de constantes.
+    /// @brief Índice no pool de constantes para o nome do atributo (CONSTANT_UTF8).
     u2 attribute_name_index;
-    /// @brief Tamanho em bytes do atributo.
+
+    /// @brief Tamanho dos dados do atributo em bytes (excluindo os 6 bytes iniciais).
     u4 attribute_length;
-    /// @brief Informação do atributo.
+
+    /// @brief Informações específicas do tipo de atributo.
+    /// @see attribute_info para estruturas específicas por tipo.
     attribute_info info;
 } attribute;
 

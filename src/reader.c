@@ -166,7 +166,7 @@ void read_attributes(const cp_info *cp, u2 n, FILE *fptr, attribute *attr)
 
                     if (c > 0)
                     {
-                        attr[i].info.Code.exception_table = (exception_table *)calloc(c, sizeof(exception_table));
+                        attr[i].info.Code.exception_table = (struct exception_table *)calloc(c, sizeof(struct exception_table));
                         if (attr[i].info.Code.exception_table != NULL)
                             for (size_t j = 0; j < c; j++)
                             {
@@ -189,7 +189,7 @@ void read_attributes(const cp_info *cp, u2 n, FILE *fptr, attribute *attr)
                     break;
                 case LineNumberTable:
                     c = read_u2(fptr);
-                    fseek(fptr, c * sizeof(line_number_table), SEEK_CUR);
+                    fseek(fptr, c * sizeof(struct line_number_table), SEEK_CUR);
                     break;
                 default:
                     break;
