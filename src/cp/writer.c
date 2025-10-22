@@ -15,7 +15,7 @@ void show_constants(u2 count, cp_info *_cp)
         {
         case CONSTANT_Class:
             u2 cls_name_index = cp->info.Class.name_index;
-            printf("%s#%u = Class\t\t\t#%u\t\t// %ls\n",
+            printf("%s#%u = Class\t\t\t#%u\t\t// %s\n",
                    pad, i, cls_name_index, _cp[cls_name_index - 1].info.UTF8.str);
             break;
         case CONSTANT_Fieldref:
@@ -34,19 +34,19 @@ void show_constants(u2 count, cp_info *_cp)
             u2 name_and_type_index = cp->info.Ref.name_and_type_index;
 
             // Recuperação as strings para exibição
-            wchar_t *cls = _cp[_cp[cls_index - 1].info.Class.name_index - 1].info.UTF8.str;
-            wchar_t *ref_name = _cp[_cp[name_and_type_index - 1].info.NameAndType.name_index - 1].info.UTF8.str;
-            wchar_t *ref_type = _cp[_cp[name_and_type_index - 1].info.NameAndType.descriptor_index - 1].info.UTF8.str;
+            char *cls = _cp[_cp[cls_index - 1].info.Class.name_index - 1].info.UTF8.str;
+            char *ref_name = _cp[_cp[name_and_type_index - 1].info.NameAndType.name_index - 1].info.UTF8.str;
+            char *ref_type = _cp[_cp[name_and_type_index - 1].info.NameAndType.descriptor_index - 1].info.UTF8.str;
 
             // Inclusão de aspas na função <init> para conformidade com saída do javap
-            ref_name = !wcscmp(ref_name, (wchar_t *)L"<init>") ? L"\"<init>\"" : ref_name;
+            ref_name = !strcmp(ref_name, (char *)"<init>") ? "\"<init>\"" : ref_name;
 
-            printf("%s#%u = %s\t\t\t#%u.#%u\t\t// %ls.%ls:%ls\n",
+            printf("%s#%u = %s\t\t\t#%u.#%u\t\t// %s.%s:%s\n",
                    pad, i, ref, cls_index, name_and_type_index, cls, ref_name, ref_type);
             break;
         case CONSTANT_String:
             u2 str_index = cp->info.String.string_index;
-            printf("%s#%u = String\t\t\t#%u\t\t// %ls\n", pad, i, str_index, _cp[str_index - 1].info.UTF8.str);
+            printf("%s#%u = String\t\t\t#%u\t\t// %s\n", pad, i, str_index, _cp[str_index - 1].info.UTF8.str);
             break;
         case CONSTANT_Integer:
             printf("%s#%u = Integer\t\t\t%i\n", pad, i, cp->info._4Bn.number.i);
@@ -66,16 +66,16 @@ void show_constants(u2 count, cp_info *_cp)
             u2 desc_index = cp->info.NameAndType.descriptor_index;
 
             // Recuperação das strings
-            wchar_t *name = _cp[name_index - 1].info.UTF8.str;
-            wchar_t *desc = _cp[desc_index - 1].info.UTF8.str;
+            char *name = _cp[name_index - 1].info.UTF8.str;
+            char *desc = _cp[desc_index - 1].info.UTF8.str;
 
             // Inclusão de aspas no método <init> para conformidade com saída do javap
-            name = !wcscmp(name, (wchar_t *)L"<init>") ? L"\"<init>\"" : name;
+            name = !strcmp(name, (char *)"<init>") ? "\"<init>\"" : name;
 
-            printf("%s#%u = NameAndType\t\t#%u.#%u\t\t// %ls:%ls\n", pad, i, name_index, desc_index, name, desc);
+            printf("%s#%u = NameAndType\t\t#%u.#%u\t\t// %s:%s\n", pad, i, name_index, desc_index, name, desc);
             break;
         case CONSTANT_UTF8:
-            printf("%s#%u = UTF-8\t\t\t%ls\n", pad, i, cp->info.UTF8.str);
+            printf("%s#%u = UTF-8\t\t\t%s\n", pad, i, cp->info.UTF8.str);
             break;
         case CONSTANT_MethodHandle:
             printf("%s#%u = MethodHandle\n", pad, i);

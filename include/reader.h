@@ -14,6 +14,8 @@
 
 #define LE (__BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__ ? 1 : 0)
 
+/** @file */
+
 /**
  * @brief Abre e retorna um ponteiro para um arquivo .class.
  * 

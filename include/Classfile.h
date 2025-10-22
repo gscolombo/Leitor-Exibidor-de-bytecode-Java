@@ -8,6 +8,8 @@
 #include "constants.h"
 #include "utils.h"
 
+/** @file */
+
 /**
  * @brief Estrutura que representa um arquivo .class Java, conforme especificação JVM 8.
  */

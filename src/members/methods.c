@@ -41,16 +41,16 @@ void show_methods(const ClassFile *cf)
             member_info method = cf->methods[i];
 
             u2 access_flags = method.access_flags;
-            wchar_t *method_name = cp[method.name_index - 1].info.UTF8.str;
-            wchar_t *method_desc = cp[method.descriptor_index - 1].info.UTF8.str;
+            char *method_name = cp[method.name_index - 1].info.UTF8.str;
+            char *method_desc = cp[method.descriptor_index - 1].info.UTF8.str;
 
             // Handle <init> method
-            int is_init = !wcscmp(method_name, L"<init>");
+            int is_init = !strcmp(method_name, "<init>");
             if (is_init)
             {
-                wchar_t *classname = cp[cp[cf->this_class - 1].info.Class.name_index - 1].info.UTF8.str;
+                char *classname = cp[cp[cf->this_class - 1].info.Class.name_index - 1].info.UTF8.str;
 
-                for (wchar_t *wcptr = classname; wcptr < classname + wcslen(classname) - 1; wcptr++)
+                for (char *wcptr = classname; wcptr < classname + strlen(classname) - 1; wcptr++)
                     if (*wcptr == L'/')
                     {
                         *wcptr = L'.';
@@ -61,40 +61,40 @@ void show_methods(const ClassFile *cf)
             }
 
             // Get parameters descriptor length
-            wchar_t *params_end = wcschr(method_desc, L')') + 1;
+            char *params_end = strchr(method_desc, L')') + 1;
 
             size_t params_desc_len = params_end - method_desc;
-            size_t ret_desc_len = wcslen(params_end);
+            size_t ret_desc_len = strlen(params_end);
 
             // Split descriptor
-            wchar_t *params_desc = (wchar_t *)calloc(params_desc_len + 1, sizeof(wchar_t));
+            char *params_desc = (char *)calloc(params_desc_len + 1, sizeof(char));
             if (params_desc)
             {
-                wcsncpy(params_desc, method_desc, params_desc_len);
+                strncpy(params_desc, method_desc, params_desc_len);
                 params_desc[params_desc_len] = L'\0';
             }
 
-            wchar_t *ret_desc = (wchar_t *)calloc(ret_desc_len + 1, sizeof(wchar_t));
+            char *ret_desc = (char *)calloc(ret_desc_len + 1, sizeof(char));
             if (ret_desc)
             {
-                wcsncpy(ret_desc, params_end, ret_desc_len);
+                strncpy(ret_desc, params_end, ret_desc_len);
                 ret_desc[ret_desc_len] = L'\0';
             }
 
             // Parse descriptors
-            wchar_t *params_str = NULL, *ret_str = NULL;
+            char *params_str = NULL, *ret_str = NULL;
 
             if (!is_init)
                 ret_str = parse_descriptor(ret_desc, NULL);
 
-            params_str = parse_descriptor(params_desc, L",");
+            params_str = parse_descriptor(params_desc, ",");
 
             // Parse flags
             char *flags = parse_flags(access_flags, 12, ", ", flag_map);
             char *kws = parse_flags(access_flags, 9, " ", flag_kw_map);
 
-            printf(" %s %ls%ls%ls;\n    descriptor: %ls\n    flags: (0x%04x) %s\n%c",
-                   kws, ret_str ? ret_str : L"", method_name, params_str, method_desc, access_flags, flags, nl);
+            printf(" %s %s%s%s;\n    descriptor: %s\n    flags: (0x%04x) %s\n%c",
+                   kws, ret_str ? ret_str : "", method_name, params_str, method_desc, access_flags, flags, nl);
 
             free(flags), free(kws);
             free(params_desc), free(ret_desc);

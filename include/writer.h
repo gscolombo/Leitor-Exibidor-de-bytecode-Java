@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#include <wchar.h>
 
 #include "Classfile.h"
 #include "member.h"
@@ -12,6 +11,8 @@
 #include "cp/writer.h"
 #include "methods.h"
 #include "fields.h"
+
+/** @file */
 
 /**
  * @brief Exibe as informações de um `ClassFile`.

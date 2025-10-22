@@ -11,6 +11,8 @@
 #include "utils.h"
 #include "wchar.h"
 
+/** @file */
+
 /**
  * Exibe os campos (fields) de uma estrutura ClassFile.
  *

@@ -9,6 +9,8 @@
 #include "attribute_enum.h"
 #include "member.h"
 
+/** @file */
+
 /**
  * @brief Troca os dois bytes de um inteiro de 16 bits.
  *
@@ -62,7 +64,7 @@ char *parse_flags(u2, size_t, const char *, const FlagMap[]);
  * @param name Nome do atributo.
  * @return Valor enumerado correspondente ao nome do atributo.
  */
-const attribute_name *convert_attr_name(const wchar_t *);
+const attribute_name *convert_attr_name(const char *);
 
 /**
  * @brief Converte um descritor na sua versão intelígivel (original),
@@ -72,6 +74,6 @@ const attribute_name *convert_attr_name(const wchar_t *);
  * @param sep String a ser utilizada como separador entre cada símbolo do descritor.
  * @return String com a versão intelígivel do descritor.
  */
-wchar_t *parse_descriptor(const wchar_t *, wchar_t *);
+char *parse_descriptor(const char *, char *);
 
 #endif

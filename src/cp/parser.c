@@ -83,10 +83,10 @@ cp_info *parse_constant_pool(FILE *fptr, u2 count)
         cp++;
     }
 
-    return cp - (count - 1);
+    return constant_pool;
 }
 
-wchar_t *decode_modified_utf8_str(u2 length, const u1 *bytes)
+char *decode_modified_utf8_str(u2 length, const u1 *bytes)
 {
     if (bytes == NULL)
     {
@@ -100,23 +100,19 @@ wchar_t *decode_modified_utf8_str(u2 length, const u1 *bytes)
     {
         u1 x = bytes[pos];
 
-        if (x < 0x80)
+        if (x < 0x80) // 1 byte code point
         {
             buffer_size++;
             pos++;
-
-            // 2 byte code point
         }
-        else if ((x & 0xE0) == 0xC0)
+        else if ((x & 0xE0) == 0xC0) // 2 bytes code point
         { // Check if high byte starts with 110
             if (pos + 1 >= length)
                 return NULL; // Early return if truncated sequence
             buffer_size++;
             pos += 2;
-
-            // 3 byte code point
         }
-        else if ((x & 0xF0) == 0xE0)
+        else if ((x & 0xF0) == 0xE0) // 3 bytes code point
         { // Check if high byte starts with 1110
             if (pos + 2 >= length)
                 return NULL; // Same as above
@@ -129,7 +125,7 @@ wchar_t *decode_modified_utf8_str(u2 length, const u1 *bytes)
         }
     }
 
-    wchar_t *str = (wchar_t *)malloc((buffer_size + 1) * sizeof(wchar_t));
+    char *str = (char *)malloc((buffer_size + 1) * sizeof(char));
     if (str == NULL)
         return NULL;
 
@@ -142,14 +138,14 @@ wchar_t *decode_modified_utf8_str(u2 length, const u1 *bytes)
 
         if (x < 0x80)
         {
-            str[i++] = (wchar_t)x;
+            str[i++] = (char)x;
             pos++;
         }
         else if ((x & 0xE0) == 0xC0)
         {
             u1 y = bytes[pos + 1];
             u2 code_point = ((x & 0x1F) << 6) | (y & 0x3F);
-            str[i++] = code_point == 0 ? L'\0' : (wchar_t)code_point; // The null character is represent by two bytes (0xC0,0x80);
+            str[i++] = code_point == 0 ? L'\0' : (char)code_point; // The null character is represented by two bytes (0xC0,0x80);
             pos += 2;
         }
         else if ((x & 0xF0) == 0xE0)
@@ -157,7 +153,7 @@ wchar_t *decode_modified_utf8_str(u2 length, const u1 *bytes)
             u1 y = bytes[pos + 1];
             u1 z = bytes[pos + 2];
             u2 code_point = ((x & 0xF) << 12) | ((y & 0x3F) << 6) | (z & 0x3F);
-            str[i++] = (wchar_t)code_point;
+            str[i++] = (char)code_point;
             pos += 3;
         }
     }
