@@ -19,6 +19,8 @@
 
 #include "uinteger.h"
 
+/** @file */
+
 /**
  * União dos diferentes
  * tipos de constantes apresentados
@@ -95,7 +97,7 @@ typedef union Constant
         /// @brief Bytes da _string_ constante.
         u1 *bytes;
         /// @brief _String_ decodificada do formato UTF-8 modificado
-        wchar_t *str;
+        char *str;
     } UTF8;
 
     /// @brief Representa um manipulador de método.

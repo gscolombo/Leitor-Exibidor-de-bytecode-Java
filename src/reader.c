@@ -138,7 +138,7 @@ void read_attributes(const cp_info *cp, u2 n, FILE *fptr, attribute *attr)
             attr[i].attribute_name_index = read_u2(fptr);
             attr[i].attribute_length = read_u4(fptr);
 
-            const wchar_t *attr_name = cp[attr[i].attribute_name_index - 1].info.UTF8.str;
+            const char *attr_name = cp[attr[i].attribute_name_index - 1].info.UTF8.str;
 
             const attribute_name *attr_type = convert_attr_name(attr_name);
 

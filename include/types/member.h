@@ -4,6 +4,8 @@
 #include "uinteger.h"
 #include "attribute_info.h"
 
+/** @file */
+
 /**
  * @brief Mapeia um valor de flag para seu nome em string.
  */

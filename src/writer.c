@@ -25,17 +25,17 @@ void show_classfile(ClassFile *cf)
     u2 cls_name_index = cp[cf->this_class - 1].info.Class.name_index;
     u2 super_cls_name_index = cp[cf->super_class - 1].info.Class.name_index;
 
-    wchar_t *classname = cp[cls_name_index - 1].info.UTF8.str;
-    wchar_t *super_classname = cp[super_cls_name_index - 1].info.UTF8.str;
+    char *classname = cp[cls_name_index - 1].info.UTF8.str;
+    char *super_classname = cp[super_cls_name_index - 1].info.UTF8.str;
     char *class_access_flags = parse_flags(cf->access_flags, 8, ", ", class_flag_map);
     char *class_kws_flags = parse_flags(cf->access_flags, 6, " ", class_flag_kw_map);
 
-    printf("%s class %ls\n", class_kws_flags, classname);
+    printf("%s class %s\n", class_kws_flags, classname);
     printf("  Magic: %#X\n", cf->magic);
     printf("  Version: %u.%u\n", cf->major_version, cf->minor_version);
     printf("  Flags: (%#.4x) %s\n", cf->access_flags, class_access_flags);
-    printf("  this_class: #%u\t\t\t// %ls\n", cf->this_class, classname);
-    printf("  super_class: #%u\t\t\t// %ls\n", cf->super_class, super_classname);
+    printf("  this_class: #%u\t\t\t// %s\n", cf->this_class, classname);
+    printf("  super_class: #%u\t\t\t// %s\n", cf->super_class, super_classname);
     printf("  interfaces: %u, fields: %u, methods: %u, attributes: %u\n",
            cf->interfaces_count, cf->fields_count, cf->methods_count, cf->attributes_count);
 

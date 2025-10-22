@@ -1,7 +1,6 @@
 #ifndef TYPES_ATTRIBUTES_ATTRIBUTE_INFO_H
 #define TYPES_ATTRIBUTES_ATTRIBUTE_INFO_H
 
-#include <wchar.h>
 
 #include "uinteger.h"
 #include "attributes.h"
@@ -19,6 +18,30 @@ typedef struct attribute
 
     /// @brief Informações específicas do tipo de atributo.
     /// @see attribute_info para estruturas específicas por tipo.
+    /**
+     * @note
+     * @parblock
+     * Alguns atributos necessários para suporte a debugging e novos mecanismos da JVM 8, estão fora do escopo deste projeto 
+     * e não serão implementados.\n
+     * Contudo, suas estruturas básicas foram definidas para fins de documentação e facilitar uma eventual implementação futura.
+     * 
+     * Os atributos **não** considerados são:
+     * - AnnotationDefault
+     * - LineNumberTable
+     * - LocalVariableTable
+     * - LocalVariableTypeTable
+     * - Deprecated
+     * - SourceDebugExtension
+     * - Signature
+     * - RuntimeVisibleAnnotations
+     * - RuntimeInvisibleAnnotations
+     * - RuntimeVisibleParameterAnnotations
+     * - RuntimeInvisibleParameterAnnotations
+     * - EnclosingMethod
+     * - BootstrapMethods
+     * - MethodParameters
+     * @endparblock
+     */
     attribute_info info;
 } attribute;
 

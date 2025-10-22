@@ -36,15 +36,15 @@ void show_fields(const ClassFile *cf)
             member_info field = cf->fields[i];
 
             u2 access_flags = field.access_flags;
-            wchar_t *field_name = cp[field.name_index - 1].info.UTF8.str;
-            wchar_t *field_desc = cp[field.descriptor_index - 1].info.UTF8.str;
+            char *field_name = cp[field.name_index - 1].info.UTF8.str;
+            char *field_desc = cp[field.descriptor_index - 1].info.UTF8.str;
 
-            wchar_t *field_desc_str = parse_descriptor(field_desc, NULL);
+            char *field_desc_str = parse_descriptor(field_desc, NULL);
 
             char *flags = parse_flags(access_flags, 9, ", ", flag_map);
             char *kws = parse_flags(access_flags, 7, " ", flag_kw_map);
 
-            printf(" %s %ls%ls;\n    descriptor: %ls\n    flags: (0x%04x) %s\n%c",
+            printf(" %s %s%s;\n    descriptor: %s\n    flags: (0x%04x) %s\n%c",
                    kws, field_desc_str, field_name, field_desc,
                    access_flags, flags, nl);
 

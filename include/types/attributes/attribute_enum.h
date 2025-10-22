@@ -1,7 +1,9 @@
 #ifndef TYPES_ATTRIBUTES_ATTRIBUTE_ENUM_H
 #define TYPES_ATTRIBUTES_ATTRIBUTE_ENUM_H
 
-// Enumeração de nomes de atributos para uso em funções utilitárias
+/** @file */
+
+/// @brief Enumeração de nomes de atributos para uso em funções utilitárias
 typedef enum
 {
     ConstantValue,

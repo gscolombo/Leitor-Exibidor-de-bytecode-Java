@@ -83,36 +83,36 @@ char *parse_flags(u2 flags, size_t n, const char *sep, const FlagMap flag_map[])
 static const struct
 {
     const attribute_name attr;
-    const wchar_t *str;
+    const char *str;
 } conversion[] = {
-    {ConstantValue, L"ConstantValue"},
-    {Code, L"Code"},
-    {StackMapTable, L"StackMapTable"},
-    {Exceptions, L"Exceptions"},
-    {InnerClasses, L"InnerClasses"},
-    {EnclosingMethod, L"EnclosingMethod"},
-    {Synthetic, L"Synthetic"},
-    {Signature, L"Signature"},
-    {SourceFile, L"SourceFile"},
-    {SourceDebugExtension, L"SourceDebugExtension"},
-    {LineNumberTable, L"LineNumberTable"},
-    {LocalVariableTable, L"LocalVariableTable"},
-    {LocalVariableTypeTable, L"LocalVariableTypeTable"},
-    {Deprecated, L"Deprecated"},
-    {RuntimeVisibleAnnotations, L"RuntimeVisibleAnnotations"},
-    {RuntimeInvisibleAnnotations, L"RuntimeInvisibleAnnotations"},
-    {RuntimeVisibleParameterAnnotations, L"RuntimeVisibleParameterAnnotations"},
-    {RuntimeInvisibleParameterAnnotations, L"RuntimeInvisibleParameterAnnotations"},
-    {AnnotationDefault, L"AnnotationDefault"},
-    {BootstrapMethods, L"BootstrapMethods"},
-    {MethodParameters, L"MethodParameters"}};
+    {ConstantValue, "ConstantValue"},
+    {Code, "Code"},
+    {StackMapTable, "StackMapTable"},
+    {Exceptions, "Exceptions"},
+    {InnerClasses, "InnerClasses"},
+    {EnclosingMethod, "EnclosingMethod"},
+    {Synthetic, "Synthetic"},
+    {Signature, "Signature"},
+    {SourceFile, "SourceFile"},
+    {SourceDebugExtension, "SourceDebugExtension"},
+    {LineNumberTable, "LineNumberTable"},
+    {LocalVariableTable, "LocalVariableTable"},
+    {LocalVariableTypeTable, "LocalVariableTypeTable"},
+    {Deprecated, "Deprecated"},
+    {RuntimeVisibleAnnotations, "RuntimeVisibleAnnotations"},
+    {RuntimeInvisibleAnnotations, "RuntimeInvisibleAnnotations"},
+    {RuntimeVisibleParameterAnnotations, "RuntimeVisibleParameterAnnotations"},
+    {RuntimeInvisibleParameterAnnotations, "RuntimeInvisibleParameterAnnotations"},
+    {AnnotationDefault, "AnnotationDefault"},
+    {BootstrapMethods, "BootstrapMethods"},
+    {MethodParameters, "MethodParameters"}};
 
-const attribute_name *convert_attr_name(const wchar_t *name)
+const attribute_name *convert_attr_name(const char *name)
 {
     if (name != NULL)
         for (size_t i = 0; i < sizeof(conversion) / sizeof(conversion[0]); i++)
         {
-            if (!wcscmp(name, conversion[i].str))
+            if (!strcmp(name, conversion[i].str))
                 return &conversion[i].attr;
         }
 
@@ -121,31 +121,31 @@ const attribute_name *convert_attr_name(const wchar_t *name)
 
 static const struct
 {
-    wchar_t base_type;
-    wchar_t *type;
+    char base_type;
+    char *type;
 } base_type_map[9] = {
-    {L'B', L"byte"},
-    {L'C', L"char"},
-    {L'D', L"double"},
-    {L'F', L"float"},
-    {L'I', L"int"},
-    {L'J', L"long"},
-    {L'S', L"short"},
-    {L'Z', L"boolean"},
-    {L'V', L"void"}};
+    {L'B', "byte"},
+    {L'C', "char"},
+    {L'D', "double"},
+    {L'F', "float"},
+    {L'I', "int"},
+    {L'J', "long"},
+    {L'S', "short"},
+    {L'Z', "boolean"},
+    {L'V', "void"}};
 
-wchar_t *parse_descriptor(const wchar_t *descriptor, wchar_t *sep)
+char *parse_descriptor(const char *descriptor, char *sep)
 {
     if (descriptor == NULL)
         return NULL;
 
     unsigned int dim = 0;
-    size_t l = wcslen(descriptor);
+    size_t l = strlen(descriptor);
 
-    wchar_t *buf = (wchar_t *)calloc(256, sizeof(wchar_t));
+    char *buf = (char *)calloc(256, sizeof(char));
 
     if (buf != NULL)
-        for (const wchar_t *desc = descriptor; desc < descriptor + l; desc++)
+        for (const char *desc = descriptor; desc < descriptor + l; desc++)
         {
             if (*desc == L'[')
                 dim++;
@@ -154,13 +154,13 @@ wchar_t *parse_descriptor(const wchar_t *descriptor, wchar_t *sep)
                 switch (*desc)
                 {
                 case L'(':
-                    wcsncat(buf, L"(", 1);
+                    strcat(buf, "(");
                     break;
                 case L')':
-                    wcsncat(buf, L")", 1);
+                    strcat(buf, ")");
                     break;
                 case L'L':
-                    wchar_t *buf_it = buf + wcslen(buf);
+                    char *buf_it = buf + strlen(buf);
                     while (*(++desc) != L';')
                         *(buf_it++) = *desc == L'/' ? L'.' : *desc;
                     *buf_it = L'\0';
@@ -168,13 +168,13 @@ wchar_t *parse_descriptor(const wchar_t *descriptor, wchar_t *sep)
                 default:
                     for (size_t i = 0; i < sizeof(base_type_map) / sizeof(base_type_map[0]); i++)
                         if (*desc == base_type_map[i].base_type)
-                            wcscat(buf, base_type_map[i].type);
+                            strcat(buf, base_type_map[i].type);
                     break;
                 }
 
                 while (dim > 0)
                 {
-                    wcscat(buf, L"[]");
+                    strcat(buf, "[]");
                     dim--;
                 }
 
@@ -185,14 +185,14 @@ wchar_t *parse_descriptor(const wchar_t *descriptor, wchar_t *sep)
                     *(desc + 1) != L')' &&
                     *desc != L'[' &&
                     *desc != L'V')
-                    wcsncat(buf, sep, 1);
+                    strncat(buf, sep, 1);
 
                 // Append whitespace
                 if (desc < descriptor + l &&
                     *desc != L'(' &&
                     *desc != L')' &&
                     *(desc + 1) != L')')
-                    wcsncat(buf, L" ", 1);
+                    strcat(buf, " ");
             }
         }
 

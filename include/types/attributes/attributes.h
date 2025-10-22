@@ -50,9 +50,9 @@ typedef union attribute_info
         /// @brief Número de entradas na tabela de stack map frames
         u2 number_of_entries;
         /// @brief Array de stack map frames que definem o estado da pilha em pontos específicos do código
-        union stack_map_frame
+        /// @note Deve ser finalizado caso seja implementado o mecanismo de verificação de tipo especificado para a JVM 8.
+        struct stack_map_frame
         {
-            // Stack map frame types would be defined here
         } *entries;
     } StackMapTable;
 
@@ -177,9 +177,9 @@ typedef union attribute_info
         /// @brief Número de anotações definidas
         u2 num_annotations;
         /// @brief Array de estruturas de anotações
+        /// @note Deve ser finalizado caso a JVM necessite executar programas Java com anotações.
         struct annotation
         {
-            // Annotation structure would be defined here
         } *annotations;
     } RuntimeVisibleAnnotations, RuntimeInvisibleAnnotations;
 
@@ -202,9 +202,9 @@ typedef union attribute_info
     struct AnnotationDefault
     {
         /// @brief Valor padrão da anotação quando não explicitamente especificado
+        /// @note Faz parte da estrutura `annotation`, de acordo com a especificação da JVM 8.
         struct element_value
         {
-            // Element value structure would be defined here
         } default_value;
     } AnnotationDefault;
 
