@@ -187,11 +187,8 @@ void read_attributes(const cp_info *cp, u2 n, FILE *fptr, attribute *attr)
                             read_attributes(cp, c, fptr, attr[i].info.Code.attributes);
                     }
                     break;
-                case LineNumberTable:
-                    c = read_u2(fptr);
-                    fseek(fptr, c * sizeof(struct line_number_table), SEEK_CUR);
-                    break;
                 default:
+                    fseek(fptr, attr[i].attribute_length, SEEK_CUR);
                     break;
                 }
         }
