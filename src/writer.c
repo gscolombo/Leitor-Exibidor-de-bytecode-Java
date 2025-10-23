@@ -1,5 +1,9 @@
 #include "writer.h"
 
+/** @file
+ * @brief Declaração de função para exibição de informações do arquivo `.class`.
+ */
+
 static const FlagMap class_flag_map[8] = {
     {0x0001, "ACC_PUBLIC"},
     {0x0010, "ACC_FINAL"},
