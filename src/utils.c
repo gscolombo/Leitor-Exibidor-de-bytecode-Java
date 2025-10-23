@@ -1,5 +1,9 @@
 #include "utils.h"
 
+/** @file
+ * @brief Definição de funções utilitárias para o restante do projeto.
+ */
+
 unsigned int u2swap(const unsigned int n)
 {
     return ((n << 8)) | ((n >> 8));

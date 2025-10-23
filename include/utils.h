@@ -9,7 +9,9 @@
 #include "attribute_enum.h"
 #include "member.h"
 
-/** @file */
+/** @file
+ * @brief Declaração de funções utilitárias para o restante do projeto.
+ */
 
 /**
  * @brief Troca os dois bytes de um inteiro de 16 bits.
