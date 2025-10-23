@@ -106,14 +106,14 @@ char *decode_modified_utf8_str(u2 length, const u1 *bytes)
             pos++;
         }
         else if ((x & 0xE0) == 0xC0) // 2 bytes code point
-        { // Check if high byte starts with 110
+        {                            // Check if high byte starts with 110
             if (pos + 1 >= length)
                 return NULL; // Early return if truncated sequence
             buffer_size++;
             pos += 2;
         }
         else if ((x & 0xF0) == 0xE0) // 3 bytes code point
-        { // Check if high byte starts with 1110
+        {                            // Check if high byte starts with 1110
             if (pos + 2 >= length)
                 return NULL; // Same as above
             buffer_size++;
@@ -172,12 +172,12 @@ float decode_float_bytes(u4 b)
         return NAN;
     else
     {
-        u4 s, e, m;
+        int s, e, m;
         s = ((b >> 31) == 0) ? 1 : -1;
         e = ((b >> 23) & 0xFF);
         m = (e == 0) ? (b & 0x7FFFFF) << 1 : (b & 0x7FFFFF) | 0x800000;
 
-        return s * m * (1 << (e - 150));
+        return s * m * pow(2, e - 150);
     }
 }
 
@@ -190,19 +190,21 @@ double decode_double_bytes(u4 hb, u4 lb)
 {
     long b = decode_long_bytes(hb, lb);
 
-    if (b == 0x7FF0000000000000L)
+    if (b == 0x7ff0000000000000L)
         return INFINITY;
-    else if (b == (long)0xFFF0000000000000L)
+    else if (b == (long)0xfff0000000000000L)
         return -INFINITY;
-    else if (((0x7FF0000000000001L <= b) && (b <= 0x7FFFFFFFFFFFFFFFL)) || (((long)0xFFF0000000000001L <= b) && (b <= (long)0xFFFFFFFFFFFFFFFFL)))
+    else if (((0x7ff0000000000001L <= b) && (b <= 0x7fffffffffffffffL)) ||
+             (((long)0xfff0000000000001L <= b) && (b <= (long)0xffffffffffffffffL)))
         return NAN;
     else
     {
-        u4 s, e, m;
+        int s, e;
+        long m;
         s = ((b >> 63) == 0) ? 1 : -1;
-        e = (int)((b >> 52) & 0x7FFL);
-        m = (e == 0) ? (b & 0xFFFFFFFFFFFFFL) << 1 : (b & 0xFFFFFFFFFFFFFL) | 0x10000000000000L;
+        e = (int)((b >> 52) & 0x7ffL);
+        m = (e == 0) ? (b & 0xfffffffffffffL) << 1 : (b & 0xfffffffffffffL) | 0x10000000000000L;
 
-        return s * m * (1 << (e - 1075));
+        return s * m * pow(2, e - 1075);
     }
 }
