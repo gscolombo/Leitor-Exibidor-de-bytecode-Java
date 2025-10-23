@@ -1,5 +1,9 @@
 #include "reader.h"
 
+/** @file
+ * @brief Definições de funções relacionadas a leitura de arquivos `.class`.
+ */
+
 u1 read_u1(FILE *fptr)
 {
     u1 u;
