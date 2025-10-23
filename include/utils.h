@@ -56,6 +56,10 @@ unsigned int u4swap(unsigned int);
 /**
  * @brief Retorna o número de dígitos de um inteiro não negativo.
  *
+ * Essa função conta a quantidade de vezes que um inteiro não negativo pode ser dividido
+ * por 10 com o valor resultante maior ou igual a 10. \n
+ * A contagem final corresponde ao número de dígitos do inteiro.
+ * 
  * @param n Um inteiro não negativo.
  * @return O número de dígitos de `n`.
  */
@@ -65,7 +69,14 @@ unsigned int num_digits(unsigned int);
  * @brief Aplica um mapeamento de flags para o nome correspondente e concatena
  * cada nome em uma string, com um separador opcional.
  * 
- * @param flags String de 2 bytes ou 16 bits com "1" representando a ativação de uma flag.
+ * A partir de um dado mapeamento entre _flags_ e o nome correspondente, essa função
+ * concatena os nomes das _flags_ em uma única _string_, separadas por uma dada _string_. \n
+ * Assume-se que o mapeamento corresponda a uma função bijetora. Logo, a função é baseada em
+ * uma única travessia do mapa de _flags_, verificando a presença de cada _flag_ nas
+ * _flags_ passadas para a função. Caso esteja presente, o nome da _flag_ é inserido
+ * na _string_ retornada.
+ * 
+ * @param flags String de 2 bytes ou 16 bits com "1" representando a presença de uma flag.
  * @param n Número de nomes distintos de flags.
  * @param sep
  * @parblock
@@ -81,6 +92,9 @@ char *parse_flags(u2, size_t, const char *, const FlagMap[]);
 /**
  * @brief Converte o nome de um atributo no seu respectivo valor enumerado.
  * 
+ * Essa função retorna um valor enumerado (`attribute_name`) a partir do nome de um atributo, como
+ * definido pela especificação da JVM 8.
+ * 
  * @param name Nome do atributo.
  * @return Valor enumerado correspondente ao nome do atributo.
  */
@@ -89,6 +103,10 @@ const attribute_name *convert_attr_name(const char *);
 /**
  * @brief Converte um descritor na sua versão intelígivel (original),
  * de acordo com a especificação da JVM 8.
+ * 
+ * Essa função avalia um descritor com base na especificação da JVM 8 e monta uma _string_
+ * com a versão intelígivel/original do descritor. \n
+ * Um separador pode ser passado para ser inserido entre cada _token_ do descritor.
  * 
  * @param descriptor String do descritor de membro (campo ou método).
  * @param sep String a ser utilizada como separador entre cada símbolo do descritor.

@@ -20,9 +20,7 @@ unsigned int num_digits(unsigned int n)
 
     int r = 2;
     while ((n /= 10) > 9)
-    {
         ++r;
-    }
 
     return r;
 }
