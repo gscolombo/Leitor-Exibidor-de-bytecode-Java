@@ -14,8 +14,18 @@
 /**
  * @brief Troca os dois bytes de um inteiro de 16 bits.
  *
- * Esta função recebe um inteiro de 16 bits e troca seus bytes inferior e superior.
- * Por exemplo, se a entrada for 0x1234, a saída será 0x3412.
+ * Esta função recebe um inteiro de 16 bits e troca seus _bytes_ inferior e superior.
+ * 
+ * A implementação se baseia em operações _bitwise_. Especificamente, os operadores `<<` e `>>` são 
+ * usados para mover os pares de dígitos hexadecimais para as posições desejadas. O operador `|` é 
+ * utilizado para "concatenar" os pares em um único número. \n
+ * Por exemplo: \n
+ * ```python
+ *  n = 0x1234
+ *  a = (n << 8) = (0x1234 << 8) = 0x3400
+ *  b = (n >> 8) = (0x1234 >> 8) = 0x0012
+ *  a | b = 0x3400 | 0x0012 = 0x3412
+ * ```
  *
  * @param n O inteiro de 16 bits para trocar os bytes.
  * @return O inteiro de 16 bits com os bytes trocados.
@@ -26,8 +36,18 @@ unsigned int u2swap(unsigned int);
  * @brief Inverte a ordem dos bytes de um inteiro de 32 bits.
  *
  * Esta função reverte a ordem dos bytes em um inteiro de 32 bits.
- * Por exemplo, dado uma entrada de 0x12345678, a saída será 0x78563412.
- *
+ * A implementação se baseia em operações _bitwise_. Especificamente, os operadores `<<` e `>>` são 
+ * usados em conjunto com o operador `&` para mover os pares de dígitos hexadecimais para as posições desejadas. 
+ * O operador `|` é utilizado para "concatenar" os pares em um único número. \n
+ * Por exemplo: \n
+ * ```python
+ *  n = 0x12345678
+ *  a = n >> 24 = 0x00000012
+ *  b = (n >> 8) & 0xff00 = 0x00123456 & 0x0000ff00 = 0x00003400
+ *  c = (n << 8) & 0xff0000 = 0x34567800 & 0x00ff0000 = 0x00560000
+ *  a = n << 24 = 0x78000000
+ *  a | b | c | d = 0x00000012 | 0x00003400 | 0x00560000 | 0x78000000 = 0x78563412
+ * ```
  * @param n O inteiro de 32 bits para inverter.
  * @return O inteiro de 32 bits com os bytes invertidos.
  */
