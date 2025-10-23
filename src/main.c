@@ -1,6 +1,7 @@
 #include "utils.h"
 #include "reader.h"
 #include "writer.h"
+#include "free.h"
 
 int main(const int argc, char *argv[]) {
     if (argc < 2) {
