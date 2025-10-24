@@ -42,6 +42,11 @@ char* decode_modified_utf8_str(u2, const u1*);
 /**
  * @brief Decodifica uma sequência de bytes correspondente a um valor do tipo float.
  * 
+ * Essa é uma implementação direta da especificação da JVM 8 para 
+ * decoficação de valores `float` a partir da sequência de _bytes_ correspondente.\n
+ * Nesse caso, a função pode retornar tanto um valor representando ± infinito, o valor `NaN`
+ * ou um número real de precisão simples.
+ * 
  * @param b Array de bytes.
  * 
  * @return `float` correspondente à sequência de bytes.
@@ -51,6 +56,9 @@ float decode_float_bytes(u4);
 /**
  * @brief Decodifica uma sequência de bytes correspondente a um valor do tipo long.
  * 
+ * Essa é uma implementação direta da especificação da JVM 8 para 
+ * decoficação de valores `long` a partir da sequência de _bytes_ correspondente.
+ * 
  * @param b Array de bytes.
  * 
  * @return `long` correspondente à sequência de bytes.
@@ -59,6 +67,11 @@ long decode_long_bytes(u4, u4);
 
 /**
  * @brief Decodifica uma sequência de bytes correspondente a um valor do tipo double.
+ * 
+ * Essa é uma implementação direta da especificação da JVM 8 para 
+ * decoficação de valores `double` a partir da sequência de _bytes_ correspondente.\n
+ * Nesse caso, a função pode retornar tanto um valor representando ± infinito, o valor `NaN`
+ * ou um número real de precisão dupla.
  * 
  * @param b Array de bytes.
  * 

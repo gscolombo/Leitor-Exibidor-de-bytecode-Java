@@ -52,13 +52,13 @@ void show_constants(u2 count, cp_info *_cp)
             printf("%s#%u = Integer\t\t\t%i\n", pad, i, cp->info._4Bn.number.i);
             break;
         case CONSTANT_Float:
-            printf("%s#%u = Float\t\t\t%f\n", pad, i, cp->info._4Bn.number.f);
+            printf("%s#%u = Float\t\t\t%.1ff\n", pad, i, cp->info._4Bn.number.f);
             break;
         case CONSTANT_Long:
-            printf("%s#%u = Long\t\t\t%li\n", pad, i, cp->info._8Bn.number.l);
+            printf("%s#%u = Long\t\t\t%lil\n", pad, i, cp->info._8Bn.number.l);
             break;
         case CONSTANT_Double:
-            printf("%s#%u = Double\t\t\t%f\n", pad, i, cp->info._8Bn.number.d);
+            printf("%s#%u = Double\t\t\t%.1lfd\n", pad, i, cp->info._8Bn.number.d);
             break;
         case CONSTANT_NameAndType:
             // Índices das strings de nome e descritor

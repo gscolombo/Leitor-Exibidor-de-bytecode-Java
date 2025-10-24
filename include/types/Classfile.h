@@ -1,17 +1,16 @@
 #ifndef CLASSFILE_H_
 #define CLASSFILE_H_
 
-#include <stdlib.h>
-
 #include "uinteger.h"
 #include "member.h"
 #include "constants.h"
-#include "utils.h"
 
-/** @file */
+/** @file
+ * @brief Definição de estrutura Classfile para representação de um arquivo `.class`.
+ */
 
 /**
- * @brief Estrutura que representa um arquivo .class Java, conforme especificação JVM 8.
+ * @brief Estrutura que representa um arquivo .class, conforme especificação JVM 8.
  */
 typedef struct ClassFile
 {
@@ -49,19 +48,4 @@ typedef struct ClassFile
     attribute *attributes;
 } ClassFile;
 
-/**
- * @brief Libera a memória alocada para uma estrutura `ClassFile`.
- *
- * @param cf Ponteiro para uma estrutura `ClassFile`
- */
-void free_classfile(ClassFile *);
-
-/**
- * @brief Libera a memória alocada para uma estrutura `attribute`.
- *
- * @param cp Ponteiro para uma estrutura `cp_info` contendo o pool de constantes.
- * @param count Número de atributos.
- * @param attr Ponteiro para uma estrutura `attribute`.
- */
-void free_attributes(cp_info *, u2, attribute *);
 #endif

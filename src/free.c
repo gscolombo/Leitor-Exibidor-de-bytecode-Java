@@ -1,4 +1,8 @@
-#include "Classfile.h"
+#include "free.h"
+
+/** @file
+ * @brief Definição de funções para liberação de memória alocada.
+ */
 
 void free_classfile(ClassFile *cf)
 {

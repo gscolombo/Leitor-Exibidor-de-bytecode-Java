@@ -12,11 +12,16 @@
 #include "methods.h"
 #include "fields.h"
 
-/** @file */
+/** @file
+ *  @brief Declaração de função para exibição de informações do arquivo `.class`.
+ */
 
 /**
  * @brief Exibe as informações de um `ClassFile`.
  *
+ * Essa função exibe as informações de um arquivo `.class` em um formato
+ * similar à saída do comando `javap` com a _flag_ `-v`.
+ * 
  * @param cf Ponteiro para a estrutura `ClassFile` que será exibida.
  */
 void show_classfile(ClassFile *);
