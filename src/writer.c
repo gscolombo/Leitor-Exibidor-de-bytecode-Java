@@ -1,4 +1,8 @@
 #include "writer.h"
+#include <string.h>
+#include "types/cp/constants.h"
+#include "types/attributes/attribute_info.h"
+#include "types/attributes/attributes.h"
 
 /** @file
  * @brief Declaração de função para exibição de informações do arquivo `.class`.
@@ -21,6 +25,42 @@ static const FlagMap class_flag_kw_map[6] = {
     {0x0400, "abstract"},
     {0x2000, "@interface"},
     {0x4000, "enum"}};
+
+static u2 be_u2_from_bytes(const u1 *p) {
+    return (u2)((p[0] << 8) | p[1]); // big-endian
+}
+
+static void show_class_attributes(ClassFile *cf)
+{
+    if (cf->attributes_count == 0) return;
+
+    cp_info *cp = cf->constant_pool;
+
+    for (u2 i = 0; i < cf->attributes_count; ++i) {
+        const attribute *ai = &cf->attributes[i];
+
+        // resolve nome do atributo via CP (Utf8)
+        const char *attr_name = cp[ai->attribute_name_index - 1].info.UTF8.str;
+        if (!attr_name) {
+            printf("[<unknown-attribute>: length=%u]\n", ai->attribute_length);
+            continue;
+        }
+
+        if (strcmp(attr_name, "SourceFile") == 0) {
+            u2 sourcefile_index = ai->info.SourceFile.sourcefile_index; // já vem parseado
+            if (sourcefile_index > 0 && sourcefile_index <= cf->constant_pool_count) {
+                const char *fname = cf->constant_pool[sourcefile_index - 1].info.UTF8.str;
+                if (fname) printf(" [SourceFile: %s]\n", fname);
+                else       printf("[SourceFile: <invalid cp index #%u>]\n", sourcefile_index);
+            } else {
+                printf("[SourceFile: <invalid cp index #%u>]\n", sourcefile_index);
+            }
+        } else {
+            // fallback para atributos de classe ainda não implementados
+            printf("[%s: length=%u]\n", attr_name, ai->attribute_length);
+        }
+    }
+}
 
 void show_classfile(ClassFile *cf)
 {
@@ -60,8 +100,13 @@ void show_classfile(ClassFile *cf)
     if (cf->methods_count > 0)
     {
         show_methods(cf);
-        printf("}\n");
+        printf("\n");
     }
+
+    // imprime atributos de classe (ex.: SourceFile) antes da chave final
+    show_class_attributes(cf);
+
+    printf("}\n");
 
     free(class_access_flags);
     free(class_kws_flags);
