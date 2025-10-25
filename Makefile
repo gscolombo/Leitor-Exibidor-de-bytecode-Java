@@ -31,7 +31,7 @@ $(TARGET): $(OBJS)
 ifeq ($(DEBUG_MODE), true)
 	@$(CC) $(OBJS) -o $@ $(DEBUG_FLAGS) $(LDFLAGS)
 else
-	@$(CC) $(OBJS) -o $@
+	@$(CC) $(OBJS) -o $@ -lm
 endif
 
 # Compile each source file to an object file
