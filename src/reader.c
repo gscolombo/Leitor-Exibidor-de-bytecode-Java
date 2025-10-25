@@ -105,6 +105,9 @@ ClassFile read_classfile(FILE *fptr)
             read_member(cf.constant_pool, cf.methods_count, cf.methods, fptr);
 
         cf.attributes_count = read_u2(fptr);
+        cf.attributes = (attribute *)calloc(cf.attributes_count, sizeof(attribute));
+        if (cf.attributes != NULL)
+            read_attributes(cf.constant_pool, cf.attributes_count, fptr, cf.attributes);
     }
 
     printf("%lu bytes readed.\n\n", ftell(fptr));
@@ -190,6 +193,9 @@ void read_attributes(const cp_info *cp, u2 n, FILE *fptr, attribute *attr)
                         if (attr[i].info.Code.attributes != NULL)
                             read_attributes(cp, c, fptr, attr[i].info.Code.attributes);
                     }
+                    break;
+                case SourceFile:
+                    attr[i].info.SourceFile.sourcefile_index = read_u2(fptr);
                     break;
                 default:
                     fseek(fptr, attr[i].attribute_length, SEEK_CUR);
