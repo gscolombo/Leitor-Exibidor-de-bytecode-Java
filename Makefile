@@ -51,6 +51,7 @@ clean:
 rebuild: clean all
 
 # Debug target to see what's being included
+FILE= # Path to a .class file
 debug:
 	@echo "Include directories:"
 	@echo "  "$(INCLUDE_DIRS)
@@ -58,9 +59,8 @@ debug:
 	@echo "  "$(SRCS)
 	@echo "Object files:"
 	@echo "  "$(OBJS)"\n"
-	@make rebuild -e "DEBUG_MODE=true" -e "TARGET=cjavap_debug"
+	@make -e "DEBUG_MODE=true" -e "TARGET=cjavap_debug"
 	@echo "\n------------------------------------------------\n"
-	@cd .; ./cjavap_debug classfiles/Example/Main.class 
-	@rm cjavap_debug
+	@cd .; ./cjavap_debug $(FILE) || rm cjavap_debug
 
 .PHONY: all clean rebuild debug
