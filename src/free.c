@@ -9,11 +9,14 @@ void free_classfile(ClassFile *cf)
     cp_info *cp = cf->constant_pool;
 
     free(cf->interfaces);
-    free(cf->fields);
 
     for (size_t i = 0; i < cf->methods_count; i++)
         free_attributes(cp, cf->methods[i].attributes_count, cf->methods[i].attributes);
     free(cf->methods);
+
+    for (size_t i = 0; i < cf->fields_count; i++)
+        free_attributes(cp, cf->fields[i].attributes_count, cf->fields[i].attributes);
+    free(cf->fields);
 
     for (size_t i = 0; i < cf->attributes_count; i++)
         free_attributes(cp, cf->attributes_count, cf->attributes);
