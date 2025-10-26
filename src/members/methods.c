@@ -1,4 +1,8 @@
 #include "methods.h"
+#include <string.h>
+#include "types/cp/constants.h"
+#include "types/attributes/attribute_info.h"
+#include "types/attributes/attributes.h"
 
 static const FlagMap flag_map[12] = {
     {0x0001, "ACC_PUBLIC"},
@@ -24,6 +28,18 @@ static const FlagMap flag_kw_map[9] = {
     {0x0100, "native"},
     {0x0400, "abstract"},
     {0x0800, "strictfp"}};
+
+static const char* cp_class_name(const ClassFile *cf, u2 class_index) {
+    if (class_index < 1 || class_index > cf->constant_pool_count) return NULL;
+    const cp_info *cp = cf->constant_pool;
+    const cp_info *cls = &cp[class_index - 1];
+    if (cls->tag != CONSTANT_Class) return NULL;
+    u2 name_index = cls->info.Class.name_index;
+    if (name_index < 1 || name_index > cf->constant_pool_count) return NULL;
+    const cp_info *utf = &cp[name_index - 1];
+    if (utf->tag != CONSTANT_UTF8) return NULL;
+    return utf->info.UTF8.str; // formato internal (java/lang/Exception)
+}
 
 void show_methods(const ClassFile *cf)
 {
@@ -95,6 +111,59 @@ void show_methods(const ClassFile *cf)
 
             printf(" %s %s%s%s;\n    descriptor: %s\n    flags: (0x%04x) %s\n%c",
                    kws, ret_str ? ret_str : "", method_name, params_str, method_desc, access_flags, flags, nl);
+
+            // atributos do método
+            if (method.attributes_count > 0 && method.attributes != NULL) {
+                attribute *attrs = method.attributes;
+                cp_info *cp = cf->constant_pool;
+                u2 cp_count = cf->constant_pool_count;
+
+                for (u2 a = 0; a < method.attributes_count; ++a) {
+                    const attribute *ai = &attrs[a];
+
+                    // nome do atributo
+                    if (ai->attribute_name_index < 1 || ai->attribute_name_index > cp_count) {
+                        printf("  [<invalid-attribute-name-index #%u>: length=%u]\n",
+                            ai->attribute_name_index, ai->attribute_length);
+                        continue;
+                    }
+                    if (cp[ai->attribute_name_index - 1].tag != CONSTANT_UTF8) {
+                        printf("  [<non-utf8-attribute-name #%u>: length=%u]\n",
+                            ai->attribute_name_index, ai->attribute_length);
+                        continue;
+                    }
+                    const char *attr_name = cp[ai->attribute_name_index - 1].info.UTF8.str;
+                    if (!attr_name) {
+                        printf("  [<unknown-attribute>: length=%u]\n", ai->attribute_length);
+                        continue;
+                    }
+
+                    if (strcmp(attr_name, "Exceptions") == 0) {
+                        u2 n = ai->info.Exceptions.number_of_exceptions;
+                        u2 *tab = ai->info.Exceptions.exception_index_table;
+                        if (n == 0 || tab == NULL) {
+                            printf("  [Exceptions: none]\n");
+                        } else {
+                            printf("  [Exceptions:\n");
+                            for (u2 k = 0; k < n; ++k) {
+                                u2 exc_class_idx = tab[k];
+                                const char *exc_name = cp_class_name(cf, exc_class_idx);
+                                if (exc_name) {
+                                    // opcional: converter / para . ao imprimir
+                                    printf("    %s\n", exc_name);
+                                } else {
+                                    printf("    <invalid class index #%u>\n", exc_class_idx);
+                                }
+                            }
+                            printf("  ]\n");
+                        }
+                    } else {
+                        // por enquanto, mantenha fallback mínimo
+                        // (depois trataremos Signature, Deprecated/Synthetic, Code, etc.)
+                        // printf("  [%s: length=%u]\n", attr_name, ai->attribute_length);
+                    }
+                }
+            }
 
             free(flags), free(kws);
             free(params_desc), free(ret_desc);
