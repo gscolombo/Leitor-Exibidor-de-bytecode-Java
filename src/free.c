@@ -47,6 +47,8 @@ void free_attributes(cp_info *cp, u2 count, attribute *attr)
                     free(attr[i].info.Code.exception_table);
                     free_attributes(cp, attr[i].info.Code.attributes_count, attr[i].info.Code.attributes);
                     break;
+                case Exceptions:
+                    free(attr[i].info.Exceptions.exception_index_table);
                 default:
                     break;
                 }
