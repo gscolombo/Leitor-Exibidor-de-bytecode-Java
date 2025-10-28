@@ -32,7 +32,7 @@
  * @param n O inteiro de 16 bits para trocar os bytes.
  * @return O inteiro de 16 bits com os bytes trocados.
  */
-unsigned int u2swap(unsigned int);
+u2 u2swap(u2 n);
 
 /**
  * @brief Inverte a ordem dos bytes de um inteiro de 32 bits.
@@ -53,7 +53,7 @@ unsigned int u2swap(unsigned int);
  * @param n O inteiro de 32 bits para inverter.
  * @return O inteiro de 32 bits com os bytes invertidos.
  */
-unsigned int u4swap(unsigned int);
+u4 u4swap(u4 n);
 
 /**
  * @brief Retorna o número de dígitos de um inteiro não negativo.
