@@ -155,17 +155,17 @@ typedef struct cp_info
     /// Os valores válidos são definidos pelas macros CONSTANT_* documentadas acima.
     ///
     /// **Valores possíveis:**
-    /// - 7  → @ref CONSTANT_Class (Referência a classe/interface)
-    /// - 9  → @ref CONSTANT_Fieldref (Referência a campo)
-    /// - 10 → @ref CONSTANT_Methodref (Referência a método de classe)
-    /// - 11 → @ref CONSTANT_InterfaceMethodref (Referência a método de interface)
-    /// - 8  → @ref CONSTANT_String (Referência a string)
+    /// - 1  → @ref CONSTANT_UTF8 (String UTF-8)
     /// - 3  → @ref CONSTANT_Integer (Valor inteiro)
     /// - 4  → @ref CONSTANT_Float (Valor float)
     /// - 5  → @ref CONSTANT_Long (Valor long)
     /// - 6  → @ref CONSTANT_Double (Valor double)
+    /// - 7  → @ref CONSTANT_Class (Referência a classe/interface)
+    /// - 8  → @ref CONSTANT_String (Referência a string)
+    /// - 9  → @ref CONSTANT_Fieldref (Referência a campo)
+    /// - 10 → @ref CONSTANT_Methodref (Referência a método de classe)
+    /// - 11 → @ref CONSTANT_InterfaceMethodref (Referência a método de interface)
     /// - 12 → @ref CONSTANT_NameAndType (Descritor nome e tipo)
-    /// - 1  → @ref CONSTANT_UTF8 (String UTF-8)
     /// - 15 → @ref CONSTANT_MethodHandle (Manipulador de método)
     /// - 16 → @ref CONSTANT_MethodType (Tipo de método)
     /// - 18 → @ref CONSTANT_InvokeDynamic
