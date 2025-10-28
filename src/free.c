@@ -1,4 +1,5 @@
 #include "free.h"
+#include <stdio.h>
 
 /** @file
  * @brief Definição de funções para liberação de memória alocada.
@@ -18,8 +19,7 @@ void free_classfile(ClassFile *cf)
         free_attributes(cp, cf->fields[i].attributes_count, cf->fields[i].attributes);
     free(cf->fields);
 
-    for (size_t i = 0; i < cf->attributes_count; i++)
-        free_attributes(cp, cf->attributes_count, cf->attributes);
+    free_attributes(cp, cf->attributes_count, cf->attributes);
 
     for (size_t i = 1; i < (size_t)cf->constant_pool_count - 1; i++)
     {
@@ -36,7 +36,7 @@ void free_classfile(ClassFile *cf)
 void free_attributes(cp_info *cp, u2 count, attribute *attr)
 {
     if (count > 0)
-        for (size_t i = 0; i < count; i++)
+        for (u2 i = 0; i < count; i++)
         {
             const attribute_name *attr_name = convert_attr_name(cp[attr[i].attribute_name_index - 1].info.UTF8.str);
             if (attr_name != NULL)
@@ -49,6 +49,10 @@ void free_attributes(cp_info *cp, u2 count, attribute *attr)
                     break;
                 case Exceptions:
                     free(attr[i].info.Exceptions.exception_index_table);
+                    break;
+                case InnerClasses:
+                    free(attr[i].info.InnerClasses.classes);
+                    break;
                 default:
                     break;
                 }
