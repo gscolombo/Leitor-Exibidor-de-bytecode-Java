@@ -24,31 +24,10 @@ static const FlagMap flag_kw_map[7] = {
     {0x0040, "volatile"},
     {0x0080, "transient"}};
 
-// Converte (high, low) -> double sem UB
-static double u8_to_double(u4 high, u4 low) {
-    uint64_t bits = ((uint64_t)high << 32) | (uint64_t)low;
-    double d;
-    memcpy(&d, &bits, sizeof(double));
-    return d;
-}
-
-// Converte (high, low) -> int64_t sem UB (javap imprime long como signed)
-static int64_t u8_to_int64(u4 high, u4 low) {
-    uint64_t u = ((uint64_t)high << 32) | (uint64_t)low;
-    int64_t s;
-    memcpy(&s, &u, sizeof(s));
-    return s;
-}
-
-// Converte u4 -> float sem UB
-static float u4_to_float(u4 x) {
-    float f;
-    memcpy(&f, &x, sizeof(float));
-    return f;
-}
-
-static void print_constant_value(const ClassFile *cf, u2 constant_index) {
-    if (constant_index == 0 || constant_index > cf->constant_pool_count) {
+static void print_constant_value(const ClassFile *cf, u2 constant_index)
+{
+    if (constant_index == 0 || constant_index > cf->constant_pool_count)
+    {
         printf("  [ConstantValue: <invalid cp index #%u>]\n", constant_index);
         return;
     }
@@ -56,44 +35,48 @@ static void print_constant_value(const ClassFile *cf, u2 constant_index) {
     cp_info *cp = cf->constant_pool;
     cp_info *entry = &cp[constant_index - 1];
 
-    switch (entry->tag) {
-        case CONSTANT_Integer: {
-            // no seu constants.h: info._4Bn.bytes e info._4Bn.number.i
-            int32_t v;
-            memcpy(&v, &entry->info._4Bn.bytes, sizeof(v));
-            printf("  [ConstantValue: %d]\n", v);
-            break;
+    switch (entry->tag)
+    {
+    case CONSTANT_Integer:
+    {
+        // no seu constants.h: info._4Bn.bytes e info._4Bn.number.i
+        printf("    ConstantValue: int %i\n", entry->info._4Bn.number.i);
+        break;
+    }
+    case CONSTANT_Float:
+    {
+        printf("    ConstantValue: float %gf\n", entry->info._4Bn.number.f);
+        break;
+    }
+    case CONSTANT_Long:
+    {
+        printf("    ConstantValue: long %lil\n", entry->info._8Bn.number.l);
+        break;
+    }
+    case CONSTANT_Double:
+    {
+        printf("    ConstantValue: double %gd\n", entry->info._8Bn.number.d);
+        break;
+    }
+    case CONSTANT_String:
+    {
+        u2 utf8_index = entry->info.String.string_index;
+        if (utf8_index >= 1 && utf8_index <= cf->constant_pool_count &&
+            cp[utf8_index - 1].tag == CONSTANT_UTF8)
+        {
+            const char *s = cp[utf8_index - 1].info.UTF8.str;
+            printf("   ConstantValue: String \"%s\"\n", s ? s : "<invalid utf8>");
         }
-        case CONSTANT_Float: {
-            float f = u4_to_float(entry->info._4Bn.bytes);
-            printf("  [ConstantValue: %g]\n", f);
-            break;
+        else
+        {
+            printf("   ConstantValue: <invalid string index #%u>\n", utf8_index);
         }
-        case CONSTANT_Long: {
-            int64_t v = u8_to_int64(entry->info._8Bn.high_bytes, entry->info._8Bn.low_bytes);
-            printf("  [ConstantValue: %" PRId64 "]\n", v);
-            break;
-        }
-        case CONSTANT_Double: {
-            double d = u8_to_double(entry->info._8Bn.high_bytes, entry->info._8Bn.low_bytes);
-            printf("  [ConstantValue: %g]\n", d);
-            break;
-        }
-        case CONSTANT_String: {
-            u2 utf8_index = entry->info.String.string_index;
-            if (utf8_index >= 1 && utf8_index <= cf->constant_pool_count &&
-                cp[utf8_index - 1].tag == CONSTANT_UTF8) {
-                const char *s = cp[utf8_index - 1].info.UTF8.str;
-                printf("  [ConstantValue: \"%s\"]\n", s ? s : "<invalid utf8>");
-            } else {
-                printf("  [ConstantValue: <invalid string index #%u>]\n", utf8_index);
-            }
-            break;
-        }
-        default:
-            // pela especificação, ConstantValue deve apontar só para {Integer, Float, Long, Double, String}
-            printf("  [ConstantValue: <unsupported cp tag %u at #%u>]\n", entry->tag, constant_index);
-            break;
+        break;
+    }
+    default:
+        // pela especificação, ConstantValue deve apontar só para {Integer, Float, Long, Double, String}
+        printf("  ConstantValue: <unsupported cp tag %u at #%u>\n", entry->tag, constant_index);
+        break;
     }
 }
 
@@ -121,30 +104,40 @@ void show_fields(const ClassFile *cf)
             char *flags = parse_flags(access_flags, 9, ", ", flag_map);
             char *kws = parse_flags(access_flags, 7, " ", flag_kw_map);
 
-            printf(" %s %s%s;\n    descriptor: %s\n    flags: (0x%04x) %s\n%c",
+            printf(" %s %s%s;\n    descriptor: %s\n    flags: (0x%04x) %s\n",
                    kws, field_desc_str, field_name, field_desc,
-                   access_flags, flags, nl);
+                   access_flags, flags);
 
-            if (field.attributes_count > 0 && field.attributes != NULL) {
+            if (field.attributes_count > 0 && field.attributes != NULL)
+            {
                 attribute *attrs = field.attributes;
-                for (u2 a = 0; a < field.attributes_count; ++a) {
+                for (u2 a = 0; a < field.attributes_count; ++a)
+                {
                     const attribute *ai = &attrs[a];
                     const char *attr_name = cp[ai->attribute_name_index - 1].info.UTF8.str;
 
-                    if (!attr_name) {
+                    if (!attr_name)
+                    {
                         printf("  [<unknown-attribute>: length=%u]\n", ai->attribute_length);
                         continue;
                     }
 
-                    if (strcmp(attr_name, "ConstantValue") == 0) {
+                    const attribute_name *attr_type = convert_attr_name(attr_name);
+
+                    if (attr_type != NULL && *attr_type == ConstantValue)
+                    {
                         // já parseado no reader: ai->info.ConstantValue.constantvalue_index
                         print_constant_value(cf, ai->info.ConstantValue.constantvalue_index);
-                    } else {
+                    }
+                    else
+                    {
                         // por enquanto, só liste nome/length dos demais atributos de field
                         printf("  [%s: length=%u]\n", attr_name, ai->attribute_length);
                     }
                 }
             }
+
+            printf("%c", nl);
 
             free(flags);
             free(field_desc_str);
