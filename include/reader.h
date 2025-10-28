@@ -12,7 +12,9 @@
 #include "uinteger.h"
 #include "member.h"
 
-#define LE (__BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__ ? 1 : 0)
+#ifndef LE
+#define LE (__BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__)
+#endif
 
 /** @file
  * @brief Declarações de funções relacionadas a leitura de arquivos `.class`.
@@ -116,6 +118,9 @@ void read_member(const cp_info *, u2, member_info *, FILE *);
  * @param attr Ponteiro para uma _array_ de estruturas `attribute`.
  * @see attribute
  */
-void read_attributes(const cp_info *, u2, FILE *, attribute *);
+void read_member(const cp_info *, u2, u2, member_info *info, FILE *fptr);
+void read_attributes(const cp_info *, u2 constant_pool_count, u2, FILE *, attribute *);
 
+// Declare parse_constant_pool
+cp_info* parse_constant_pool(FILE *fptr, u2 constant_pool_count);
 #endif
