@@ -71,6 +71,14 @@ ClassFile read_classfile(FILE *fptr)
         fseek(fptr, 0, SEEK_SET);
 
         cf.magic = read_u4(fptr);
+
+        if (cf.magic != 0xCAFEBABE)
+        {
+            fprintf(stderr, "Erro: arquivo .class inválido (magic number = 0x%08X, esperado 0xCAFEBABE).\n", cf.magic);
+            fclose(fptr);
+            exit(EXIT_FAILURE);
+        }
+        
         cf.minor_version = read_u2(fptr);
         cf.major_version = read_u2(fptr);
         cf.constant_pool_count = read_u2(fptr);
