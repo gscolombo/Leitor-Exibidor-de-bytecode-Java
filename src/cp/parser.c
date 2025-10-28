@@ -24,16 +24,16 @@ cp_info *parse_constant_pool(FILE *fptr, u2 count)
             cp->info.String.string_index = read_u2(fptr);
             break;
         case CONSTANT_Integer:
-        case CONSTANT_Float:
+        case CONSTANT_Float:{
             u4 ibytes = read_u4(fptr);
             cp->info._4Bn.bytes = ibytes;
             if (cp->tag == CONSTANT_Integer)
                 cp->info._4Bn.number.i = ibytes;
             else
                 cp->info._4Bn.number.f = decode_float_bytes(ibytes);
-            break;
+            break;}
         case CONSTANT_Long:
-        case CONSTANT_Double:
+        case CONSTANT_Double:{
             u4 high_bytes = read_u4(fptr), low_bytes = read_u4(fptr);
             cp->info._8Bn.high_bytes = high_bytes;
             cp->info._8Bn.low_bytes = low_bytes;
@@ -44,12 +44,12 @@ cp_info *parse_constant_pool(FILE *fptr, u2 count)
                 cp->info._8Bn.number.d = decode_double_bytes(high_bytes, low_bytes);
 
             cp++; // Extra increment to account for the extra space for 8 byte constants in the pool table
-            break;
+            break;}
         case CONSTANT_NameAndType:
             cp->info.NameAndType.name_index = read_u2(fptr);
             cp->info.NameAndType.descriptor_index = read_u2(fptr);
             break;
-        case CONSTANT_UTF8:
+        case CONSTANT_UTF8:{
             u2 l = read_u2(fptr);
             cp->info.UTF8.length = l;
 
@@ -64,7 +64,7 @@ cp_info *parse_constant_pool(FILE *fptr, u2 count)
             b -= l;
             cp->info.UTF8.bytes = b;
             cp->info.UTF8.str = decode_modified_utf8_str(l, b);
-            break;
+            break;}
         case CONSTANT_MethodHandle:
             cp->info.MethodHandle.reference_kind = read_u1(fptr);
             cp->info.MethodHandle.reference_index = read_u2(fptr);

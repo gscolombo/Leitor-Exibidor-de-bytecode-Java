@@ -14,14 +14,14 @@ void show_constants(u2 count, cp_info *_cp)
         switch (cp->tag)
         {
         case CONSTANT_Class:
-            u2 cls_name_index = cp->info.Class.name_index;
+            {u2 cls_name_index = cp->info.Class.name_index;
             printf("%s#%u = Class\t\t\t#%u\t\t// %s\n",
                    pad, i, cls_name_index, _cp[cls_name_index - 1].info.UTF8.str);
-            break;
+            break;}
         case CONSTANT_Fieldref:
         case CONSTANT_Methodref:
         case CONSTANT_InterfaceMethodref:
-            char *ref;
+            {char *ref;
             if (cp->tag == CONSTANT_Fieldref)
                 ref = "Fieldref";
             else if (cp->tag == CONSTANT_Methodref)
@@ -43,11 +43,11 @@ void show_constants(u2 count, cp_info *_cp)
 
             printf("%s#%u = %s\t\t\t#%u.#%u\t\t// %s.%s:%s\n",
                    pad, i, ref, cls_index, name_and_type_index, cls, ref_name, ref_type);
-            break;
+            break;}
         case CONSTANT_String:
-            u2 str_index = cp->info.String.string_index;
+            {u2 str_index = cp->info.String.string_index;
             printf("%s#%u = String\t\t\t#%u\t\t// %s\n", pad, i, str_index, _cp[str_index - 1].info.UTF8.str);
-            break;
+            break;}
         case CONSTANT_Integer:
             printf("%s#%u = Integer\t\t\t%i\n", pad, i, cp->info._4Bn.number.i);
             break;
@@ -61,7 +61,7 @@ void show_constants(u2 count, cp_info *_cp)
             printf("%s#%u = Double\t\t\t%.1lfd\n", pad, i, cp->info._8Bn.number.d);
             break;
         case CONSTANT_NameAndType:
-            // Índices das strings de nome e descritor
+           { // Índices das strings de nome e descritor
             u2 name_index = cp->info.NameAndType.name_index;
             u2 desc_index = cp->info.NameAndType.descriptor_index;
 
@@ -73,7 +73,7 @@ void show_constants(u2 count, cp_info *_cp)
             name = !strcmp(name, (char *)"<init>") ? "\"<init>\"" : name;
 
             printf("%s#%u = NameAndType\t\t#%u.#%u\t\t// %s:%s\n", pad, i, name_index, desc_index, name, desc);
-            break;
+            break;}
         case CONSTANT_UTF8:
             printf("%s#%u = UTF-8\t\t\t%s\n", pad, i, cp->info.UTF8.str);
             break;
