@@ -3,6 +3,7 @@
 #include "types/cp/constants.h"
 #include "types/attributes/attribute_info.h"
 #include "types/attributes/attributes.h"
+#include "opcodes.h"
 
 static const FlagMap flag_map[12] = {
     {0x0001, "ACC_PUBLIC"},
@@ -47,9 +48,9 @@ void show_methods(const ClassFile *cf)
         return;
 
     cp_info *cp = cf->constant_pool;
-
     u2 count = cf->methods_count;
     char nl;
+
     if (count > 0 && cf->methods != NULL)
         for (size_t i = 0; i < count; i++)
         {
@@ -65,20 +66,17 @@ void show_methods(const ClassFile *cf)
             if (is_init)
             {
                 char *classname = cp[cp[cf->this_class - 1].info.Class.name_index - 1].info.UTF8.str;
-
                 for (char *wcptr = classname; wcptr < classname + strlen(classname) - 1; wcptr++)
                     if (*wcptr == L'/')
                     {
                         *wcptr = L'.';
                         break;
                     }
-
                 method_name = classname;
             }
 
             // Get parameters descriptor length
             char *params_end = strchr(method_desc, L')') + 1;
-
             size_t params_desc_len = params_end - method_desc;
             size_t ret_desc_len = strlen(params_end);
 
@@ -148,19 +146,29 @@ void show_methods(const ClassFile *cf)
                             for (u2 k = 0; k < n; ++k) {
                                 u2 exc_class_idx = tab[k];
                                 const char *exc_name = cp_class_name(cf, exc_class_idx);
-                                if (exc_name) {
-                                    // opcional: converter / para . ao imprimir
+                                if (exc_name)
                                     printf("    %s\n", exc_name);
-                                } else {
+                                else
                                     printf("    <invalid class index #%u>\n", exc_class_idx);
-                                }
                             }
                             printf("  ]\n");
                         }
-                    } else {
-                        // por enquanto, mantenha fallback mínimo
-                        // (depois trataremos Signature, Deprecated/Synthetic, Code, etc.)
-                        // printf("  [%s: length=%u]\n", attr_name, ai->attribute_length);
+                    }
+                    
+                    else if (strcmp(attr_name, "Code") == 0) {
+                        printf("  [Code:\n");
+                        printf("    max_stack: %u, max_locals: %u, code_length: %u\n",
+                            ai->info.Code.max_stack,
+                            ai->info.Code.max_locals,
+                            ai->info.Code.code_length);
+
+                        show_opcodes(ai->info.Code.code, ai->info.Code.code_length);
+
+                        printf("  ]\n");
+                    }
+
+                    else {
+                        printf("  [%s: length=%u]\n", attr_name, ai->attribute_length);
                     }
                 }
             }
