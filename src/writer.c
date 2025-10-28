@@ -26,39 +26,67 @@ static const FlagMap class_flag_kw_map[6] = {
     {0x2000, "@interface"},
     {0x4000, "enum"}};
 
-static u2 be_u2_from_bytes(const u1 *p) {
-    return (u2)((p[0] << 8) | p[1]); // big-endian
-}
-
 static void show_class_attributes(ClassFile *cf)
 {
-    if (cf->attributes_count == 0) return;
+    if (cf->attributes_count == 0)
+        return;
 
     cp_info *cp = cf->constant_pool;
 
-    for (u2 i = 0; i < cf->attributes_count; ++i) {
+    for (u2 i = 0; i < cf->attributes_count; ++i)
+    {
         const attribute *ai = &cf->attributes[i];
 
         // resolve nome do atributo via CP (Utf8)
         const char *attr_name = cp[ai->attribute_name_index - 1].info.UTF8.str;
-        if (!attr_name) {
+        if (!attr_name)
+        {
             printf("[<unknown-attribute>: length=%u]\n", ai->attribute_length);
             continue;
         }
 
-        if (strcmp(attr_name, "SourceFile") == 0) {
-            u2 sourcefile_index = ai->info.SourceFile.sourcefile_index; // já vem parseado
-            if (sourcefile_index > 0 && sourcefile_index <= cf->constant_pool_count) {
-                const char *fname = cf->constant_pool[sourcefile_index - 1].info.UTF8.str;
-                if (fname) printf(" [SourceFile: %s]\n", fname);
-                else       printf("[SourceFile: <invalid cp index #%u>]\n", sourcefile_index);
-            } else {
-                printf("[SourceFile: <invalid cp index #%u>]\n", sourcefile_index);
+        const attribute_name *attr_enum = convert_attr_name(attr_name);
+
+        if (attr_enum)
+            switch (*attr_enum)
+            {
+            case SourceFile:
+                u2 sourcefile_index = ai->info.SourceFile.sourcefile_index; // já vem parseado
+                if (sourcefile_index > 0 && sourcefile_index <= cf->constant_pool_count)
+                {
+                    const char *fname = cf->constant_pool[sourcefile_index - 1].info.UTF8.str;
+                    if (fname)
+                        printf("SourceFile: \"%s\"\n", fname);
+                    else
+                        printf("SourceFile: <invalid cp index #%u>\n", sourcefile_index);
+                }
+                else
+                {
+                    printf("SourceFile: <invalid cp index #%u>\n", sourcefile_index);
+                }
+                break;
+            case InnerClasses:
+                u2 n = ai->info.InnerClasses.number_of_classes;
+                if (n > 0)
+                {
+                    printf("InnerClasses:\n");
+                    for (u2 i = 0; i < n; i++)
+                    {
+                        struct classes class = ai->info.InnerClasses.classes[i];
+                        const char *inner_class_name = cp[class.inner_name_index - 1].info.UTF8.str;
+                        const char *inner_class_full_name = cp[cp[class.inner_class_info_index - 1].info.Class.name_index - 1].info.UTF8.str;
+                        const char *outer_class_name = cp[cp[class.outer_class_info_index - 1].info.Class.name_index - 1].info.UTF8.str;
+
+                        printf("  #%u= #%u of #%u;\t\t\t\t  // %s=class %s of class %s\n",
+                               class.inner_name_index, class.inner_class_info_index, class.outer_class_info_index,
+                               inner_class_name, inner_class_full_name, outer_class_name);
+                    }
+                }
+                break;
+            default:
+                printf("[%s: length=%u]\n", attr_name, ai->attribute_length);
+                break;
             }
-        } else {
-            // fallback para atributos de classe ainda não implementados
-            printf("[%s: length=%u]\n", attr_name, ai->attribute_length);
-        }
     }
 }
 
@@ -103,10 +131,8 @@ void show_classfile(ClassFile *cf)
         printf("\n");
     }
 
-    // imprime atributos de classe (ex.: SourceFile) antes da chave final
-    show_class_attributes(cf);
-
     printf("}\n");
+    show_class_attributes(cf);
 
     free(class_access_flags);
     free(class_kws_flags);

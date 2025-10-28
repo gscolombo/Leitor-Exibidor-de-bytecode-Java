@@ -197,7 +197,8 @@ void read_attributes(const cp_info *cp, u2 n, FILE *fptr, attribute *attr)
                 case SourceFile:
                     attr[i].info.SourceFile.sourcefile_index = read_u2(fptr);
                     break;
-                case Exceptions: {
+                case Exceptions:
+                {
                     // Estrutura:
                     // u2 number_of_exceptions;
                     // u2 exception_index_table[number_of_exceptions];
@@ -205,22 +206,49 @@ void read_attributes(const cp_info *cp, u2 n, FILE *fptr, attribute *attr)
                     u2 n = read_u2(fptr);
                     attr[i].info.Exceptions.number_of_exceptions = n;
 
-                    if (n > 0) {
+                    if (n > 0)
+                    {
                         attr[i].info.Exceptions.exception_index_table = (u2 *)calloc(n, sizeof(u2));
-                        if (attr[i].info.Exceptions.exception_index_table != NULL) {
-                            for (u2 k = 0; k < n; ++k) {
+                        if (attr[i].info.Exceptions.exception_index_table != NULL)
+                        {
+                            for (u2 k = 0; k < n; ++k)
+                            {
                                 attr[i].info.Exceptions.exception_index_table[k] = read_u2(fptr);
                             }
-                        } else {
-                            // Falha de alocação: avance o arquivo para não desalinhar
-                            for (u2 k = 0; k < n; ++k) (void)read_u2(fptr);
                         }
-                    } else {
+                        else
+                        {
+                            // Falha de alocação: avance o arquivo para não desalinhar
+                            for (u2 k = 0; k < n; ++k)
+                                (void)read_u2(fptr);
+                        }
+                    }
+                    else
+                    {
                         attr[i].info.Exceptions.exception_index_table = NULL;
                     }
                     break;
                 }
-                
+                case InnerClasses:
+                    u2 n = read_u2(fptr);
+
+                    attr[i].info.InnerClasses.number_of_classes = n;
+                    if (n > 0)
+                    {
+                        attr[i].info.InnerClasses.classes = (struct classes *)calloc(n, sizeof(struct classes));
+                        if (attr[i].info.InnerClasses.classes != NULL)
+                            for (size_t j = 0; j < n; j++)
+                            {
+                                attr[i].info.InnerClasses.classes[j].inner_class_info_index = read_u2(fptr);
+                                attr[i].info.InnerClasses.classes[j].outer_class_info_index = read_u2(fptr);
+                                attr[i].info.InnerClasses.classes[j].inner_name_index = read_u2(fptr);
+                                attr[i].info.InnerClasses.classes[j].inner_class_access_flags = read_u2(fptr);
+                            }
+                        else {
+                            fseek(fptr, n*sizeof(struct classes), SEEK_CUR);
+                        }
+                    }
+                    break;
                 default:
                     fseek(fptr, attr[i].attribute_length, SEEK_CUR);
                     break;
