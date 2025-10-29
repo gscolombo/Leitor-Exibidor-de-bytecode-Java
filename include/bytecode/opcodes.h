@@ -1,0 +1,21 @@
+#ifndef OPCODES_H
+#define OPCODES_H
+
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+#include "uinteger.h"
+
+typedef struct
+{
+    u1 opcode;
+    const char *name;
+    int category;
+} OpcodeInfo;
+
+const OpcodeInfo *get_opcode_info(u1 opcode);
+
+void show_opcodes(const u1 *code, u4 length);
+
+#endif

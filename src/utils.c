@@ -149,11 +149,13 @@ char *parse_descriptor(const char *descriptor, char *sep)
                     strcat(buf, ")");
                     break;
                 case L'L':
-                    {char *buf_it = buf + strlen(buf);
+                {
+                    char *buf_it = buf + strlen(buf);
                     while (*(++desc) != L';')
                         *(buf_it++) = *desc == L'/' ? L'.' : *desc;
                     *buf_it = L'\0';
-                    break;}
+                    break;
+                }
                 default:
                     for (size_t i = 0; i < sizeof(base_type_map) / sizeof(base_type_map[0]); i++)
                         if (*desc == base_type_map[i].base_type)
