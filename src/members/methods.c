@@ -107,8 +107,8 @@ void show_methods(const ClassFile *cf)
             char *flags = parse_flags(access_flags, 12, ", ", flag_map);
             char *kws = parse_flags(access_flags, 9, " ", flag_kw_map);
 
-            printf(" %s %s%s%s;\n    descriptor: %s\n    flags: (0x%04x) %s\n%c",
-                   kws, ret_str ? ret_str : "", method_name, params_str, method_desc, access_flags, flags, nl);
+            printf(" %s %s%s%s;\n    descriptor: %s\n    flags: (0x%04x) %s\n",
+                   kws, ret_str ? ret_str : "", method_name, params_str, method_desc, access_flags, flags);
 
             // atributos do método
             if (method.attributes_count > 0 && method.attributes != NULL) {
@@ -156,15 +156,13 @@ void show_methods(const ClassFile *cf)
                     }
                     
                     else if (strcmp(attr_name, "Code") == 0) {
-                        printf("  [Code:\n");
-                        printf("    max_stack: %u, max_locals: %u, code_length: %u\n",
+                        printf("    Code:\n");
+                        printf("      max_stack: %u, max_locals: %u, code_length: %u\n",
                             ai->info.Code.max_stack,
                             ai->info.Code.max_locals,
                             ai->info.Code.code_length);
 
                         show_opcodes(ai->info.Code.code, ai->info.Code.code_length);
-
-                        printf("  ]\n");
                     }
 
                     else {
@@ -172,6 +170,8 @@ void show_methods(const ClassFile *cf)
                     }
                 }
             }
+
+            printf("%c", nl);
 
             free(flags), free(kws);
             free(params_desc), free(ret_desc);
