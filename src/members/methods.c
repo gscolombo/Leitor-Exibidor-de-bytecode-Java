@@ -3,7 +3,7 @@
 #include "types/cp/constants.h"
 #include "types/attributes/attribute_info.h"
 #include "types/attributes/attributes.h"
-#include "opcodes.h"
+#include "bytecode/printer.h"
 
 static const FlagMap flag_map[12] = {
     {0x0001, "ACC_PUBLIC"},
