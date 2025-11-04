@@ -5,9 +5,10 @@
 #include <stdio.h>
 #include <stddef.h>
 
-#include "bytecode/opcodes.h"
+#include "uinteger.h"
+#include "cp/writer.h"
+#include "opcode_table.h"
 
-
-void show_opcodes(const u1 *code, u4 length);
+void show_opcodes(const u1 *, u4, const cp_info *);
 
 #endif

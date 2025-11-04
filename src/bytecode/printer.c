@@ -1,12 +1,13 @@
 #include "bytecode/printer.h"
 
-void show_opcodes(const u1 *code, u4 length)
+void show_opcodes(const u1 *code, u4 length, const cp_info *cp)
 {
     u4 i = 0;
     while (i < length)
     {
         // Ignore reserved opcodes
-        if (code[i] > 0xC9) {
+        if (code[i] > 0xC9)
+        {
             i++;
             continue;
         }
@@ -34,24 +35,51 @@ void show_opcodes(const u1 *code, u4 length)
 
         case 0x12: // ldc, 1 byte índice
             if (i + 1 < length)
-                printf(" #%u", code[i + 1]);
+            {
+                char *constant_value = get_constant_UTF8_value(code[i + 1], cp);
+                printf(" #%u <%s>", code[i + 1], constant_value);
+                free(constant_value);
+            }
             i += 2;
             break;
 
         case 0x13: // ldc_w, 2 bytes índice
         case 0x14: // ldc2_w, 2 bytes índice
+        case 0xB2: // getstatic
+        case 0xB3: // putstatic
+        case 0xB4: // getfield
+        case 0xB5: // putfield
+        case 0xB6: // invokevirtual
+        case 0xB7: // invokespecial
+        case 0xB8: // invokestatic
+        case 0xBB: // new
+        case 0xBD: // anewarray
             if (i + 2 < length)
             {
                 u2 idx = (code[i + 1] << 8) | code[i + 2];
-                printf(" #%u", idx);
+                char *constant_value = get_constant_UTF8_value(idx, cp);
+                printf(" #%u <%s>", idx, constant_value);
+                free(constant_value);
             }
             i += 3;
+            break;
+
+        case 0xC5: // multianewarray
+            if (i + 3 < length)
+            {
+                u2 idx = (code[i + 1] << 8) | code[i + 2];
+                char *constant_value = get_constant_UTF8_value(idx, cp);
+                u1 dim = code[i + 3];
+                printf(" #%u <%s> dim %u", idx, constant_value, dim);
+                free(constant_value);
+            }
+            i += 4;
             break;
 
         case 0x84: // iinc, 1 byte imediato não-negativo, 1 byte imediato
             if (i + 2 < length)
             {
-                printf(" %u, %i", (u1)code[i + 1], (uint8_t)code[i + 2]);
+                printf(" %u by %i", (u1)code[i + 1], (uint8_t)code[i + 2]);
             }
             i += 3;
             break;
@@ -74,52 +102,42 @@ void show_opcodes(const u1 *code, u4 length)
         case 0xC6: // ifnull
         case 0xC7: // ifnonnull
             if (i + 2 < length)
-                printf(" %i", (int16_t)((code[i + 1] << 8) | code[i + 2]) + i); // branch address
-            i += 3;
-            break;
-
-        case 0xB2: // getstatic
-        case 0xB3: // putstatic
-        case 0xB4: // getfield
-        case 0xB5: // putfield
-        case 0xB6: // invokevirtual
-        case 0xB7: // invokespecial
-        case 0xB8: // invokestatic
-        case 0xBB: // new
-        case 0xBD: // anewarray
-            if (i + 2 < length)
             {
-                u2 idx = (code[i + 1] << 8) | code[i + 2];
-                printf(" #%u", idx);
+                int16_t offset = (code[i + 1] << 8) | code[i + 2];
+                printf(" %u (%c%i)", offset + i, offset > 0 ? '+' : '\0', offset); // branch address
+                i += 3;
             }
-            i += 3;
             break;
 
         case 0xBC: // newarray, 1 byte imediato
             if (i + 1 < length)
             {
+                printf(" %u", code[i + 1]);
                 switch (code[i + 1])
                 {
                 case 4:
-                    printf(" boolean");
+                    printf(" (boolean)");
                     break;
                 case 5:
-                    printf(" char");
+                    printf(" (char)");
                     break;
                 case 6:
-                    printf(" float");
+                    printf(" (float)");
                     break;
                 case 7:
-                    printf(" byte");
+                    printf(" (double)");
                     break;
                 case 8:
-                    printf(" short");
+                    printf(" (byte)");
                     break;
                 case 9:
-                    printf(" int");
+                    printf(" (short)");
                     break;
                 case 10:
-                    printf(" long");
+                    printf(" (int)");
+                    break;
+                case 11:
+                    printf(" (long)");
                     break;
                 default:
                     printf(" unknown type");

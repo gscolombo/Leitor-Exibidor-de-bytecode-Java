@@ -162,7 +162,7 @@ void show_methods(const ClassFile *cf)
                             ai->info.Code.max_locals,
                             ai->info.Code.code_length);
 
-                        show_opcodes(ai->info.Code.code, ai->info.Code.code_length);
+                        show_opcodes(ai->info.Code.code, ai->info.Code.code_length, cp);
                     }
 
                     else {
