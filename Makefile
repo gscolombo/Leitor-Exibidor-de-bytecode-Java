@@ -4,7 +4,7 @@ DEBUG_MODE = false
 
 # Find all subdirectories in include (including nested ones)
 INCLUDE_DIRS = $(shell find include -type d)
-CFLAGS = $(addprefix -I,$(INCLUDE_DIRS)) -Wall -Wextra
+CFLAGS = $(addprefix -I,$(INCLUDE_DIRS)) -std=c99 -Wall -Wextra
 DEBUG_FLAGS = -fsanitize=address -g
 LDFLAGS = -static-libasan
 
