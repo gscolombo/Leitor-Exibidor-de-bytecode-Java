@@ -1,5 +1,10 @@
 #include "bytecode/printer.h"
 
+inline static int32_t get_tableswitch_32B_values(u4 i, const u1 *code)
+{
+    return (code[i] << 24) | (code[i + 1] << 16) | (code[i + 2] << 8) | code[i + 3];
+}
+
 void show_opcodes(const u1 *code, u4 length, const cp_info *cp)
 {
     u4 i = 0;
@@ -145,6 +150,33 @@ void show_opcodes(const u1 *code, u4 length, const cp_info *cp)
                 }
             }
             i += 2;
+            break;
+
+        case 0xAA: // tableswitch
+            u4 start = i;
+            while ((++i) % 4 != 0)
+                continue;
+
+            int32_t _default = get_tableswitch_32B_values(i, code);
+            i += 4;
+            int32_t low = get_tableswitch_32B_values(i, code);
+            i += 4;
+            int32_t high = get_tableswitch_32B_values(i, code);
+            i += 4;
+
+            if (low <= high)
+            {
+                printf(" %i to %i\n", low, high);
+
+                for (int32_t j = 0; j < high - low + 1; j++)
+                {
+                    u4 jump_offset = get_tableswitch_32B_values(i, code);
+                    i += 4;
+                    printf("                 %4u: %u (%c%i)\n", j, start + jump_offset, jump_offset > 0 ? '+' : '\0', jump_offset);
+                }
+                printf("                 %4cdefault: %u (%c%i)", '\0', start + _default, _default > 0 ? '+' : '\0', _default);
+            }
+
             break;
 
         default:
