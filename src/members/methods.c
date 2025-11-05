@@ -3,7 +3,7 @@
 #include "types/cp/constants.h"
 #include "types/attributes/attribute_info.h"
 #include "types/attributes/attributes.h"
-#include "opcodes.h"
+#include "bytecode/printer.h"
 
 static const FlagMap flag_map[12] = {
     {0x0001, "ACC_PUBLIC"},
@@ -162,7 +162,7 @@ void show_methods(const ClassFile *cf)
                             ai->info.Code.max_locals,
                             ai->info.Code.code_length);
 
-                        show_opcodes(ai->info.Code.code, ai->info.Code.code_length);
+                        show_opcodes(ai->info.Code.code, ai->info.Code.code_length, cp);
                     }
 
                     else {

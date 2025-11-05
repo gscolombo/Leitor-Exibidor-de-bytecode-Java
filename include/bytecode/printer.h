@@ -2,8 +2,13 @@
 #define PRINTER_H
 
 #include <stdint.h>
+#include <stdio.h>
 #include <stddef.h>
 
-void print_opcodes(const uint8_t *code, size_t length);
+#include "uinteger.h"
+#include "cp/writer.h"
+#include "opcode_table.h"
+
+void show_opcodes(const u1 *, u4, const cp_info *);
 
 #endif
