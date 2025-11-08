@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <stdbool.h>
 
 #include "Classfile.h"
 #include "utils.h"
@@ -41,7 +42,7 @@ FILE *open_classfile(const char *);
  * @param fptr Ponteiro para um arquivo .class.
  * @return Estrutura `Classfile` de um arquivo .class.
  */
-ClassFile read_classfile(FILE *);
+ClassFile read_classfile(FILE *, bool);
 
 /**
  * @brief Lê 1 byte a partir de um ponteiro de arquivo .class.

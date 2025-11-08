@@ -2,7 +2,7 @@
 
 const OpcodeInfo opcode_table[202] = {
     /* Constants */
-    {"nop"},
+    {"nop", NULL},
     {"aconst_null"},
     {"iconst_m1"},
     {"iconst_0"},
@@ -20,7 +20,7 @@ const OpcodeInfo opcode_table[202] = {
     {"dconst_1"},
     {"bipush"},
     {"sipush"},
-    {"ldc"},
+    {"ldc", &ldc},
     {"ldc_w"},
     {"ldc2_w"},
 
@@ -46,7 +46,7 @@ const OpcodeInfo opcode_table[202] = {
     {"dload_1"},
     {"dload_2"},
     {"dload_3"},
-    {"aload_0"},
+    {"aload_0", &aload_0},
     {"aload_1"},
     {"aload_2"},
     {"aload_3"},
@@ -191,15 +191,15 @@ const OpcodeInfo opcode_table[202] = {
     {"freturn"},
     {"dreturn"},
     {"areturn"},
-    {"return"},
+    {"return", &_return},
 
     /* References */
-    {"getstatic"},
+    {"getstatic", &getstatic},
     {"putstatic"},
     {"getfield"},
     {"putfield"},
-    {"invokevirtual"},
-    {"invokespecial"},
+    {"invokevirtual", &invokevirtual},
+    {"invokespecial", &invokespecial},
     {"invokestatic"},
     {"invokeinterface"},
     {"invokedynamic"},

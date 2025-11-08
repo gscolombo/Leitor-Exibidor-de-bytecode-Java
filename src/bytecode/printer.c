@@ -17,8 +17,8 @@ void show_opcodes(const u1 *code, u4 length, const cp_info *cp)
             continue;
         }
 
-        const OpcodeInfo info = opcode_table[code[i]];
-        printf("      %4u: %s", i, info.name);
+        const OpcodeInfo opcode = opcode_table[code[i]];
+        printf("      %4u: %s", i, opcode.mnemonic);
 
         // operandos imediatos ou índices na constant pool
         switch (code[i])

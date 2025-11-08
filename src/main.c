@@ -2,19 +2,88 @@
 #include "reader.h"
 #include "writer.h"
 #include "free.h"
+#include "bootstrap_loader.h"
+#include "MethodArea.h"
+#include "Thread.h"
+#include "Frame.h"
+#include "interpreter.h"
 
-int main(const int argc, char *argv[]) {
-    if (argc < 2) {
-        printf("Invalid number of arguments. Pass the path for the .class file.\n");
+int main(const int argc, char *argv[])
+{
+    if (argc < 3)
+    {
+        printf("Invalid number of arguments."
+               "Pass the mode of operation (--show or --execute) along with the path for a .class file.\n");
         return 1;
     }
 
-    FILE *fptr = open_classfile(argv[1]);
-    
-    if (fptr != NULL) {
-        ClassFile cf = read_classfile(fptr);
-        show_classfile(&cf);        
-        free_classfile(&cf);
+    if (!strcmp(argv[1], "--execute"))
+    {
+        /* Interpreter */
+        // Initialize method area
+        MethodArea *method_area = (MethodArea *)malloc(sizeof(MethodArea));
+        method_area->num_classes = 0;
+        method_area->classes = NULL;
+
+        // Load and link input class as initial class
+        ClassFile *initial_class = bootstrap_loader(argv[2], method_area);
+        if (initial_class != NULL)
+        {
+            // Find <init> method of initial class
+            member_info *init_method = find_method(initial_class, "<init>");
+            if (init_method != NULL)
+            {
+                // Start main thread
+                Thread *main_thread = initialize_thread();
+
+                java_type *local_variables = (java_type *)calloc(init_method->attributes->info.Code.max_locals, sizeof(java_type));
+                local_variables[0].ref.object_ref = initial_class;
+
+                Frame *init_frame = create_frame(initial_class, init_method, local_variables, NULL);
+                push_frame(main_thread, init_frame);
+
+                // Initialize initial class
+                execute_method(main_thread);
+
+                member_info *main_method = find_method(initial_class, "main");
+                if (main_method != NULL)
+                {
+                    java_type *local_variables = (java_type *)calloc(main_method->attributes->info.Code.max_locals, sizeof(java_type));
+                    local_variables[0].ref.object_ref = initial_class;
+
+                    Frame *main_frame = create_frame(initial_class, main_method, local_variables, NULL);
+                    push_frame(main_thread, main_frame);
+\
+                    printf("\"main\" method execution:\n------------------------------------------------\n\n");
+                    execute_method(main_thread);
+                }
+
+                // Cleanup
+                free_thread(main_thread);
+            }
+        }
+        for (size_t i = 0; i < method_area->num_classes; i++)
+            free_classfile(&method_area->classes[i]);
+
+        free(method_area->classes);
+        free(method_area);
+    }
+    else if (!strcmp(argv[1], "--show"))
+    {
+        /* Information display */
+        FILE *fptr = open_classfile(argv[2]);
+
+        if (fptr != NULL)
+        {
+            ClassFile cf = read_classfile(fptr, true);
+            show_classfile(&cf);
+            free_classfile(&cf);
+        }
+    }
+    else
+    {
+        printf("Invalid option \"%s\". Choose between --show and --execute.\n", argv[1]);
+        return 1;
     }
 
     return 0;

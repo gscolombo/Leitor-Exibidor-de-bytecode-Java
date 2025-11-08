@@ -2,11 +2,12 @@
 #define OPCODE_INFO_H
 
 #include "uinteger.h"
+#include "Thread.h"
 
 typedef struct
 {
-    const char *name;
-    // Incluir ponteiro para função que realiza operação
+    const char *mnemonic;
+    void (*exec)(Thread *);
 } OpcodeInfo;
 
 #endif

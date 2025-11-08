@@ -61,6 +61,6 @@ debug:
 	@echo "  "$(OBJS)"\n"
 	@make -e "DEBUG_MODE=true" -e "TARGET=cjavap_debug"
 	@echo "\n------------------------------------------------\n"
-	@cd .; ./cjavap_debug $(FILE) && rm cjavap_debug
+	@cd .; ./cjavap_debug $(MODE) $(FILE) && rm cjavap_debug
 
 .PHONY: all clean rebuild debug

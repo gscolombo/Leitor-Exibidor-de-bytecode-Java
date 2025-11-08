@@ -59,7 +59,7 @@ FILE *open_classfile(const char *path)
     return NULL;
 }
 
-ClassFile read_classfile(FILE *fptr)
+ClassFile read_classfile(FILE *fptr, bool show_bytes)
 {
     ClassFile cf;
 
@@ -67,7 +67,8 @@ ClassFile read_classfile(FILE *fptr)
     {
         const size_t fsize = ftell(fptr);
 
-        printf("Size: %lu bytes.\n", fsize);
+        if (show_bytes)
+            printf("Size: %lu bytes.\n", fsize);
         fseek(fptr, 0, SEEK_SET);
 
         cf.magic = read_u4(fptr);
@@ -78,7 +79,7 @@ ClassFile read_classfile(FILE *fptr)
             fclose(fptr);
             exit(EXIT_FAILURE);
         }
-        
+
         cf.minor_version = read_u2(fptr);
         cf.major_version = read_u2(fptr);
         cf.constant_pool_count = read_u2(fptr);
@@ -118,7 +119,8 @@ ClassFile read_classfile(FILE *fptr)
             read_attributes(cf.constant_pool, cf.attributes_count, fptr, cf.attributes);
     }
 
-    printf("%lu bytes readed.\n\n", ftell(fptr));
+    if (show_bytes)
+        printf("%lu bytes readed.\n\n", ftell(fptr));
     fclose(fptr);
     return cf;
 }
@@ -252,8 +254,9 @@ void read_attributes(const cp_info *cp, u2 n, FILE *fptr, attribute *attr)
                                 attr[i].info.InnerClasses.classes[j].inner_name_index = read_u2(fptr);
                                 attr[i].info.InnerClasses.classes[j].inner_class_access_flags = read_u2(fptr);
                             }
-                        else {
-                            fseek(fptr, n*sizeof(struct classes), SEEK_CUR);
+                        else
+                        {
+                            fseek(fptr, n * sizeof(struct classes), SEEK_CUR);
                         }
                     }
                     break;
