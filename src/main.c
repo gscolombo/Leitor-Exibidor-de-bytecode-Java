@@ -39,24 +39,12 @@ int main(const int argc, char *argv[])
                 java_type *local_variables = (java_type *)calloc(init_method->attributes->info.Code.max_locals, sizeof(java_type));
                 local_variables[0].ref.object_ref = initial_class;
 
-                Frame *init_frame = create_frame(initial_class, init_method, local_variables, NULL);
-                push_frame(main_thread, init_frame);
-
                 // Initialize initial class
-                execute_method(main_thread);
+                invoke_method(main_thread, initial_class, init_method, local_variables, NULL);
 
                 member_info *main_method = find_method(initial_class, "main");
                 if (main_method != NULL)
-                {
-                    java_type *local_variables = (java_type *)calloc(main_method->attributes->info.Code.max_locals, sizeof(java_type));
-                    local_variables[0].ref.object_ref = initial_class;
-
-                    Frame *main_frame = create_frame(initial_class, main_method, local_variables, NULL);
-                    push_frame(main_thread, main_frame);
-\
-                    printf("\"main\" method execution:\n------------------------------------------------\n\n");
-                    execute_method(main_thread);
-                }
+                    invoke_method(main_thread, initial_class, main_method, NULL, NULL);
 
                 // Cleanup
                 free_thread(main_thread);

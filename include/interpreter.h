@@ -7,6 +7,8 @@
 
 Thread *initialize_thread();
 
+void invoke_method(Thread *, ClassFile *, member_info *, java_type *, Frame *);
+
 void push_frame(Thread *, Frame *);
 
 void pop_frame(Thread *, Frame *);

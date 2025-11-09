@@ -103,3 +103,11 @@ java_type pop_operand(Frame *f)
     f->operand_stack.top--;
     return val;
 }
+
+void invoke_method(Thread *t, ClassFile *class, member_info *method, java_type *local_variables, Frame *caller)
+{
+    Frame *frame = create_frame(class, method, local_variables, caller);
+    push_frame(t, frame);
+
+    execute_method(t);
+}
