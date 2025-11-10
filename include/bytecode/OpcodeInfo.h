@@ -2,12 +2,12 @@
 #define OPCODE_INFO_H
 
 #include "uinteger.h"
-#include "Thread.h"
+#include "Frame.h"
 
 typedef struct
 {
     const char *mnemonic;
-    void (*exec)(Thread *);
+    void (*exec)(Frame *);
 } OpcodeInfo;
 
 #endif

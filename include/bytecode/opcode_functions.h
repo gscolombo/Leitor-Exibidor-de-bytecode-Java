@@ -1,29 +1,29 @@
 #ifndef OPCODE_FUNCTIONS_H
 #define OPCODE_FUNCTIONS_H
 
-#include "Thread.h"
+#include "Frame.h"
 #include "interpreter.h"
 #include "cp/writer.h"
 #include "bootstrap_loader.h"
 #include "bytecode/utils.h"
 
-void aload_0(Thread *);
+void aload_0(Frame *);
 
-void iload_n(Thread *);
+void iload_n(Frame *);
 
-void ldc(Thread *);
+void ldc(Frame *);
 
-void iconst_i(Thread *);
+void iconst_i(Frame *);
 
-void getstatic(Thread *);
-void invokespecial(Thread *);
-void invokevirtual(Thread *);
-void invokestatic(Thread *);
+void getstatic(Frame *);
+void invokespecial(Frame *);
+void invokevirtual(Frame *);
+void invokestatic(Frame *);
 
-void tableswitch(Thread *);
+void tableswitch(Frame *);
 
-void ireturn(Thread *);
-void _return(Thread *);
+void ireturn(Frame *);
+void _return(Frame *);
 
 
 #endif

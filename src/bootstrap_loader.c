@@ -11,13 +11,14 @@ ClassFile *bootstrap_loader(char *path, MethodArea *method_area, const char *cla
         // Search for class in method area
         for (size_t i = 0; i < method_area->num_classes; i++)
         {
-            const char *loaded_cls_name = get_constant_UTF8_value(method_area->classes[i].this_class,
-                                                                  method_area->classes[i].constant_pool);
+            char *loaded_cls_name = get_constant_UTF8_value(method_area->classes[i].this_class,
+                                                            method_area->classes[i].constant_pool);
             if (!strcmp(loaded_cls_name, class_name))
             {
                 free(loaded_cls_name);
                 return &method_area->classes[i];
             }
+            free(loaded_cls_name);
         }
 
         path = strcat(ROOT_FOLDER, "/");

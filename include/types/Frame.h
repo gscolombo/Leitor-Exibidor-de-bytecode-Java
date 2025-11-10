@@ -5,6 +5,7 @@
 #include "uinteger.h"
 #include "constants.h"
 #include "Classfile.h"
+#include "MethodArea.h"
 
 typedef union
 {
@@ -19,15 +20,22 @@ typedef union
     u4 *returnAddress;
 } primitive_type;
 
-typedef union
+typedef union java_type
 {
-    ClassFile *object_ref;
-    primitive_type *array_ref;
-} reference;
-
-typedef union
-{
-    reference ref;
+    union reference
+    {
+        struct ObjectRef
+        {
+            ClassFile *_class;
+            struct Field
+            {
+                const char *name;
+                const char *descriptor;
+                union java_type *value;
+            } *fields;
+        } *object_ref;
+        primitive_type *array_ref;
+    } ref;
     primitive_type t;
 } java_type;
 
@@ -49,6 +57,8 @@ typedef struct Frame
     member_info *method;
     u1 *method_code;
     u4 method_code_length;
+    MethodArea *method_area;
+    u4 pc_register;
 } Frame;
 
 #endif

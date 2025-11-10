@@ -1,24 +1,15 @@
 #ifndef INTERPRETER_H
 #define INTERPRETER_H
 
-#include "Thread.h"
 #include "opcode_table.h"
 
-Thread *initialize_thread(MethodArea *);
-
-void invoke_method(Thread *, ClassFile *, member_info *, java_type *, Frame *);
-
-void push_frame(Thread *, Frame *);
-
-void pop_frame(Thread *, Frame *);
+Frame *invoke_method(ClassFile *, member_info *, java_type *, Frame *, MethodArea *);
 
 member_info *find_method(ClassFile *, const char *);
 
 Frame *create_frame(ClassFile *, member_info *, java_type *, Frame *);
 
-void execute_method(Thread *);
-
-void free_thread(Thread *);
+Frame *execute_method(Frame *);
 
 void push_operand(Frame *, java_type);
 

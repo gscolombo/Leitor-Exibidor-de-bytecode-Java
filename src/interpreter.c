@@ -1,32 +1,25 @@
 #include "interpreter.h"
 
-Thread *initialize_thread(MethodArea *method_area)
+Frame *execute_method(Frame *f)
 {
-    Thread *t = (Thread *)malloc(sizeof(Thread));
+    u1 *code = f->method_code;
+    u4 l = f->method_code_length;
 
-    t->pc_register = 0;
-    t->current_frame = NULL;
-    t->stack_size = 0;
-    t->method_area = method_area;
+    f->pc_register = 0;
+    while (f->pc_register < l)
+        opcode_table[code[f->pc_register]].exec(f);
 
-    return t;
-}
+    Frame *caller_frame = f->previous_frame;
 
-void execute_method(Thread *t)
-{
-    u1 *code = t->current_frame->method_code;
-    u4 l = t->current_frame->method_code_length;
+    free(f->local_variables);
+    free(f->operand_stack.stack);
+    free(f);
 
-    t->pc_register = 0;
-    while (t->pc_register < l)
-        opcode_table[code[t->pc_register]].exec(t);
-
-    pop_frame(t, t->current_frame);
+    return caller_frame;
 }
 
 member_info *find_method(ClassFile *_class, const char *method_name)
 {
-
     char *resolved_method_name = NULL;
     for (size_t i = 0; i < _class->methods_count; i++)
     {
@@ -68,29 +61,6 @@ Frame *create_frame(ClassFile *_class, member_info *method, java_type *local_var
     return NULL;
 }
 
-void push_frame(Thread *t, Frame *frame)
-{
-    t->current_frame = frame;
-    t->stack_size++;
-}
-
-void pop_frame(Thread *t, Frame *frame)
-{
-    t->current_frame = frame->previous_frame;
-    t->stack_size--;
-
-    free(frame->local_variables);
-    free(frame->operand_stack.stack);
-    free(frame);
-}
-
-void free_thread(Thread *t)
-{
-    while (t->stack_size > 0)
-        pop_frame(t, t->current_frame);
-    free(t);
-}
-
 inline void push_operand(Frame *f, java_type val)
 {
     f->operand_stack.top++;
@@ -104,10 +74,9 @@ java_type pop_operand(Frame *f)
     return val;
 }
 
-void invoke_method(Thread *t, ClassFile *class, member_info *method, java_type *local_variables, Frame *caller)
+Frame *invoke_method(ClassFile *class, member_info *method, java_type *local_variables, Frame *caller, MethodArea *method_area)
 {
     Frame *frame = create_frame(class, method, local_variables, caller);
-    push_frame(t, frame);
-
-    execute_method(t);
+    frame->method_area = method_area;
+    return execute_method(frame);
 }

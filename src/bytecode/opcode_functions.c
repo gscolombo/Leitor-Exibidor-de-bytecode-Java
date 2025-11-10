@@ -1,30 +1,30 @@
 #include "opcode_functions.h"
 
-void aload_0(Thread *t)
+void aload_0(Frame *f)
 {
-    push_operand(t->current_frame, t->current_frame->local_variables[0]);
-    t->pc_register++;
+    push_operand(f, f->local_variables[0]);
+    f->pc_register++;
 }
 
-void iload_n(Thread *t)
+void iload_n(Frame *f)
 {
-    u1 n = t->current_frame->method_code[t->pc_register] - 26;
-    push_operand(t->current_frame, t->current_frame->local_variables[n]);
-    t->pc_register++;
+    u1 n = f->method_code[f->pc_register] - 26;
+    push_operand(f, f->local_variables[n]);
+    f->pc_register++;
 }
 
-void iconst_i(Thread *t)
+void iconst_i(Frame *f)
 {
     java_type i;
-    i.t._int = (int32_t)t->current_frame->method_code[t->pc_register] - 3;
-    push_operand(t->current_frame, i);
-    t->pc_register++;
+    i.t._int = (int32_t)f->method_code[f->pc_register] - 3;
+    push_operand(f, i);
+    f->pc_register++;
 }
 
-void ldc(Thread *t)
+void ldc(Frame *f)
 {
-    u1 index = t->current_frame->method_code[t->pc_register + 1];
-    cp_info constant = t->current_frame->runtime_cp[index - 1];
+    u1 index = f->method_code[f->pc_register + 1];
+    cp_info constant = f->runtime_cp[index - 1];
 
     java_type val;
 
@@ -37,57 +37,57 @@ void ldc(Thread *t)
         val.t._float = constant.info._4Bn.number.f;
         break;
     case CONSTANT_String:
-        val.ref.array_ref = (primitive_type *)get_constant_UTF8_value(index, t->current_frame->runtime_cp);
+        val.ref.array_ref = (primitive_type *)get_constant_UTF8_value(index, f->runtime_cp);
         break;
     // TODO: Handle class references
     default:
         break;
     }
 
-    push_operand(t->current_frame, val);
-    t->pc_register += 2;
+    push_operand(f, val);
+    f->pc_register += 2;
 }
 
-void getstatic(Thread *t)
+void getstatic(Frame *f)
 {
-    u1 *code = t->current_frame->method_code;
-    u2 idx = (code[t->pc_register + 1] << 8) | code[t->pc_register + 2];
+    u1 *code = f->method_code;
+    u2 idx = (code[f->pc_register + 1] << 8) | code[f->pc_register + 2];
 
     java_type resolved_field;
-    resolved_field.ref.array_ref = (primitive_type *)get_constant_UTF8_value(idx, t->current_frame->runtime_cp);
+    resolved_field.ref.array_ref = (primitive_type *)get_constant_UTF8_value(idx, f->runtime_cp);
 
     // Standard output object field, don't need to initialize the class
     if (!strcmp((const char *)resolved_field.ref.array_ref, "java/lang/System.out:Ljava/io/PrintStream;"))
     {
-        push_operand(t->current_frame, resolved_field);
+        push_operand(f, resolved_field);
     }
 
-    t->pc_register += 3;
+    f->pc_register += 3;
 }
 
-void invokespecial(Thread *t)
+void invokespecial(Frame *f)
 {
-    u1 *code = t->current_frame->method_code;
-    u2 idx = (code[t->pc_register + 1] << 8) | code[t->pc_register + 2];
+    u1 *code = f->method_code;
+    u2 idx = (code[f->pc_register + 1] << 8) | code[f->pc_register + 2];
 
-    char *resolved_method = get_constant_UTF8_value(idx, t->current_frame->runtime_cp);
+    char *resolved_method = get_constant_UTF8_value(idx, f->runtime_cp);
 
     // Super class is Object class (do nothing, except for popping the objectref value)
     if (!strcmp(resolved_method, "java/lang/Object.<init>:()V"))
-        pop_operand(t->current_frame);
+        pop_operand(f);
 
     // TODO: Finish (super) class initialization
 
     free(resolved_method);
-    t->pc_register += 3;
+    f->pc_register += 3;
 }
 
-void invokevirtual(Thread *t)
+void invokevirtual(Frame *f)
 {
-    u1 *code = t->current_frame->method_code;
-    u2 idx = (code[t->pc_register + 1] << 8) | code[t->pc_register + 2];
+    u1 *code = f->method_code;
+    u2 idx = (code[f->pc_register + 1] << 8) | code[f->pc_register + 2];
 
-    char *resolved_method = get_constant_UTF8_value(idx, t->current_frame->runtime_cp);
+    char *resolved_method = get_constant_UTF8_value(idx, f->runtime_cp);
 
     const char *method_name = strtok(resolved_method, ":");
     if (!strcmp(method_name, "java/io/PrintStream.println")) // Call to println
@@ -99,14 +99,14 @@ void invokevirtual(Thread *t)
         case 'L':
             if (!strcmp(descriptor, "(Ljava/lang/String;)V"))
             {
-                char *str = (char *)pop_operand(t->current_frame).ref.array_ref;
+                char *str = (char *)pop_operand(f).ref.array_ref;
                 printf("%s\n", str);
                 free(str);
             }
             // TODO: Define logic for class references
             break;
         case 'I':
-            int32_t i = pop_operand(t->current_frame).t._int;
+            int32_t i = pop_operand(f).t._int;
             printf("%i\n", i);
             break;
         // TODO: Define logic for other cases
@@ -114,27 +114,27 @@ void invokevirtual(Thread *t)
             break;
         }
 
-        free(pop_operand(t->current_frame).ref.array_ref); // Pop and free PrintStream class reference
+        free(pop_operand(f).ref.array_ref); // Pop and free PrintStream class reference
     }
 
     // TODO: Handle general class method invocation
 
     free(resolved_method);
-    t->pc_register += 3;
+    f->pc_register += 3;
 }
 
-void invokestatic(Thread *t)
+void invokestatic(Frame *f)
 {
-    u1 *code = t->current_frame->method_code;
-    u2 idx = (code[t->pc_register + 1] << 8) | code[t->pc_register + 2];
+    u1 *code = f->method_code;
+    u2 idx = (code[f->pc_register + 1] << 8) | code[f->pc_register + 2];
 
-    u2 method_class_idx = t->current_frame->runtime_cp[idx - 1].info.Ref.class_index;
-    char *class_name = get_constant_UTF8_value(method_class_idx, t->current_frame->runtime_cp);
-    ClassFile *class = bootstrap_loader(NULL, t->method_area, class_name);
+    u2 method_class_idx = f->runtime_cp[idx - 1].info.Ref.class_index;
+    char *class_name = get_constant_UTF8_value(method_class_idx, f->runtime_cp);
+    ClassFile *class = bootstrap_loader(NULL, f->method_area, class_name);
 
     if (class)
     {
-        char *resolved_method = get_constant_UTF8_value(idx, t->current_frame->runtime_cp);
+        char *resolved_method = get_constant_UTF8_value(idx, f->runtime_cp);
         const char *resolved_method_name = strtok(resolved_method + strlen(class_name) + 1, ":"); // Get only method name
 
         member_info *method = find_method(class, resolved_method_name);
@@ -160,13 +160,12 @@ void invokestatic(Thread *t)
         java_type *local_variables = (java_type *)calloc(nargs, sizeof(java_type));
 
         for (u2 i = 0; i < nargs; i++)
-            local_variables[i] = pop_operand(t->current_frame);
+            local_variables[i] = pop_operand(f);
 
-        Frame *frame = create_frame(class, method, local_variables, t->current_frame);
-        push_frame(t, frame);
-        u4 last_pc = t->pc_register;
-        execute_method(t);
-        t->pc_register = last_pc + 3;
+        u4 last_pc = f->pc_register;
+
+        invoke_method(class, method, local_variables, f, f->method_area);
+        f->pc_register = last_pc + 3;
     }
     else
     {
@@ -175,38 +174,38 @@ void invokestatic(Thread *t)
     }
 }
 
-void tableswitch(Thread *t)
+void tableswitch(Frame *f)
 {
-    u1 *code = t->current_frame->method_code;
-    u4 start = t->pc_register;
+    u1 *code = f->method_code;
+    u4 start = f->pc_register;
 
-    while ((++t->pc_register) % 4 != 0)
+    while ((++f->pc_register) % 4 != 0)
         continue;
 
-    int32_t _default = get_tableswitch_32B_values(t->pc_register, code);
-    t->pc_register += 4;
-    int32_t low = get_tableswitch_32B_values(t->pc_register, code);
-    t->pc_register += 4;
-    int32_t high = get_tableswitch_32B_values(t->pc_register, code);
-    t->pc_register += 4;
+    int32_t _default = get_tableswitch_32B_values(f->pc_register, code);
+    f->pc_register += 4;
+    int32_t low = get_tableswitch_32B_values(f->pc_register, code);
+    f->pc_register += 4;
+    int32_t high = get_tableswitch_32B_values(f->pc_register, code);
+    f->pc_register += 4;
 
-    int32_t i = pop_operand(t->current_frame).t._int;
+    int32_t i = pop_operand(f).t._int;
 
     if (i < low || i > high)
-        t->pc_register = start + _default;
+        f->pc_register = start + _default;
     else
-        t->pc_register = start + get_tableswitch_32B_values(t->pc_register + 4 * i, code);
+        f->pc_register = start + get_tableswitch_32B_values(f->pc_register + 4 * i, code);
 }
 
-void ireturn(Thread *t)
+void ireturn(Frame *f)
 {
     java_type ret;
-    ret = pop_operand(t->current_frame);
-    push_operand(t->current_frame->previous_frame, ret);
-    t->pc_register = t->current_frame->method_code_length;
+    ret = pop_operand(f);
+    push_operand(f->previous_frame, ret);
+    f->pc_register = f->method_code_length;
 }
 
-void _return(Thread *t)
+void _return(Frame *f)
 {
-    t->pc_register = t->current_frame->method_code_length;
+    f->pc_register = f->method_code_length;
 }
