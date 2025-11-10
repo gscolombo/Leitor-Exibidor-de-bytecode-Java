@@ -3,6 +3,7 @@
 
 #include "uinteger.h"
 #include "Frame.h"
+#include "MethodArea.h"
 
 typedef struct {
     int16_t top;
@@ -13,6 +14,7 @@ typedef struct {
     u4 pc_register;
     u4 stack_size;
     Frame *current_frame;
+    MethodArea *method_area;
 } Thread;
 
 #endif 

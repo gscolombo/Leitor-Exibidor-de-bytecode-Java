@@ -8,6 +8,6 @@
 #include "MethodArea.h"
 #include "cp/writer.h"
 
-ClassFile *bootstrap_loader(const char *, MethodArea *);
+ClassFile *bootstrap_loader(char *, MethodArea *, const char *);
 
 #endif

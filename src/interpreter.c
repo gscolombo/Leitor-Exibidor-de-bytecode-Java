@@ -1,12 +1,13 @@
 #include "interpreter.h"
 
-Thread *initialize_thread()
+Thread *initialize_thread(MethodArea *method_area)
 {
     Thread *t = (Thread *)malloc(sizeof(Thread));
 
     t->pc_register = 0;
     t->current_frame = NULL;
     t->stack_size = 0;
+    t->method_area = method_area;
 
     return t;
 }
@@ -44,7 +45,6 @@ member_info *find_method(ClassFile *_class, const char *method_name)
 Frame *create_frame(ClassFile *_class, member_info *method, java_type *local_variables, Frame *previous_frame)
 {
     Frame *frame = (Frame *)malloc(sizeof(Frame));
-    frame->_class = _class;
     frame->runtime_cp = _class->constant_pool;
 
     frame->method = method;

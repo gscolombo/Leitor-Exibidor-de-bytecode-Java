@@ -3,9 +3,8 @@
 
 #include "Thread.h"
 #include "opcode_table.h"
-#include "MethodArea.h"
 
-Thread *initialize_thread();
+Thread *initialize_thread(MethodArea *);
 
 void invoke_method(Thread *, ClassFile *, member_info *, java_type *, Frame *);
 

@@ -1,22 +1,30 @@
 #include "bootstrap_loader.h"
 #include "writer.h"
 
-ClassFile *bootstrap_loader(const char *path, MethodArea *method_area)
-{
-    // Load class from classfile
-    FILE *fptr = open_classfile(path);
-    ClassFile class = read_classfile(fptr, false);
+static char *ROOT_FOLDER;
 
+ClassFile *bootstrap_loader(char *path, MethodArea *method_area, const char *class_name)
+{
     // Check if method area has classes
     if (method_area->classes != NULL)
     {
-        const char *class_name = get_constant_UTF8_value(class.this_class, class.constant_pool);
+        // Search for class in method area
         for (size_t i = 0; i < method_area->num_classes; i++)
         {
-            const char *loaded_cls_name = get_constant_UTF8_value(method_area->classes[i].this_class, method_area->classes[i].constant_pool);
+            const char *loaded_cls_name = get_constant_UTF8_value(method_area->classes[i].this_class,
+                                                                  method_area->classes[i].constant_pool);
             if (!strcmp(loaded_cls_name, class_name))
+            {
+                free(loaded_cls_name);
                 return &method_area->classes[i];
+            }
         }
+
+        path = strcat(ROOT_FOLDER, "/");
+        path = strcat(path, class_name);
+        path = strcat(path, ".class");
+        FILE *fptr = open_classfile(path);
+        ClassFile class = read_classfile(fptr, false);
 
         method_area->classes = (ClassFile *)realloc(method_area->classes, sizeof(method_area->classes) + sizeof(class));
 
@@ -29,6 +37,11 @@ ClassFile *bootstrap_loader(const char *path, MethodArea *method_area)
     }
     else // Load initial class
     {
+        FILE *fptr = open_classfile(path);
+        ClassFile class = read_classfile(fptr, false);
+
+        ROOT_FOLDER = strtok(path, "/");
+
         method_area->classes = (ClassFile *)malloc(sizeof(ClassFile));
         if (method_area->classes != NULL)
         {

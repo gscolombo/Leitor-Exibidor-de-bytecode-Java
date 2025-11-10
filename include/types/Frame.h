@@ -49,7 +49,6 @@ typedef struct Frame
     member_info *method;
     u1 *method_code;
     u4 method_code_length;
-    ClassFile *_class;
 } Frame;
 
 #endif

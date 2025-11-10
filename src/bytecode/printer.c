@@ -1,10 +1,5 @@
 #include "bytecode/printer.h"
 
-inline static int32_t get_tableswitch_32B_values(u4 i, const u1 *code)
-{
-    return (code[i] << 24) | (code[i + 1] << 16) | (code[i + 2] << 8) | code[i + 3];
-}
-
 void show_opcodes(const u1 *code, u4 length, const cp_info *cp)
 {
     u4 i = 0;

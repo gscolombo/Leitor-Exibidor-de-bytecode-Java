@@ -20,13 +20,14 @@ int main(const int argc, char *argv[])
     if (!strcmp(argv[1], "--execute"))
     {
         /* Interpreter */
+
         // Initialize method area
         MethodArea *method_area = (MethodArea *)malloc(sizeof(MethodArea));
         method_area->num_classes = 0;
         method_area->classes = NULL;
 
         // Load and link input class as initial class
-        ClassFile *initial_class = bootstrap_loader(argv[2], method_area);
+        ClassFile *initial_class = bootstrap_loader(argv[2], method_area, NULL);
         if (initial_class != NULL)
         {
             // Find <init> method of initial class
@@ -34,7 +35,7 @@ int main(const int argc, char *argv[])
             if (init_method != NULL)
             {
                 // Start main thread
-                Thread *main_thread = initialize_thread();
+                Thread *main_thread = initialize_thread(method_area);
 
                 java_type *local_variables = (java_type *)calloc(init_method->attributes->info.Code.max_locals, sizeof(java_type));
                 local_variables[0].ref.object_ref = initial_class;
