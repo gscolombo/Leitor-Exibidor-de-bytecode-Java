@@ -1,24 +1,19 @@
 #include "opcode_functions.h"
 
-void aload_0(Frame *f)
-{
-    push_operand(f, f->local_variables[0]);
-    f->pc++;
-}
-
-void iload_n(Frame *f)
-{
-    u1 n = f->method->bytecode.code[f->pc] - 26;
-    push_operand(f, f->local_variables[n]);
-    f->pc++;
-}
-
 void iconst_i(Frame *f)
 {
     java_type i;
     i.t._int = (int32_t)f->method->bytecode.code[f->pc] - 3;
     push_operand(f, i);
     f->pc++;
+}
+
+void bipush(Frame *f)
+{
+    java_type bi;
+    bi.t._int = (int32_t)f->method->bytecode.code[f->pc + 1];
+    push_operand(f, bi);
+    f->pc += 2;
 }
 
 void ldc(Frame *f)
@@ -46,6 +41,92 @@ void ldc(Frame *f)
 
     push_operand(f, val);
     f->pc += 2;
+}
+
+static const enum Cond { EQ,
+                         NE,
+                         LT,
+                         GE,
+                         GT,
+                         LE };
+void if_cond(Frame *f)
+{
+    u1 *code = f->method->bytecode.code;
+    enum Cond cond = code[f->pc] - 153;
+    int16_t branch = (code[f->pc + 1] << 8) | code[f->pc + 2];
+    int32_t value = pop_operand(f).t._int;
+
+    int16_t offset = 3;
+    switch (cond)
+    {
+    case EQ:
+        if (value == 0)
+            offset = branch;
+        break;
+    case NE:
+        if (value != 0)
+            offset = branch;
+        break;
+    case LT:
+        if (value < 0)
+            offset = branch;
+        break;
+    case GE:
+        if (value >= 0)
+            offset = branch;
+        break;
+    case GT:
+        if (value > 0)
+            offset = branch;
+        break;
+    case LE:
+        if (value <= 0)
+            offset = branch;
+        break;
+    default:
+        break;
+    }
+
+    f->pc += offset;
+}
+
+void imul(Frame *f)
+{
+    int32_t v1, v2;
+    v2 = pop_operand(f).t._int;
+    v1 = pop_operand(f).t._int;
+
+    java_type result;
+    result.t._int = v1 * v2;
+    push_operand(f, result);
+
+    f->pc++;
+}
+
+void isub(Frame *f)
+{
+    int32_t v1, v2;
+    v2 = pop_operand(f).t._int;
+    v1 = pop_operand(f).t._int;
+
+    java_type result;
+    result.t._int = v1 - v2;
+    push_operand(f, result);
+
+    f->pc++;
+}
+
+void iload_n(Frame *f)
+{
+    u1 n = f->method->bytecode.code[f->pc] - 26;
+    push_operand(f, f->local_variables[n]);
+    f->pc++;
+}
+
+void aload_0(Frame *f)
+{
+    push_operand(f, f->local_variables[0]);
+    f->pc++;
 }
 
 void getstatic(Frame *f)

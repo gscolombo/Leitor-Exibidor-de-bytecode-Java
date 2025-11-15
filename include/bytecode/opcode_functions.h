@@ -7,13 +7,16 @@
 #include "bootstrap_loader.h"
 #include "bytecode/utils.h"
 
-void aload_0(Frame *);
-
-void iload_n(Frame *);
-
+void iconst_i(Frame *);
+void bipush(Frame *);
 void ldc(Frame *);
 
-void iconst_i(Frame *);
+void if_cond(Frame *);
+void isub(Frame *);
+void imul(Frame *);
+
+void iload_n(Frame *);
+void aload_0(Frame *);
 
 void getstatic(Frame *);
 void invokespecial(Frame *);
@@ -24,6 +27,5 @@ void tableswitch(Frame *);
 
 void ireturn(Frame *);
 void _return(Frame *);
-
 
 #endif

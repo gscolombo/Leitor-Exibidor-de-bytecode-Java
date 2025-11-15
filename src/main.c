@@ -22,6 +22,7 @@ int main(const int argc, char *argv[])
 
         // Initialize method area
         MethodArea method_area;
+        method_area.num_classes = 0;
         method_area.classes = (Class *)malloc(sizeof(Class));
         if (method_area.classes == NULL)
             exit(1);

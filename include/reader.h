@@ -13,7 +13,7 @@
 #include "uinteger.h"
 #include "member.h"
 
-#define LE (__BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__ ? 1 : 0)
+#define LittleEndian (__BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__ ? 1 : 0)
 
 /** @file
  * @brief Declarações de funções relacionadas a leitura de arquivos `.class`.

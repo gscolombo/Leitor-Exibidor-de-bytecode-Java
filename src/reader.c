@@ -17,7 +17,7 @@ u2 read_u2(FILE *fptr)
     u2 u;
     fread(&u, sizeof(u2), 1, fptr);
 
-    if (LE)
+    if (LittleEndian)
     {
         u = u2swap(u);
     }
@@ -30,7 +30,7 @@ u4 read_u4(FILE *fptr)
     u4 u;
     fread(&u, sizeof(u4), 1, fptr);
 
-    if (LE)
+    if (LittleEndian)
     {
         u = u4swap(u);
     }
