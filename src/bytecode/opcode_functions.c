@@ -3,41 +3,41 @@
 void aload_0(Frame *f)
 {
     push_operand(f, f->local_variables[0]);
-    f->pc_register++;
+    f->pc++;
 }
 
 void iload_n(Frame *f)
 {
-    u1 n = f->method_code[f->pc_register] - 26;
+    u1 n = f->method->bytecode.code[f->pc] - 26;
     push_operand(f, f->local_variables[n]);
-    f->pc_register++;
+    f->pc++;
 }
 
 void iconst_i(Frame *f)
 {
     java_type i;
-    i.t._int = (int32_t)f->method_code[f->pc_register] - 3;
+    i.t._int = (int32_t)f->method->bytecode.code[f->pc] - 3;
     push_operand(f, i);
-    f->pc_register++;
+    f->pc++;
 }
 
 void ldc(Frame *f)
 {
-    u1 index = f->method_code[f->pc_register + 1];
-    cp_info constant = f->runtime_cp[index - 1];
+    u1 index = f->method->bytecode.code[f->pc + 1];
+    RuntimeConstant c = f->class->runtime_cp[index - 1];
 
     java_type val;
 
-    switch (constant.tag)
+    switch (c.type)
     {
     case CONSTANT_Integer:
-        val.t._int = constant.info._4Bn.number.i;
+        val.t._int = c.value.i;
         break;
     case CONSTANT_Float:
-        val.t._float = constant.info._4Bn.number.f;
+        val.t._float = c.value.f;
         break;
     case CONSTANT_String:
-        val.ref.array_ref = (primitive_type *)get_constant_UTF8_value(index, f->runtime_cp);
+        val.ref.array_ref = (primitive_type *)c.value.strref;
         break;
     // TODO: Handle class references
     default:
@@ -45,32 +45,35 @@ void ldc(Frame *f)
     }
 
     push_operand(f, val);
-    f->pc_register += 2;
+    f->pc += 2;
 }
 
 void getstatic(Frame *f)
 {
-    u1 *code = f->method_code;
-    u2 idx = (code[f->pc_register + 1] << 8) | code[f->pc_register + 2];
+    u1 *code = f->method->bytecode.code;
+    u2 idx = (code[f->pc + 1] << 8) | code[f->pc + 2];
 
-    java_type resolved_field;
-    resolved_field.ref.array_ref = (primitive_type *)get_constant_UTF8_value(idx, f->runtime_cp);
+    char *field_ref = f->class->runtime_cp[idx - 1].value.strref;
 
     // Standard output object field, don't need to initialize the class
-    if (!strcmp((const char *)resolved_field.ref.array_ref, "java/lang/System.out:Ljava/io/PrintStream;"))
+    if (!strcmp(field_ref, "java/lang/System.out:Ljava/io/PrintStream;"))
     {
-        push_operand(f, resolved_field);
+        java_type val;
+        val.ref.array_ref = (primitive_type *)field_ref;
+        push_operand(f, val);
     }
 
-    f->pc_register += 3;
+    // TODO: Handle general field references
+
+    f->pc += 3;
 }
 
 void invokespecial(Frame *f)
 {
-    u1 *code = f->method_code;
-    u2 idx = (code[f->pc_register + 1] << 8) | code[f->pc_register + 2];
+    u1 *code = f->method->bytecode.code;
+    u2 idx = (code[f->pc + 1] << 8) | code[f->pc + 2];
 
-    char *resolved_method = get_constant_UTF8_value(idx, f->runtime_cp);
+    char *resolved_method = f->class->runtime_cp[idx - 1].value.strref;
 
     // Super class is Object class (do nothing, except for popping the objectref value)
     if (!strcmp(resolved_method, "java/lang/Object.<init>:()V"))
@@ -79,17 +82,21 @@ void invokespecial(Frame *f)
     // TODO: Finish (super) class initialization
 
     free(resolved_method);
-    f->pc_register += 3;
+    f->pc += 3;
 }
 
 void invokevirtual(Frame *f)
 {
-    u1 *code = f->method_code;
-    u2 idx = (code[f->pc_register + 1] << 8) | code[f->pc_register + 2];
+    u1 *code = f->method->bytecode.code;
+    u2 idx = (code[f->pc + 1] << 8) | code[f->pc + 2];
 
-    char *resolved_method = get_constant_UTF8_value(idx, f->runtime_cp);
+    char *method_ref = f->class->runtime_cp[idx - 1].value.strref;
+    size_t length = strlen(method_ref);
 
-    const char *method_name = strtok(resolved_method, ":");
+    char *method_name = (char *)malloc(sizeof(char) * length + 1);
+    strcpy(method_name, method_ref);
+
+    method_name = strtok(method_name, ":");
     if (!strcmp(method_name, "java/io/PrintStream.println")) // Call to println
     {
         char *descriptor = strtok(NULL, ":");
@@ -101,7 +108,6 @@ void invokevirtual(Frame *f)
             {
                 char *str = (char *)pop_operand(f).ref.array_ref;
                 printf("%s\n", str);
-                free(str);
             }
             // TODO: Define logic for class references
             break;
@@ -114,58 +120,55 @@ void invokevirtual(Frame *f)
             break;
         }
 
-        free(pop_operand(f).ref.array_ref); // Pop and free PrintStream class reference
+        (void)pop_operand(f).ref.array_ref; // Pop PrintStream class reference
     }
 
     // TODO: Handle general class method invocation
 
-    free(resolved_method);
-    f->pc_register += 3;
+    free(method_name);
+    f->pc += 3;
 }
 
 void invokestatic(Frame *f)
 {
-    u1 *code = f->method_code;
-    u2 idx = (code[f->pc_register + 1] << 8) | code[f->pc_register + 2];
+    u1 *code = f->method->bytecode.code;
+    u2 idx = (code[f->pc + 1] << 8) | code[f->pc + 2];
 
-    u2 method_class_idx = f->runtime_cp[idx - 1].info.Ref.class_index;
-    char *class_name = get_constant_UTF8_value(method_class_idx, f->runtime_cp);
-    ClassFile *class = bootstrap_loader(NULL, f->method_area, class_name);
+    char *method_interface_ref = f->class->runtime_cp[idx - 1].value.strref;
+
+    // TODO: Check method constraints
+
+    char *class_name = strtok(method_interface_ref, ".");
+    Class *class = bootstrap_loader(NULL, f->method_area, class_name);
 
     if (class)
     {
-        char *resolved_method = get_constant_UTF8_value(idx, f->runtime_cp);
-        const char *resolved_method_name = strtok(resolved_method + strlen(class_name) + 1, ":"); // Get only method name
+        char *method_name = strtok(method_interface_ref + strlen(class_name) + 1, ":"); // Get only method name
 
-        member_info *method = find_method(class, resolved_method_name);
+        Method *method = lookup_method(method_name, class);
 
-        free(class_name);
-        free(resolved_method);
-
-        if (method)
-        {
-            if (!(method->access_flags & 0x0008)) // Check if method is static
-            {
-                printf("Error: method is not static.\n");
-                exit(1);
-            }
-        }
-        else
+        if (!method)
         {
             printf("Error: method not found.\n");
             exit(1);
         }
 
-        u2 nargs = method->attributes->info.Code.max_locals;
+        if (!(method->access_flags & 0x0008)) // Check if method is static
+        {
+            printf("Error: method is not static.\n");
+            exit(1);
+        }
+
+        u2 nargs = method->bytecode.max_locals;
         java_type *local_variables = (java_type *)calloc(nargs, sizeof(java_type));
 
         for (u2 i = 0; i < nargs; i++)
             local_variables[i] = pop_operand(f);
 
-        u4 last_pc = f->pc_register;
+        u4 last_pc = f->pc;
 
         invoke_method(class, method, local_variables, f, f->method_area);
-        f->pc_register = last_pc + 3;
+        f->pc = last_pc + 3;
     }
     else
     {
@@ -176,25 +179,25 @@ void invokestatic(Frame *f)
 
 void tableswitch(Frame *f)
 {
-    u1 *code = f->method_code;
-    u4 start = f->pc_register;
+    u1 *code = f->method->bytecode.code;
+    u4 start = f->pc;
 
-    while ((++f->pc_register) % 4 != 0)
+    while ((++f->pc) % 4 != 0)
         continue;
 
-    int32_t _default = get_tableswitch_32B_values(f->pc_register, code);
-    f->pc_register += 4;
-    int32_t low = get_tableswitch_32B_values(f->pc_register, code);
-    f->pc_register += 4;
-    int32_t high = get_tableswitch_32B_values(f->pc_register, code);
-    f->pc_register += 4;
+    int32_t _default = get_tableswitch_32B_values(f->pc, code);
+    f->pc += 4;
+    int32_t low = get_tableswitch_32B_values(f->pc, code);
+    f->pc += 4;
+    int32_t high = get_tableswitch_32B_values(f->pc, code);
+    f->pc += 4;
 
     int32_t i = pop_operand(f).t._int;
 
     if (i < low || i > high)
-        f->pc_register = start + _default;
+        f->pc = start + _default;
     else
-        f->pc_register = start + get_tableswitch_32B_values(f->pc_register + 4 * i, code);
+        f->pc = start + get_tableswitch_32B_values(f->pc + 4 * i, code);
 }
 
 void ireturn(Frame *f)
@@ -202,10 +205,10 @@ void ireturn(Frame *f)
     java_type ret;
     ret = pop_operand(f);
     push_operand(f->previous_frame, ret);
-    f->pc_register = f->method_code_length;
+    f->pc = f->method->bytecode.code_length;
 }
 
 void _return(Frame *f)
 {
-    f->pc_register = f->method_code_length;
+    f->pc = f->method->bytecode.code_length;
 }

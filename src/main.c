@@ -21,24 +21,27 @@ int main(const int argc, char *argv[])
         /* Interpreter */
 
         // Initialize method area
-        MethodArea *method_area = (MethodArea *)malloc(sizeof(MethodArea));
-        method_area->num_classes = 0;
-        method_area->classes = NULL;
+        MethodArea method_area;
+        method_area.classes = (Class *)malloc(sizeof(Class));
+        if (method_area.classes == NULL)
+            exit(1);
 
         // Load and link input class as initial class
-        ClassFile *initial_class = bootstrap_loader(argv[2], method_area, NULL);
+        Class *initial_class = bootstrap_loader(argv[2], &method_area, NULL);
         if (initial_class != NULL)
         {
-            member_info *main_method = find_method(initial_class, "main");
-            if (main_method != NULL)
-                invoke_method(initial_class, main_method, NULL, NULL, method_area);
+            // Invoke main method
+            Method *main_method = lookup_method("main", initial_class);
+            if (!main_method) {
+                printf("Método \"main\" não encontrado.\n");
+                exit(1);
+            }
+
+            invoke_method(initial_class, main_method, NULL, NULL, &method_area);
         }
-        
+
         // Clean method area
-        for (size_t i = 0; i < method_area->num_classes; i++)
-            free_classfile(&method_area->classes[i]);
-        free(method_area->classes);
-        free(method_area);
+        cleanup(method_area);
     }
     else if (!strcmp(argv[1], "--show"))
     {

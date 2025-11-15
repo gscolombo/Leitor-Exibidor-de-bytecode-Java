@@ -6,8 +6,9 @@
 #include "Classfile.h"
 #include "reader.h"
 #include "MethodArea.h"
-#include "cp/writer.h"
+#include "method_area_utils.h"
 
-ClassFile *bootstrap_loader(char *, MethodArea *, const char *);
+
+Class *bootstrap_loader(char *, MethodArea *, const char *);
 
 #endif

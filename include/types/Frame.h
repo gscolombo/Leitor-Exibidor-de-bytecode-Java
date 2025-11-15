@@ -48,17 +48,13 @@ typedef struct
 
 typedef struct Frame
 {
-    u2 max_locals;
+    u4 pc;
     java_type *local_variables;
-    u2 max_stack;
     OperandStack operand_stack;
-    cp_info *runtime_cp;
     struct Frame *previous_frame;
-    member_info *method;
-    u1 *method_code;
-    u4 method_code_length;
+    Method *method;
+    Class *class;
     MethodArea *method_area;
-    u4 pc_register;
 } Frame;
 
 #endif
