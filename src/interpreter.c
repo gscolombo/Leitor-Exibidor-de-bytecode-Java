@@ -1,20 +1,12 @@
 #include "interpreter.h"
 
-Frame *execute_method(Frame *f)
+void execute_method(Frame *f)
 {
     u1 *code = f->method->bytecode.code;
     u4 l = f->method->bytecode.code_length;
 
     while (f->pc < l)
         opcode_table[code[f->pc]].exec(f);
-
-    Frame *caller_frame = f->previous_frame;
-
-    free(f->local_variables);
-    free(f->operand_stack.stack);
-    free(f);
-
-    return caller_frame;
 }
 
 inline void push_operand(Frame *f, java_type val)
@@ -30,7 +22,7 @@ java_type pop_operand(Frame *f)
     return val;
 }
 
-Frame *invoke_method(Class *class, Method *method, java_type *local_variables, Frame *caller, MethodArea *method_area)
+void invoke_method(Class *class, Method *method, java_type *local_variables, Frame *caller, MethodArea *method_area)
 {
     // Create frame...
     Frame *frame = (Frame *)malloc(sizeof(Frame));
@@ -48,9 +40,13 @@ Frame *invoke_method(Class *class, Method *method, java_type *local_variables, F
 
     frame->operand_stack = op_stack;
 
-    // ...then execute current method
-    if (frame->operand_stack.stack != NULL)
-        return execute_method(frame);
+    // ...then execute current method...
+    if (frame->operand_stack.stack != NULL &&
+        frame->local_variables != NULL)
+        execute_method(frame);
 
-    return NULL;
+    // ...and free allocated memory
+    free(frame->local_variables);
+    free(frame->operand_stack.stack);
+    free(frame);
 }

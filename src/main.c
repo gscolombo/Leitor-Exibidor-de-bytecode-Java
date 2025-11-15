@@ -38,7 +38,8 @@ int main(const int argc, char *argv[])
                 exit(1);
             }
 
-            invoke_method(initial_class, main_method, NULL, NULL, &method_area);
+            java_type *local_vars = (java_type *)calloc(main_method->bytecode.max_locals, sizeof(java_type));
+            invoke_method(initial_class, main_method, local_vars, NULL, &method_area);
         }
 
         // Clean method area

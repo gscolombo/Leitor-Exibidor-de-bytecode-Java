@@ -3,9 +3,9 @@
 
 #include "opcode_table.h"
 
-Frame *invoke_method(Class *, Method *, java_type *, Frame *, MethodArea *);
+void invoke_method(Class *, Method *, java_type *, Frame *, MethodArea *);
 
-Frame *execute_method(Frame *);
+void execute_method(Frame *);
 
 void push_operand(Frame *, java_type);
 
