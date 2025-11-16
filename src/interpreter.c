@@ -41,11 +41,15 @@ void invoke_method(Class *class, Method *method, java_type *local_variables, Fra
     frame->operand_stack = op_stack;
 
     // ...then execute current method...
-    if (frame->operand_stack.stack != NULL &&
-        frame->local_variables != NULL)
+    if (frame->operand_stack.stack != NULL && frame->local_variables != NULL)
         execute_method(frame);
 
     // ...and free allocated memory
+    for (u4 k = 0; k < frame->method->ref_count; k++)
+        free(frame->method->refs[k]);
+    free(frame->method->refs);
+    frame->method->ref_count = 0; // Reset ref count
+
     free(frame->local_variables);
     free(frame->operand_stack.stack);
     free(frame);

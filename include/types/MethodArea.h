@@ -5,15 +5,17 @@
 
 #include "attributes.h"
 #include "Classfile.h"
+#include "java_type.h"
 
-typedef struct
+typedef struct FieldImpl
 {
     char *name;
     char *type;
     u2 access_flags;
+    java_type constant_value;
 } Field;
 
-typedef struct
+typedef struct MethodImpl
 {
     char *name;
     char *params;
@@ -26,6 +28,8 @@ typedef struct
         u4 code_length;
         u1 *code;
     } bytecode;
+    u4 ref_count;
+    void **refs;
 } Method;
 
 typedef struct
@@ -41,7 +45,7 @@ typedef struct
     } value;
 } RuntimeConstant;
 
-typedef struct
+typedef struct ClassImpl
 {
     char *name;
     char *super;

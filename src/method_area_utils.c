@@ -72,6 +72,53 @@ Class *create_and_load_class(const char *path)
         cls->fields[i].name = get_constant_UTF8_value(cf.fields[i].name_index, cf.constant_pool);
         cls->fields[i].type = get_constant_UTF8_value(cf.fields[i].descriptor_index, cf.constant_pool);
         cls->fields[i].access_flags = cf.fields[i].access_flags;
+        
+        if (cf.fields[i].access_flags & 0x0008) // Initialize constant value of static field
+        {
+            java_type _const;
+            RuntimeConstant c = cls->runtime_cp[cf.fields[i].attributes->info.ConstantValue.constantvalue_index];
+            switch (c.type)
+            {
+            case CONSTANT_Long:
+                _const.t._long = c.value.l;
+                break;
+            case CONSTANT_Float:
+                _const.t._float = c.value.f;
+                break;
+            case CONSTANT_Double:
+                _const.t._double = c.value.d;
+                break;
+            case CONSTANT_Integer:
+                switch (*cls->fields[i].type)
+                {
+                case 'B':
+                    _const.t.byte = c.value.i;
+                    break;
+                case 'C':
+                    _const.t._char = c.value.i;
+                    break;
+                case 'S':
+                    _const.t._short = c.value.i;
+                    break;
+                case 'Z':
+                    _const.t.boolean = c.value.i;
+                    break;
+                case 'I':
+                    _const.t._int = c.value.i;
+                    break;
+                default:
+                    break;
+                }
+                break;
+            case CONSTANT_String:
+                _const.ref.array_ref.string = c.value.strref;
+                break;
+            default:
+                break;
+            }
+
+            cls->fields[i].constant_value = _const;
+        }
     }
 
     cls->method_count = cf.methods_count;
@@ -92,6 +139,8 @@ Class *create_and_load_class(const char *path)
 
         cls->methods[i].bytecode.code = (u1 *)malloc(cf.methods[i].attributes->info.Code.code_length);
         memcpy(cls->methods[i].bytecode.code, cf.methods[i].attributes->info.Code.code, cf.methods[i].attributes->info.Code.code_length);
+
+        cls->methods[i].ref_count = 0;
     }
 
     free_classfile(&cf);
@@ -103,26 +152,31 @@ void cleanup(MethodArea method_area)
 {
     for (size_t i = 0; i < method_area.num_classes; i++)
     {
-        free(method_area.classes[i].name);
-        free(method_area.classes[i].super);
+        Class cls = method_area.classes[i];
+        free(cls.name);
+        free(cls.super);
 
-        for (size_t j = 0; j < method_area.classes[i].constants_count; j++)
-            free(method_area.classes[i].runtime_cp[j].value.strref);
-        free(method_area.classes[i].runtime_cp);
-
-        for (u2 j = 0; j < method_area.classes[i].field_count; j++)
+        for (size_t j = 0; j < cls.constants_count; j++)
         {
-            free(method_area.classes[i].fields[j].name);
-            free(method_area.classes[i].fields[j].type);
+            if ((cls.runtime_cp[j].type >= 7 && cls.runtime_cp[j].type <= 11) ||
+                cls.runtime_cp[j].type >= 15)
+                free(cls.runtime_cp[j].value.strref);
         }
-        free(method_area.classes[i].fields);
+        free(cls.runtime_cp);
 
-        for (u2 j = 0; j < method_area.classes[i].method_count; j++)
+        for (u2 j = 0; j < cls.field_count; j++)
         {
-            free(method_area.classes[i].methods[j].name);
-            free(method_area.classes[i].methods[j].params);
-            free(method_area.classes[i].methods[j].rettype);
-            free(method_area.classes[i].methods[j].bytecode.code);
+            free(cls.fields[j].name);
+            free(cls.fields[j].type);
+        }
+        free(cls.fields);
+
+        for (u2 j = 0; j < cls.method_count; j++)
+        {
+            free(cls.methods[j].name);
+            free(cls.methods[j].params);
+            free(cls.methods[j].rettype);
+            free(cls.methods[j].bytecode.code);
         }
         free(method_area.classes[i].methods);
     }
