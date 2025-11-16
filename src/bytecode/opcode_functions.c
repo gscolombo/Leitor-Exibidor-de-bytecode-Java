@@ -32,7 +32,7 @@ void ldc(Frame *f)
         val.t._float = c.value.f;
         break;
     case CONSTANT_String:
-        val.ref.array_ref = (primitive_type *)c.value.strref;
+        val.ref.array_ref.string = c.value.strref;
         break;
     // TODO: Handle class references
     default:
@@ -161,6 +161,39 @@ void iinc(Frame *f)
     f->pc += 3;
 }
 
+void i2T(Frame *f)
+{
+    int32_t value = pop_operand(f).t._int;
+    java_type result;
+
+    switch (f->method->bytecode.code[f->pc])
+    {
+    case 0x85:
+        result.t._long = (long)value;
+        break;
+    case 0x86:
+        result.t._float = (float)value;
+        break;
+    case 0x87:
+        result.t._double = (double)value;
+        break;
+    case 0x91:
+        result.t._int = (int32_t)(int8_t)value;
+        break;
+    case 0x92:
+        result.t._int = (int32_t)(u2)value;
+        break;
+    case 0x93:
+        result.t._int = (int32_t)(int16_t)value;
+        break;
+    default:
+        break;
+    }
+
+    push_operand(f, result);
+    f->pc++;
+}
+
 void iload_n(Frame *f)
 {
     u1 n = f->method->bytecode.code[f->pc] - 26;
@@ -168,9 +201,22 @@ void iload_n(Frame *f)
     f->pc++;
 }
 
-void aload_0(Frame *f)
+void aload_n(Frame *f)
 {
-    push_operand(f, f->local_variables[0]);
+    int idx = f->method->bytecode.code[f->pc] - 42;
+    push_operand(f, f->local_variables[idx]);
+    f->pc++;
+}
+
+void faload(Frame *f)
+{
+    int32_t idx = pop_operand(f).t._int;
+    ArrayRef arrayref = pop_operand(f).ref.array_ref.array;
+
+    java_type value;
+    value.t._float = ((float *)arrayref.values)[idx];
+    push_operand(f, value);
+
     f->pc++;
 }
 
@@ -183,24 +229,72 @@ void istore_n(Frame *f)
     f->pc++;
 }
 
+void astore_n(Frame *f)
+{
+    reference r = pop_operand(f).ref;
+    int idx = f->method->bytecode.code[f->pc] - 75;
+
+    f->local_variables[idx].ref = r;
+    f->pc++;
+}
+
+void fastore(Frame *f)
+{
+    float value = pop_operand(f).t._float;
+    int32_t idx = pop_operand(f).t._int;
+    ArrayRef arrayref = pop_operand(f).ref.array_ref.array;
+
+    if (arrayref.values)
+        ((float *)arrayref.values)[idx] = value;
+
+    f->pc++;
+}
+
+void tableswitch(Frame *f)
+{
+    u1 *code = f->method->bytecode.code;
+    u4 start = f->pc;
+
+    while ((++f->pc) % 4 != 0)
+        continue;
+
+    int32_t _default = get_tableswitch_32B_values(f->pc, code);
+    f->pc += 4;
+    int32_t low = get_tableswitch_32B_values(f->pc, code);
+    f->pc += 4;
+    int32_t high = get_tableswitch_32B_values(f->pc, code);
+    f->pc += 4;
+
+    int32_t i = pop_operand(f).t._int;
+
+    if (i < low || i > high)
+        f->pc = start + _default;
+    else
+        f->pc = start + get_tableswitch_32B_values(f->pc + 4 * i, code);
+}
+
 void getstatic(Frame *f)
 {
     u1 *code = f->method->bytecode.code;
     u2 idx = (code[f->pc + 1] << 8) | code[f->pc + 2];
 
-    char *field_ref = f->class->runtime_cp[idx - 1].value.strref;
+    const char *_field_ref = f->class->runtime_cp[idx - 1].value.strref;
+
+    char *field_ref = (char *)malloc((strlen(_field_ref) + 1) * sizeof(char));
+    strcpy(field_ref, _field_ref);
 
     // Standard output object field, don't need to initialize the class
     if (!strcmp(field_ref, "java/lang/System.out:Ljava/io/PrintStream;"))
     {
         java_type val;
-        val.ref.array_ref = (primitive_type *)field_ref;
+        val.ref.array_ref.string = field_ref;
         push_operand(f, val);
     }
 
     // TODO: Handle general field references
 
     f->pc += 3;
+    free(field_ref);
 }
 
 void invokespecial(Frame *f)
@@ -208,7 +302,10 @@ void invokespecial(Frame *f)
     u1 *code = f->method->bytecode.code;
     u2 idx = (code[f->pc + 1] << 8) | code[f->pc + 2];
 
-    char *resolved_method = f->class->runtime_cp[idx - 1].value.strref;
+    char *method_name = f->class->runtime_cp[idx - 1].value.strref;
+
+    char *resolved_method = (char *)malloc((strlen(method_name) + 1) * sizeof(char));
+    strcpy(resolved_method, method_name);
 
     // Super class is Object class (do nothing, except for popping the objectref value)
     if (!strcmp(resolved_method, "java/lang/Object.<init>:()V"))
@@ -225,7 +322,7 @@ void invokevirtual(Frame *f)
     u1 *code = f->method->bytecode.code;
     u2 idx = (code[f->pc + 1] << 8) | code[f->pc + 2];
 
-    char *method_ref = f->class->runtime_cp[idx - 1].value.strref;
+    const char *method_ref = f->class->runtime_cp[idx - 1].value.strref;
     size_t length = strlen(method_ref);
 
     char *method_name = (char *)malloc(sizeof(char) * length + 1);
@@ -244,7 +341,7 @@ void invokevirtual(Frame *f)
         case 'L':
             if (!strcmp(descriptor, "(Ljava/lang/String;)V"))
             {
-                char *str = (char *)pop_operand(f).ref.array_ref;
+                char *str = pop_operand(f).ref.array_ref.string;
                 printf("%s%c", str, e);
             }
             // TODO: Define logic for class references
@@ -253,12 +350,16 @@ void invokevirtual(Frame *f)
             int32_t i = pop_operand(f).t._int;
             printf("%i\n", i);
             break;
+        case 'F':
+            float _f = pop_operand(f).t._float;
+            printf("%g\n", _f);
+            break;
         // TODO: Define logic for other cases
         default:
             break;
         }
 
-        (void)pop_operand(f).ref.array_ref; // Pop PrintStream class reference
+        (void)pop_operand(f).ref.array_ref.string; // Pop PrintStream class reference
     }
 
     // TODO: Handle general class method invocation
@@ -272,19 +373,21 @@ void invokestatic(Frame *f)
     u1 *code = f->method->bytecode.code;
     u2 idx = (code[f->pc + 1] << 8) | code[f->pc + 2];
 
-    char *method_interface_ref = f->class->runtime_cp[idx - 1].value.strref;
+    const char *method_interface_ref = f->class->runtime_cp[idx - 1].value.strref;
+
+    char *ref = (char *)malloc((strlen(method_interface_ref) + 1) * sizeof(char));
+    strcpy(ref, method_interface_ref);
 
     // TODO: Check method constraints
 
-    char *class_name = strtok(method_interface_ref, ".");
+    char *class_name = strtok(ref, ".");
     Class *class = bootstrap_loader(NULL, f->method_area, class_name);
 
     if (class)
     {
-        char *method_name = strtok(method_interface_ref + strlen(class_name) + 1, ":"); // Get only method name
+        char *method_name = strtok(ref + strlen(class_name) + 1, ":"); // Get only method name
 
         Method *method = lookup_method(method_name, class);
-
         if (!method)
         {
             printf("Error: method not found.\n");
@@ -313,29 +416,69 @@ void invokestatic(Frame *f)
         printf("Error loading class.\n");
         exit(1);
     }
+
+    free(ref);
 }
 
-void tableswitch(Frame *f)
+void newarray(Frame *f)
 {
-    u1 *code = f->method->bytecode.code;
-    u4 start = f->pc;
+    u1 atype = f->method->bytecode.code[f->pc + 1];
+    u4 count = (u4)pop_operand(f).t._int;
 
-    while ((++f->pc) % 4 != 0)
-        continue;
+    void *array;
+    switch (atype)
+    {
+    case 4:
+        array = calloc(count, sizeof(bool));
+        break;
+    case 5:
+        array = calloc(count, sizeof(char));
+        break;
+    case 6:
+        array = calloc(count, sizeof(float));
+        break;
+    case 7:
+        array = calloc(count, sizeof(double));
+        break;
+    case 8:
+        array = calloc(count, sizeof(int8_t));
+        break;
+    case 9:
+        array = calloc(count, sizeof(int16_t));
+        break;
+    case 10:
+        array = calloc(count, sizeof(int32_t));
+        break;
+    case 11:
+        array = calloc(count, sizeof(int64_t));
+        break;
+    default:
+        break;
+    }
 
-    int32_t _default = get_tableswitch_32B_values(f->pc, code);
-    f->pc += 4;
-    int32_t low = get_tableswitch_32B_values(f->pc, code);
-    f->pc += 4;
-    int32_t high = get_tableswitch_32B_values(f->pc, code);
-    f->pc += 4;
+    if (array)
+    {
+        if (!f->method->ref_count)
+            f->method->refs = malloc(sizeof(void **));
+        else
+            realloc(f->method->refs, (sizeof(f->method->refs) + 1) + sizeof(void **));
 
-    int32_t i = pop_operand(f).t._int;
+        if (f->method->refs)
+        {
+            f->method->ref_count++;
+            f->method->refs[f->method->ref_count - 1] = array;
 
-    if (i < low || i > high)
-        f->pc = start + _default;
-    else
-        f->pc = start + get_tableswitch_32B_values(f->pc + 4 * i, code);
+            java_type arrayref;
+            ArrayRef a = {
+                .arraylength = count,
+                .dims = 1,
+                .values = array};
+            arrayref.ref.array_ref.array = a;
+            push_operand(f, arrayref);
+        }
+    }
+
+    f->pc += 2;
 }
 
 void ireturn(Frame *f)

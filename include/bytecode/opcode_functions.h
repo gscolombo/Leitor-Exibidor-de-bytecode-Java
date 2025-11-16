@@ -20,16 +20,24 @@ void isub(Frame *);
 void imul(Frame *);
 void iinc(Frame *);
 
+void i2T(Frame *);
+
 void iload_n(Frame *);
-void aload_0(Frame *);
+void aload_n(Frame *);
+void faload(Frame *);
+
 void istore_n(Frame *);
+void astore_n(Frame *);
+void fastore(Frame *);
+
+void tableswitch(Frame *);
 
 void getstatic(Frame *);
 void invokespecial(Frame *);
 void invokevirtual(Frame *);
 void invokestatic(Frame *);
 
-void tableswitch(Frame *);
+void newarray(Frame *);
 
 void ireturn(Frame *);
 void _return(Frame *);

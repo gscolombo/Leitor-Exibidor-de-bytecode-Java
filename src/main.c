@@ -1,10 +1,7 @@
-#include "utils.h"
 #include "reader.h"
 #include "writer.h"
 #include "free.h"
 #include "bootstrap_loader.h"
-#include "MethodArea.h"
-#include "Frame.h"
 #include "interpreter.h"
 
 int main(const int argc, char *argv[])
