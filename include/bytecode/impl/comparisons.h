@@ -7,4 +7,6 @@
 void if_cond(Frame *);
 void if_icmp_cond(Frame *);
 
+void dcmp_op(Frame *);
+
 #endif

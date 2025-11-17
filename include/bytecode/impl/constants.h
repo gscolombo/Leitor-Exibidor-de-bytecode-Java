@@ -6,6 +6,7 @@
 
 void iconst_i(Frame *);
 void fconst_f(Frame *);
+void dconst_d(Frame *);
 
 void bipush(Frame *);
 void sipush(Frame *);

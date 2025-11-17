@@ -9,4 +9,11 @@ void isub(Frame *);
 void imul(Frame *);
 void iinc(Frame *);
 
+void dadd(Frame *);
+void dsub(Frame *);
+void dmul(Frame *);
+void ddiv(Frame *);
+void dneg(Frame *);
+void drem(Frame *);
+
 #endif

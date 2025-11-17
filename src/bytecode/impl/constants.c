@@ -16,6 +16,14 @@ void fconst_f(Frame *f)
     f->pc++;
 }
 
+void dconst_d(Frame *f)
+{
+    dtype d = initialize_var(DOUBLE);
+    d.value.t._double = (float)(f->method->bytecode.code[f->pc] - 14);
+    push_operand(f, d);
+    f->pc++;
+}
+
 void bipush(Frame *f)
 {
     dtype bi = initialize_var(BYTE);

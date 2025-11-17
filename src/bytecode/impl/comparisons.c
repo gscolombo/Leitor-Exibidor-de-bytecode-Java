@@ -63,3 +63,26 @@ void if_icmp_cond(Frame *f)
 
     f->pc += icompare(cond, v1, v2, branch);
 }
+
+void dcmp_op(Frame *f)
+{
+    u1 l = f->method->bytecode.code[f->pc] - 152;
+
+    double v2 = pop_operand(f).value.t._double;
+    double v1 = pop_operand(f).value.t._double;
+
+    dtype result;
+    if (v1 > v2)
+        result.value.t._int = 1;
+    else if (v1 == v2)
+        result.value.t._int = 0;
+    else if (v1 < v2)
+        result.value.t._int = -1;
+    else if (l)
+        result.value.t._int = -1;
+    else
+        result.value.t._int = 1;
+
+    push_operand(f, result);
+    f->pc++;
+}

@@ -87,7 +87,10 @@ void invokevirtual(Frame *f)
             break;
         case 'D':
             double _d = pop_operand(f).value.t._double;
-            printf("%.1f%c", _d, e);
+            if (_d == (int64_t)_d)
+                printf("%.1f%c", _d, e);
+            else
+                printf("%.16g%c", _d, e);
             break;
         case 'C':
             u2 c = pop_operand(f).value.t._char;

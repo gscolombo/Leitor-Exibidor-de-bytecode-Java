@@ -47,3 +47,74 @@ void iinc(Frame *f)
     f->local_variables[idx].value.t._int += _const;
     f->pc += 3;
 }
+
+void dadd(Frame *f)
+{
+    double v2 = pop_operand(f).value.t._double;
+    double v1 = pop_operand(f).value.t._double;
+
+    dtype result;
+    result.value.t._double = v1 + v2;
+    push_operand(f, result);
+
+    f->pc++;
+}   
+
+void dsub(Frame *f)
+{
+    double v2 = pop_operand(f).value.t._double;
+    double v1 = pop_operand(f).value.t._double;
+
+    dtype result;
+    result.value.t._double = v1 - v2;
+    push_operand(f, result);
+
+    f->pc++;
+}   
+
+void dmul(Frame *f)
+{
+    double v2 = pop_operand(f).value.t._double;
+    double v1 = pop_operand(f).value.t._double;
+
+    dtype result;
+    result.value.t._double = v1 * v2;
+    push_operand(f, result);
+
+    f->pc++;
+}   
+
+void ddiv(Frame *f)
+{
+    double v2 = pop_operand(f).value.t._double;
+    double v1 = pop_operand(f).value.t._double;
+
+    dtype result;
+    result.value.t._double = v1 / v2;
+    push_operand(f, result);
+
+    f->pc++;
+}
+
+void dneg(Frame *f)
+{
+    double value = pop_operand(f).value.t._double;
+
+    dtype result;
+    result.value.t._double = -value;
+    push_operand(f, result);
+
+    f->pc++;
+}  
+
+void drem(Frame *f)
+{
+    double v2 = pop_operand(f).value.t._double;
+    double v1 = pop_operand(f).value.t._double;
+
+    dtype result;
+    result.value.t._double = fmod(v1, v2);
+    push_operand(f, result);
+
+    f->pc++;
+}   
