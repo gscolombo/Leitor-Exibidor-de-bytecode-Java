@@ -4,6 +4,26 @@
 #include "uinteger.h"
 #include "MethodArea.h"
 
+typedef enum cat
+{
+    CAT1,
+    CAT2
+} cat;
+
+typedef enum type_enum
+{
+    BYTE,
+    SHORT,
+    INT,
+    LONG,
+    CHAR,
+    FLOAT,
+    DOUBLE,
+    BOOLEAN,
+    RETURN_ADDRESS,
+    REFERENCE
+} type_enum;
+
 typedef union
 {
     int8_t byte;
@@ -55,5 +75,11 @@ typedef union java_type
     reference ref;
     primitive_type t;
 } java_type;
+
+typedef struct dtype
+{
+    cat cat;
+    java_type value;
+} dtype;
 
 #endif

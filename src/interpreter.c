@@ -6,23 +6,43 @@ void execute_method(Frame *f)
     u4 l = f->method->bytecode.code_length;
 
     while (f->pc < l)
+    {
+        printf("%u: %s\n", f->pc, opcode_table[code[f->pc]].mnemonic);
         opcode_table[code[f->pc]].exec(f);
+    }
 }
 
-inline void push_operand(Frame *f, java_type val)
+inline void push_operand(Frame *f, dtype d)
 {
     f->operand_stack.top++;
-    f->operand_stack.stack[f->operand_stack.top] = val;
+    f->operand_stack.stack[f->operand_stack.top] = d;
 }
 
-java_type pop_operand(Frame *f)
+dtype pop_operand(Frame *f)
 {
-    java_type val = f->operand_stack.stack[f->operand_stack.top];
+    dtype d = f->operand_stack.stack[f->operand_stack.top];
     f->operand_stack.top--;
-    return val;
+    return d;
 }
 
-void invoke_method(Class *class, Method *method, java_type *local_variables, Frame *caller, MethodArea *method_area)
+dtype initialize_var(type_enum t)
+{
+    dtype var;
+    switch (t)
+    {
+    case LONG:
+    case DOUBLE:
+        var.cat = CAT2;
+        break;
+    default:
+        var.cat = CAT1;
+        break;
+    }
+
+    return var;
+}
+
+void invoke_method(Class *class, Method *method, dtype *local_variables, Frame *caller, MethodArea *method_area)
 {
     // Create frame...
     Frame *frame = (Frame *)malloc(sizeof(Frame));
@@ -36,7 +56,7 @@ void invoke_method(Class *class, Method *method, java_type *local_variables, Fra
     OperandStack op_stack;
     op_stack.top = -1;
     op_stack.capacity = frame->method->bytecode.max_stack;
-    op_stack.stack = (java_type *)calloc(frame->method->bytecode.max_stack, sizeof(java_type));
+    op_stack.stack = (dtype *)calloc(frame->method->bytecode.max_stack, sizeof(dtype));
 
     frame->operand_stack = op_stack;
 

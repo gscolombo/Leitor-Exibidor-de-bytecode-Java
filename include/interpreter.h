@@ -3,12 +3,14 @@
 
 #include "opcode_table.h"
 
-void invoke_method(Class *, Method *, java_type *, Frame *, MethodArea *);
+void invoke_method(Class *, Method *, dtype *, Frame *, MethodArea *);
 
 void execute_method(Frame *);
 
-void push_operand(Frame *, java_type);
+void push_operand(Frame *, dtype);
 
-java_type pop_operand(Frame *);
+dtype pop_operand(Frame *);
+
+dtype initialize_var(type_enum);
 
 #endif

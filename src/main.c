@@ -35,7 +35,7 @@ int main(const int argc, char *argv[])
                 exit(1);
             }
 
-            java_type *local_vars = (java_type *)calloc(main_method->bytecode.max_locals, sizeof(java_type));
+            dtype *local_vars = (dtype *)calloc(main_method->bytecode.max_locals, sizeof(dtype));
             invoke_method(initial_class, main_method, local_vars, NULL, &method_area);
         }
 

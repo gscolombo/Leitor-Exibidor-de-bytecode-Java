@@ -54,9 +54,11 @@ Class *create_and_load_class(const char *path)
             break;
         case CONSTANT_Long:
             cls->runtime_cp[i].value.l = cf.constant_pool[i].info._8Bn.number.l;
+            i++;
             break;
         case CONSTANT_Double:
             cls->runtime_cp[i].value.d = cf.constant_pool[i].info._8Bn.number.d;
+            i++;
             break;
         default:
             cls->runtime_cp[i].value.strref = get_constant_UTF8_value(i + 1, cf.constant_pool);
@@ -72,7 +74,7 @@ Class *create_and_load_class(const char *path)
         cls->fields[i].name = get_constant_UTF8_value(cf.fields[i].name_index, cf.constant_pool);
         cls->fields[i].type = get_constant_UTF8_value(cf.fields[i].descriptor_index, cf.constant_pool);
         cls->fields[i].access_flags = cf.fields[i].access_flags;
-        
+
         if (cf.fields[i].access_flags & 0x0008) // Initialize constant value of static field
         {
             java_type _const;
