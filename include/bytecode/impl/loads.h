@@ -6,6 +6,7 @@
 
 void _load(Frame *);
 void iload_n(Frame *);
+void dload_n(Frame *);
 void aload_n(Frame *);
 void Taload(Frame *);
 

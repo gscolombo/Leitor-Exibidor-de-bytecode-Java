@@ -8,6 +8,7 @@ void istore(Frame *);
 void astore(Frame *);
 
 void istore_n(Frame *);
+void dstore_n(Frame *);
 void astore_n(Frame *);
 
 void Tastore(Frame *);

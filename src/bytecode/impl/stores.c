@@ -27,6 +27,15 @@ void istore_n(Frame *f)
     f->pc++;
 }
 
+void dstore_n(Frame *f)
+{
+    double value = pop_operand(f).value.t._double;
+    int idx = f->method->bytecode.code[f->pc] - 71;
+
+    f->local_variables[idx].value.t._double = value;
+    f->pc++;
+}
+
 void astore_n(Frame *f)
 {
     reference r = pop_operand(f).value.ref;

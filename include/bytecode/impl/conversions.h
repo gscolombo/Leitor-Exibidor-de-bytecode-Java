@@ -5,5 +5,6 @@
 #include "interpreter.h"
 
 void i2T(Frame *);
+void d2T(Frame *);
 
 #endif

@@ -14,6 +14,14 @@ void iload_n(Frame *f)
     f->pc++;
 }
 
+void dload_n(Frame *f)
+{
+    u1 n = f->method->bytecode.code[f->pc] - 38;
+    push_operand(f, f->local_variables[n]);
+
+    f->pc++;
+}
+
 void aload_n(Frame *f)
 {
     u1 idx = f->method->bytecode.code[f->pc] - 42;
