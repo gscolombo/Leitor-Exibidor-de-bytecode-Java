@@ -4,7 +4,8 @@ DEBUG_MODE = false
 
 # Find all subdirectories in include (including nested ones)
 INCLUDE_DIRS = $(shell find include -type d)
-CFLAGS = $(addprefix -I,$(INCLUDE_DIRS)) -std=c99 -Wall -Wextra
+CFLAGS = $(addprefix -I,$(INCLUDE_DIRS)) -std=c99 -Wall -Wextra -m32
+OFLAGS = -lm -m32
 DEBUG_FLAGS = -fsanitize=address -g
 LDFLAGS = -static-libasan
 
@@ -29,9 +30,9 @@ $(BUILD_DIR):
 # Link object files into the executable
 $(TARGET): $(OBJS)
 ifeq ($(DEBUG_MODE), true)
-	@$(CC) $(OBJS) -o $@ $(DEBUG_FLAGS) $(LDFLAGS)
+	@$(CC) $(OBJS) -o $@ $(DEBUG_FLAGS) $(LDFLAGS) $(OFLAGS)
 else
-	@$(CC) $(OBJS) -o $@ -lm
+	@$(CC) $(OBJS) -o $@ $(OFLAGS)
 endif
 
 # Compile each source file to an object file

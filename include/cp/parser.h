@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <math.h>
 
+#include "reader.h"
 #include "constants.h"
 
 /** @file parser.h
@@ -63,7 +64,7 @@ float decode_float_bytes(u4);
  * 
  * @return `long` correspondente à sequência de bytes.
  */
-long decode_long_bytes(u4, u4);
+int64_t decode_long_bytes(u4, u4);
 
 /**
  * @brief Decodifica uma sequência de bytes correspondente a um valor do tipo double.

@@ -1,5 +1,4 @@
 #include "parser.h"
-#include "reader.h"
 
 cp_info *parse_constant_pool(FILE *fptr, u2 count)
 {
@@ -185,7 +184,7 @@ float decode_float_bytes(u4 b)
         return NAN;
     else
     {
-        int s, e, m;
+        int32_t s, e, m;
         s = ((b >> 31) == 0) ? 1 : -1;
         e = ((b >> 23) & 0xFF);
         m = (e == 0) ? (b & 0x7FFFFF) << 1 : (b & 0x7FFFFF) | 0x800000;
@@ -194,28 +193,28 @@ float decode_float_bytes(u4 b)
     }
 }
 
-long decode_long_bytes(u4 hb, u4 lb)
+int64_t decode_long_bytes(u4 hb, u4 lb)
 {
-    return ((long)hb << 32) | lb;
+    return ((int64_t)hb << 32) | lb;
 }
 
 double decode_double_bytes(u4 hb, u4 lb)
 {
-    long b = decode_long_bytes(hb, lb);
+    int64_t b = decode_long_bytes(hb, lb);
 
     if (b == 0x7ff0000000000000L)
         return INFINITY;
     else if (b == (long)0xfff0000000000000L)
         return -INFINITY;
     else if (((0x7ff0000000000001L <= b) && (b <= 0x7fffffffffffffffL)) ||
-             (((long)0xfff0000000000001L <= b) && (b <= (long)0xffffffffffffffffL)))
+             (((int64_t)0xfff0000000000001L <= b) && (b <= (int64_t)0xffffffffffffffffL)))
         return NAN;
     else
     {
-        int s, e;
-        long m;
+        int32_t s, e;
+        int64_t m;
         s = ((b >> 63) == 0) ? 1 : -1;
-        e = (int)((b >> 52) & 0x7ffL);
+        e = (int32_t)((b >> 52) & 0x7ffL);
         m = (e == 0) ? (b & 0xfffffffffffffL) << 1 : (b & 0xfffffffffffffL) | 0x10000000000000L;
 
         return s * m * pow(2, e - 1075);
