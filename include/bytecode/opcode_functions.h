@@ -13,7 +13,7 @@ void fconst_f(Frame *);
 void bipush(Frame *);
 void sipush(Frame *);
 
-void ldc(Frame *);
+void ldc_(Frame *);
 
 void _load(Frame *);
 

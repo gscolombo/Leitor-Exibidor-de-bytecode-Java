@@ -35,12 +35,19 @@ void sipush(Frame *f)
     f->pc += 3;
 }
 
-void ldc(Frame *f)
+void ldc_(Frame *f)
 {
-    u1 index = f->method->bytecode.code[f->pc + 1];
-    RuntimeConstant c = f->class->runtime_cp[index - 1];
+    u1 mode = f->method->bytecode.code[f->pc] - 18;
 
     dtype val;
+
+    u2 index;
+    u1 b1 = f->method->bytecode.code[f->pc + 1];
+    u1 b2 = f->method->bytecode.code[f->pc + 2];
+
+    index = mode > 0 ? (b1 << 8) | b2 : b1;
+
+    RuntimeConstant c = f->class->runtime_cp[index - 1];
 
     switch (c.type)
     {
@@ -52,6 +59,14 @@ void ldc(Frame *f)
         val = initialize_var(FLOAT);
         val.value.t._float = c.value.f;
         break;
+    case CONSTANT_Long:
+        val = initialize_var(LONG);
+        val.value.t._long = c.value.l;
+        break;
+    case CONSTANT_Double:
+        val = initialize_var(DOUBLE);
+        val.value.t._double = c.value.d;
+        break;
     case CONSTANT_String:
         val = initialize_var(REFERENCE);
         val.value.ref.array_ref.string = c.value.strref;
@@ -62,7 +77,7 @@ void ldc(Frame *f)
     }
 
     push_operand(f, val);
-    f->pc += 2;
+    f->pc += mode > 0 ? 3 : 2;
 }
 
 void _load(Frame *f)
@@ -492,9 +507,17 @@ void invokevirtual(Frame *f)
             int32_t i = pop_operand(f).value.t._int;
             printf("%i%c", i, e);
             break;
+        case 'J':
+            int64_t l = pop_operand(f).value.t._long;
+            printf("%li%c", l, e);
+            break;
         case 'F':
             float _f = pop_operand(f).value.t._float;
             printf("%.1f%c", _f, e);
+            break;
+        case 'D':
+            double _d = pop_operand(f).value.t._double;
+            printf("%.1f%c", _d, e);
             break;
         case 'C':
             u2 c = pop_operand(f).value.t._char;

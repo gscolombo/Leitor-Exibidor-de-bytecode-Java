@@ -20,9 +20,9 @@ const OpcodeInfo opcode_table[202] = {
     {"dconst_1"},
     {"bipush", &bipush},
     {"sipush", &sipush},
-    {"ldc", &ldc},
-    {"ldc_w"},
-    {"ldc2_w"},
+    {"ldc", &ldc_},
+    {"ldc_w", &ldc_},
+    {"ldc2_w", &ldc_},
 
     /* Loads */
     {"iload", &_load},

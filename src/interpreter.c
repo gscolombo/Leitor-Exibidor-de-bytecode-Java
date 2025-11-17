@@ -7,7 +7,7 @@ void execute_method(Frame *f)
 
     while (f->pc < l)
     {
-        printf("%u: %s\n", f->pc, opcode_table[code[f->pc]].mnemonic);
+        // printf("%u: %s\n", f->pc, opcode_table[code[f->pc]].mnemonic);
         opcode_table[code[f->pc]].exec(f);
     }
 }
@@ -22,6 +22,7 @@ dtype pop_operand(Frame *f)
 {
     dtype d = f->operand_stack.stack[f->operand_stack.top];
     f->operand_stack.top--;
+
     return d;
 }
 
