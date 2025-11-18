@@ -215,7 +215,7 @@ const OpcodeInfo opcode_table[202] = {
 
     /* Extended */
     {"wide"},
-    {"multianewarray"},
+    {"multianewarray", &multianewarray},
     {"ifnull"},
     {"ifnonnull"},
     {"goto_w"},

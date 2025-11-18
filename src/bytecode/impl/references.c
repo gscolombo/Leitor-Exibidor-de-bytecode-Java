@@ -152,31 +152,40 @@ void newarray(Frame *f)
     u1 atype = f->method->bytecode.code[f->pc + 1];
     u4 count = (u4)pop_operand(f).value.t._int;
 
+    int t;
     void *array;
     switch (atype)
     {
-    case 4:
+    case 4: // boolean
+        t = CONSTANT_Integer;
         array = calloc(count, sizeof(bool));
         break;
-    case 5:
+    case 5: // char
+        t = CONSTANT_Integer;
         array = calloc(count, sizeof(u2));
         break;
-    case 6:
+    case 6: // float
+        t = CONSTANT_Float;
         array = calloc(count, sizeof(float));
         break;
-    case 7:
+    case 7: // double
+        t = CONSTANT_Double;
         array = calloc(count, sizeof(double));
         break;
-    case 8:
+    case 8: // byte
+        t = CONSTANT_Integer;
         array = calloc(count, sizeof(int8_t));
         break;
-    case 9:
+    case 9: // short
+        t = CONSTANT_Integer;
         array = calloc(count, sizeof(int16_t));
         break;
-    case 10:
+    case 10: // int
+        t = CONSTANT_Integer;
         array = calloc(count, sizeof(int32_t));
         break;
-    case 11:
+    case 11: // long
+        t = CONSTANT_Long;
         array = calloc(count, sizeof(int64_t));
         break;
     default:
@@ -194,6 +203,7 @@ void newarray(Frame *f)
 
             dtype arrayref = initialize_var(REFERENCE);
             ArrayRef a = {
+                .t = t,
                 .arraylength = count,
                 .dims = 1,
                 .values = array};

@@ -10,5 +10,6 @@
 #include "bytecode/impl/references.h"
 #include "bytecode/impl/stack.h"
 #include "bytecode/impl/stores.h"
+#include "bytecode/impl/extended.h"
 
 #endif

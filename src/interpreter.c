@@ -22,7 +22,6 @@ dtype pop_operand(Frame *f)
 {
     dtype d = f->operand_stack.stack[f->operand_stack.top];
     f->operand_stack.top--;
-
     return d;
 }
 

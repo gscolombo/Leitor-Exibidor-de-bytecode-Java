@@ -55,9 +55,10 @@ typedef struct ObjectRef
 
 typedef struct ArrayRef
 {
+    u1 t;
     u4 arraylength;
     u1 dims;
-    void *values; // If dims > 1, it must point to an ArrayRef struct
+    void *values; // If dims > 1, it must point to a reference
 } ArrayRef;
 
 typedef union reference

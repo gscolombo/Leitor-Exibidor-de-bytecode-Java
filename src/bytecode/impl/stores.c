@@ -29,6 +29,7 @@ void istore_n(Frame *f)
 
 void dstore_n(Frame *f)
 {
+    (void)pop_operand(f).value.t._double;
     double value = pop_operand(f).value.t._double;
     int idx = f->method->bytecode.code[f->pc] - 71;
 
@@ -48,7 +49,11 @@ void astore_n(Frame *f)
 void Tastore(Frame *f)
 {
     u1 type = f->method->bytecode.code[f->pc] - 79;
-    java_type value = pop_operand(f).value;
+    dtype op = pop_operand(f);
+
+    if (op.cat == CAT2)
+        (void)pop_operand(f);
+
     int32_t idx = pop_operand(f).value.t._int;
     ArrayRef arrayref = pop_operand(f).value.ref.array_ref.array;
 
@@ -56,28 +61,28 @@ void Tastore(Frame *f)
         switch (type)
         {
         case 0:
-            ((int32_t *)arrayref.values)[idx] = value.t._int;
+            ((int32_t *)arrayref.values)[idx] = op.value.t._int;
             break;
         case 1:
-            ((int64_t *)arrayref.values)[idx] = value.t._long;
+            ((int64_t *)arrayref.values)[idx] = op.value.t._long;
             break;
         case 2:
-            ((float *)arrayref.values)[idx] = value.t._float;
+            ((float *)arrayref.values)[idx] = op.value.t._float;
             break;
         case 3:
-            ((double *)arrayref.values)[idx] = value.t._double;
+            ((double *)arrayref.values)[idx] = op.value.t._double;
             break;
         case 4:
-            ((reference *)arrayref.values)[idx] = value.ref;
+            ((reference *)arrayref.values)[idx] = op.value.ref;
             break;
         case 5:
-            ((int8_t *)arrayref.values)[idx] = value.t.byte;
+            ((int8_t *)arrayref.values)[idx] = op.value.t.byte;
             break;
         case 6:
-            ((u2 *)arrayref.values)[idx] = value.t._char;
+            ((u2 *)arrayref.values)[idx] = op.value.t._char;
             break;
         case 7:
-            ((int16_t *)arrayref.values)[idx] = value.t._short;
+            ((int16_t *)arrayref.values)[idx] = op.value.t._short;
             break;
         default:
             break;
