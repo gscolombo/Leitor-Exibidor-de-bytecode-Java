@@ -7,6 +7,7 @@
 
 void _goto(Frame *);
 void tableswitch(Frame *);
+void lookupswitch(Frame *);
 void Treturn(Frame *);
 void _return(Frame *);
 

@@ -152,11 +152,11 @@ void show_opcodes(const u1 *code, u4 length, const cp_info *cp)
             while ((++i) % 4 != 0)
                 continue;
 
-            int32_t _default = get_tableswitch_32B_values(i, code);
+            int32_t _default = get_switch_32B_values(i, code);
             i += 4;
-            int32_t low = get_tableswitch_32B_values(i, code);
+            int32_t low = get_switch_32B_values(i, code);
             i += 4;
-            int32_t high = get_tableswitch_32B_values(i, code);
+            int32_t high = get_switch_32B_values(i, code);
             i += 4;
 
             if (low <= high)
@@ -165,7 +165,7 @@ void show_opcodes(const u1 *code, u4 length, const cp_info *cp)
 
                 for (int32_t j = 0; j < high - low + 1; j++)
                 {
-                    u4 jump_offset = get_tableswitch_32B_values(i, code);
+                    u4 jump_offset = get_switch_32B_values(i, code);
                     i += 4;
                     printf("                 %4u: %u (%c%i)\n", j, start + jump_offset, jump_offset > 0 ? '+' : '\0', jump_offset);
                 }

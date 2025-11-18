@@ -185,7 +185,7 @@ const OpcodeInfo opcode_table[202] = {
     {"jsr"},
     {"ret"},
     {"tableswitch", &tableswitch},
-    {"lookupswitch"},
+    {"lookupswitch", &lookupswitch},
     {"ireturn", &Treturn},
     {"lreturn", &Treturn},
     {"freturn", &Treturn},
