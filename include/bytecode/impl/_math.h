@@ -9,6 +9,8 @@ void isub(Frame *);
 void imul(Frame *);
 void iinc(Frame *);
 
+void lsub(Frame *);
+
 void dadd(Frame *);
 void dsub(Frame *);
 void dmul(Frame *);

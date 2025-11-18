@@ -10,7 +10,7 @@
 
 Class *lookup_class(const char *, const MethodArea *);
 
-Method *lookup_method(const char *, const Class *);
+Method *lookup_method(const char *, const char *, const Class *);
 
 Class *create_and_load_class(const char *);
 

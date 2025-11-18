@@ -34,9 +34,12 @@ void invokespecial(Frame *f)
     char *resolved_method = (char *)malloc((strlen(method_name) + 1) * sizeof(char));
     strcpy(resolved_method, method_name);
 
-    // Super class is Object class (do nothing, except for popping the objectref value)
+    // Resolved method is Object instance initialization method (do nothing, except for popping the objectref value)
     if (!strcmp(resolved_method, "java/lang/Object.<init>:()V"))
         pop_operand(f);
+
+    if (!strcmp(resolved_method, "java/lang/StringBuffer.<init>:()V"))
+        pop_operand(f); // Already initialized
 
     // TODO: Finish (super) class initialization
 
@@ -63,47 +66,17 @@ void invokevirtual(Frame *f)
         char e = newline ? '\n' : '\0';
         char *descriptor = strtok(NULL, ":");
         char rettype = *(descriptor + 1);
-        switch (rettype)
-        {
-        case 'L':
-            if (!strcmp(descriptor, "(Ljava/lang/String;)V"))
-            {
-                char *str = pop_operand(f).value.ref.array_ref.string;
-                printf("%s%c", str, e);
-            }
-            // TODO: Define logic for class references
-            break;
-        case 'I':
-            int32_t i = pop_operand(f).value.t._int;
-            printf("%i%c", i, e);
-            break;
-        case 'J':
-            int64_t l = pop_operand(f).value.t._long;
-            printf("%lli%c", l, e);
-            break;
-        case 'F':
-            float _f = pop_operand(f).value.t._float;
-            printf("%.1f%c", _f, e);
-            break;
-        case 'D':
-            double _d = pop_operand(f).value.t._double;
-            if (_d == (int64_t)_d)
-                printf("%.1f%c", _d, e);
-            else
-                printf("%.16g%c", _d, e);
-            break;
-        case 'C':
-            u2 c = pop_operand(f).value.t._char;
-            printf("%c%c", c, e);
-            break;
-        // TODO: Define logic for other cases
-        default:
-            printf("%c", e);
-            break;
-        }
+
+        _print(f, descriptor, rettype, e);
 
         (void)pop_operand(f); // Pop PrintStream class reference
     }
+
+    if (!strcmp(method_name, "java/lang/StringBuffer.append"))
+        strbuf_append(f);
+
+    if (!strcmp(method_name, "java/lang/StringBuffer.toString"))
+        strbuf_tostring(f);
 
     // TODO: Handle general class method invocation
 
@@ -129,8 +102,17 @@ void invokestatic(Frame *f)
     if (class)
     {
         char *method_name = strtok(ref + strlen(class_name) + 1, ":"); // Get only method name
+        char *method_descriptor = strtok(NULL, ":");
 
-        Method *method = lookup_method(method_name, class);
+        size_t l = 1;
+        char *desc = method_descriptor;
+        while (*desc++ != ')')
+            l++;
+
+        char *method_params = (char *)calloc(l + 1, sizeof(char));
+        strncpy(method_params, method_descriptor, l);
+
+        Method *method = lookup_method(method_name, method_params, class);
         if (!method)
         {
             printf("Error: method not found.\n");
@@ -147,12 +129,14 @@ void invokestatic(Frame *f)
         dtype *local_variables = (dtype *)calloc(nargs, sizeof(dtype));
 
         for (u2 i = 0; i < nargs; i++)
-            local_variables[i] = pop_operand(f);
+            local_variables[nargs - (i + 1)] = pop_operand(f);
 
         u4 last_pc = f->pc;
 
         invoke_method(class, method, local_variables, f, f->method_area);
         f->pc = last_pc + 3;
+
+        free(method_params);
     }
     else
     {
@@ -201,10 +185,7 @@ void newarray(Frame *f)
 
     if (array)
     {
-        if (!f->method->ref_count)
-            f->method->refs = malloc(sizeof(void **));
-        else
-            f->method->refs = (void **)realloc(f->method->refs, ((f->method->ref_count + 1) * sizeof(void **)));
+        allocref(f);
 
         if (f->method->refs)
         {
@@ -230,4 +211,21 @@ void _arraylength(Frame *f)
     length.value.t._int = pop_operand(f).value.ref.array_ref.array.arraylength;
     push_operand(f, length);
     f->pc++;
+}
+
+void new(Frame *f)
+{
+    u1 b1 = f->method->bytecode.code[f->pc + 1];
+    u1 b2 = f->method->bytecode.code[f->pc + 2];
+
+    u2 idx = (b1 << 8) | b2;
+
+    char *c = f->class->runtime_cp[idx - 1].value.strref;
+
+    dtype objectref = initialize_var(REFERENCE);
+    if (!strcmp(c, "java/lang/StringBuffer"))
+        init_stringbuffer(f, &objectref);
+
+    push_operand(f, objectref);
+    f->pc += 3;
 }

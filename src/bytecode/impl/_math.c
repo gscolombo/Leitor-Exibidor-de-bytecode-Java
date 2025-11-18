@@ -48,6 +48,18 @@ void iinc(Frame *f)
     f->pc += 3;
 }
 
+void lsub(Frame *f)
+{
+    int64_t v2 = pop_operand(f).value.t._long;
+    int64_t v1 = pop_operand(f).value.t._long;
+
+    dtype result;
+    result.value.t._long = v1 - v2;
+    push_operand(f, result);
+
+    f->pc++;
+}
+
 void dadd(Frame *f)
 {
     double v2 = pop_operand(f).value.t._double;
@@ -58,7 +70,7 @@ void dadd(Frame *f)
     push_operand(f, result);
 
     f->pc++;
-}   
+}
 
 void dsub(Frame *f)
 {
@@ -70,7 +82,7 @@ void dsub(Frame *f)
     push_operand(f, result);
 
     f->pc++;
-}   
+}
 
 void dmul(Frame *f)
 {
@@ -82,7 +94,7 @@ void dmul(Frame *f)
     push_operand(f, result);
 
     f->pc++;
-}   
+}
 
 void ddiv(Frame *f)
 {
@@ -105,7 +117,7 @@ void dneg(Frame *f)
     push_operand(f, result);
 
     f->pc++;
-}  
+}
 
 void drem(Frame *f)
 {
@@ -117,4 +129,4 @@ void drem(Frame *f)
     push_operand(f, result);
 
     f->pc++;
-}   
+}

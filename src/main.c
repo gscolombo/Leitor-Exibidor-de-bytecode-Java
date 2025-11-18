@@ -29,7 +29,7 @@ int main(const int argc, char *argv[])
         if (initial_class != NULL)
         {
             // Invoke main method
-            Method *main_method = lookup_method("main", initial_class);
+            Method *main_method = lookup_method("main", "([Ljava/lang/String;)", initial_class);
             if (!main_method) {
                 printf("Método \"main\" não encontrado.\n");
                 exit(1);

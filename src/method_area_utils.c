@@ -11,11 +11,12 @@ Class *lookup_class(const char *class_name, const MethodArea *method_area)
     return NULL;
 }
 
-Method *lookup_method(const char *method_name, const Class *class)
+Method *lookup_method(const char *method_name, const char *method_params, const Class *class)
 {
     for (u2 i = 0; i < class->method_count; i++)
     {
-        if (!strcmp(method_name, class->methods[i].name))
+        if (!strcmp(method_name, class->methods[i].name) &&
+            !strcmp(method_params, class->methods[i].params))
             return &class->methods[i];
     }
 
@@ -131,8 +132,22 @@ Class *create_and_load_class(const char *path)
         cls->methods[i].name = get_constant_UTF8_value(cf.methods[i].name_index, cf.constant_pool);
 
         char *descriptor = get_constant_UTF8_value(cf.methods[i].descriptor_index, cf.constant_pool);
-        cls->methods[i].params = strtok(descriptor, ":");
-        cls->methods[i].rettype = strtok(NULL, ":");
+
+        size_t lparams = 1;
+        char *desc = descriptor;
+        while (*desc++ != ')')
+            lparams++;
+
+        size_t lret = strlen(descriptor) - lparams;
+
+        cls->methods[i].params = (char *)calloc((lparams + 1), sizeof(char));
+        cls->methods[i].rettype = (char *)calloc((lret + 1), sizeof(char));
+
+        if (cls->methods[i].params && cls->methods[i].rettype)
+        {
+            strncpy(cls->methods[i].params, descriptor, lparams);
+            strncpy(cls->methods[i].rettype, descriptor + lparams, lret);
+        }
 
         cls->methods[i].access_flags = cf.methods[i].access_flags;
         cls->methods[i].bytecode.max_locals = cf.methods[i].attributes->info.Code.max_locals;
@@ -143,6 +158,8 @@ Class *create_and_load_class(const char *path)
         memcpy(cls->methods[i].bytecode.code, cf.methods[i].attributes->info.Code.code, cf.methods[i].attributes->info.Code.code_length);
 
         cls->methods[i].ref_count = 0;
+
+        free(descriptor);
     }
 
     free_classfile(&cf);

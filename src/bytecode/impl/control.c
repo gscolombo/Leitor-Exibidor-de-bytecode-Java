@@ -29,11 +29,36 @@ void tableswitch(Frame *f)
         f->pc = start + get_tableswitch_32B_values(f->pc + 4 * i, code);
 }
 
-void ireturn(Frame *f)
+void Treturn(Frame *f)
 {
-    dtype ret;
-    ret = pop_operand(f);
-    push_operand(f->previous_frame, ret);
+    dtype ret = pop_operand(f);
+
+    if (f->method->bytecode.code[f->pc] == 0xb0)
+    {
+        dtype retcpy;
+        if (!strcmp(f->method->rettype, "Ljava/lang/String;"))
+        {
+            allocref(f->previous_frame);
+            if (f->previous_frame->method->refs)
+            {
+                f->previous_frame->method->ref_count++;
+                u4 li = f->previous_frame->method->ref_count - 1;
+
+                char *str = ret.value.ref.array_ref.string;
+                size_t length = strlen(str) + 1;
+                retcpy.value.ref.array_ref.string = (char *)malloc(length * sizeof(char));
+                memcpy(retcpy.value.ref.array_ref.string, str, length);
+                f->previous_frame->method->refs[li] = retcpy.value.ref.array_ref.string;
+            }
+        }
+
+        // TODO: Handle object and array references
+
+        push_operand(f->previous_frame, retcpy);
+    }
+    else
+        push_operand(f->previous_frame, ret);
+
     f->pc = f->method->bytecode.code_length;
 }
 

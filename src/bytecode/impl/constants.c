@@ -70,10 +70,12 @@ void ldc_(Frame *f)
     case CONSTANT_Long:
         val = initialize_var(LONG);
         val.value.t._long = c.value.l;
+        push_operand(f, val);
         break;
     case CONSTANT_Double:
         val = initialize_var(DOUBLE);
         val.value.t._double = c.value.d;
+        push_operand(f, val);
         break;
     case CONSTANT_String:
         val = initialize_var(REFERENCE);

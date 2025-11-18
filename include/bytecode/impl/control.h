@@ -7,7 +7,7 @@
 
 void _goto(Frame *);
 void tableswitch(Frame *);
-void ireturn(Frame *);
+void Treturn(Frame *);
 void _return(Frame *);
 
 #endif
