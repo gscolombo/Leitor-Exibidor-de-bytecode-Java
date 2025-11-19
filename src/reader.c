@@ -49,7 +49,7 @@ FILE *open_classfile(const char *path)
         if (strcmp(ext, ".class") != 0)
         {
             printf("Wrong file format. Give the path of a \".class\" file.\n");
-            return NULL;
+            exit(1);
         }
 
         return fopen(path, "rb");

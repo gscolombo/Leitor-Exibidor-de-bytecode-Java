@@ -52,6 +52,7 @@ void show_opcodes(const u1 *code, u4 length, const cp_info *cp)
         case 0xB6: // invokevirtual
         case 0xB7: // invokespecial
         case 0xB8: // invokestatic
+        case 0xB9: // invokeinterface
         case 0xBB: // new
         case 0xBD: // anewarray
             if (i + 2 < length)

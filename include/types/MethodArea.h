@@ -12,17 +12,19 @@ typedef struct FieldImpl
     char *name;
     char *type;
     u2 access_flags;
-    java_type constant_value;
+    java_type value;
 } Field;
 
 typedef struct MethodImpl
 {
     char *name;
+    char *descriptor;
     char *params;
     char *rettype;
     u2 access_flags;
     struct
     {
+        u2 nargs;
         u2 max_stack;
         u2 max_locals;
         u4 code_length;

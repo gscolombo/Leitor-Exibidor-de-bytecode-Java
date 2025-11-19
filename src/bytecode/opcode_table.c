@@ -201,7 +201,7 @@ const OpcodeInfo opcode_table[202] = {
     {"invokevirtual", &invokevirtual},
     {"invokespecial", &invokespecial},
     {"invokestatic", &invokestatic},
-    {"invokeinterface"},
+    {"invokeinterface", &invokeinterface},
     {"invokedynamic"},
     {"new", &new},
     {"newarray", &newarray},

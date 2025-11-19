@@ -29,21 +29,45 @@ void invokespecial(Frame *f)
     u1 *code = f->method->bytecode.code;
     u2 idx = (code[f->pc + 1] << 8) | code[f->pc + 2];
 
-    char *method_name = f->class->runtime_cp[idx - 1].value.strref;
+    char *method_ref = f->class->runtime_cp[idx - 1].value.strref;
 
-    char *resolved_method = (char *)malloc((strlen(method_name) + 1) * sizeof(char));
-    strcpy(resolved_method, method_name);
+    char resolved_method[strlen(method_ref) + 1];
+    strcpy(resolved_method, method_ref);
 
     // Resolved method is Object instance initialization method (do nothing, except for popping the objectref value)
     if (!strcmp(resolved_method, "java/lang/Object.<init>:()V"))
         pop_operand(f);
-
-    if (!strcmp(resolved_method, "java/lang/StringBuffer.<init>:()V"))
+    else if (!strcmp(resolved_method, "java/lang/StringBuffer.<init>:()V"))
         pop_operand(f); // Already initialized
+    else
+    { // Lookup and invoke method if is set
+        const char *class_name = strtok(method_ref, ".");
+        const char *method_name = strtok(NULL, ":");
+        char *method_descriptor = strtok(NULL, ":");
 
-    // TODO: Finish (super) class initialization
+        Class *class = lookup_class(class_name, f->method_area);
+        if (!class)
+        {
+            printf("Class %s not found.", class_name);
+            exit(1);
+        }
 
-    free(resolved_method);
+        Method *method = lookup_method(method_name, method_descriptor, class);
+        if (!method)
+        {
+            printf("Method %s of class %s not found.", method_name, class_name);
+            exit(1);
+            // TODO: Search recursively on super classes, if any
+        }
+
+        const u2 nargs = method->bytecode.max_locals;
+        dtype *local_vars = (dtype *)calloc(nargs, sizeof(dtype));
+        for (u2 i = 0; i < nargs; i++)
+            local_vars[nargs - (i + 1)] = pop_operand(f);
+
+        invoke_method(class, method, local_vars, f, f->method_area);
+    }
+
     f->pc += 3;
 }
 
@@ -104,15 +128,7 @@ void invokestatic(Frame *f)
         char *method_name = strtok(ref + strlen(class_name) + 1, ":"); // Get only method name
         char *method_descriptor = strtok(NULL, ":");
 
-        size_t l = 1;
-        char *desc = method_descriptor;
-        while (*desc++ != ')')
-            l++;
-
-        char *method_params = (char *)calloc(l + 1, sizeof(char));
-        strncpy(method_params, method_descriptor, l);
-
-        Method *method = lookup_method(method_name, method_params, class);
+        Method *method = lookup_method(method_name, method_descriptor, class);
         if (!method)
         {
             printf("Error: method not found.\n");
@@ -135,8 +151,6 @@ void invokestatic(Frame *f)
 
         invoke_method(class, method, local_variables, f, f->method_area);
         f->pc = last_pc + 3;
-
-        free(method_params);
     }
     else
     {
@@ -145,6 +159,61 @@ void invokestatic(Frame *f)
     }
 
     free(ref);
+}
+
+void invokeinterface(Frame *f)
+{
+    u1 *code = f->method->bytecode.code;
+    u2 idx = (code[f->pc + 1] << 8) | code[f->pc + 2];
+
+    char *imethod_ref = f->class->runtime_cp[idx - 1].value.strref;
+
+    char resolved_method[strlen(imethod_ref) + 1];
+    strcpy(resolved_method, imethod_ref);
+
+    const char *interface_name = strtok(resolved_method, ".");
+    const char *method_name = strtok(NULL, ":");
+    char *method_descriptor = strtok(NULL, ":");
+
+    // Check if interface exists
+    const char *current_class = f->class->name;
+    Class *interface = bootstrap_loader(NULL, f->method_area, interface_name);
+    f->class = lookup_class(current_class, f->method_area); // Update current class reference in frame
+
+    if (!interface)
+    {
+        printf("Interface %s not found.", interface);
+        exit(1);
+    }
+
+    // Retrieve interface method object
+    Method *interface_method = lookup_method(method_name, method_descriptor, interface);
+    if (!interface_method)
+    {
+        printf("Interface method %s of interface %s not found.", method_name, interface);
+        exit(1);
+    }
+
+    // Look for interface method in objectref class
+    u2 nargs = interface_method->bytecode.nargs + 1;
+
+    dtype *localvars = (dtype *)calloc(nargs, sizeof(dtype));
+    for (u2 i = 0; i < nargs; i++)
+        localvars[nargs - (i + 1)] = pop_operand(f);
+
+    Class *objectref = localvars[0].value.ref.object_ref;
+    Method *instance_method = lookup_method(method_name, method_descriptor, objectref);
+
+    if (!instance_method)
+    {
+        printf("Instance method %s declared by interface %s not found in class %s.", method_name, interface, instance_method->name);
+        exit(1);
+        // TODO: Look for instance method in superclasses of objectref class.
+    }
+
+    invoke_method(objectref, instance_method, localvars, f, f->method_area);
+
+    f->pc += 5;
 }
 
 void newarray(Frame *f)
@@ -232,10 +301,28 @@ void new(Frame *f)
 
     char *c = f->class->runtime_cp[idx - 1].value.strref;
 
-    dtype objectref = initialize_var(REFERENCE);
+    dtype o = initialize_var(REFERENCE);
     if (!strcmp(c, "java/lang/StringBuffer"))
-        init_stringbuffer(f, &objectref);
+        init_stringbuffer(f, &o);
+    else // Creates copy of a class
+    {
+        const char *current_class = f->class->name;
+        Class *class = bootstrap_loader(NULL, f->method_area, c);
+        f->class = lookup_class(current_class, f->method_area); // Update current class reference in frame
 
-    push_operand(f, objectref);
+        allocref(f);
+        if (f->method->refs)
+        {
+            f->method->ref_count++;
+            o.value.ref.object_ref = (Class *)malloc(sizeof(Class));
+            if (o.value.ref.object_ref)
+            {
+                memcpy(o.value.ref.object_ref, class, sizeof(Class));
+                f->method->refs[f->method->ref_count - 1] = o.value.ref.object_ref;
+            }
+        }
+    }
+
+    push_operand(f, o);
     f->pc += 3;
 }

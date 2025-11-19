@@ -37,22 +37,6 @@ typedef union
     u4 *returnAddress;
 } primitive_type;
 
-typedef struct ObjectRef
-{
-    struct ClassImpl *_class;
-    struct
-    {
-        const char *name;
-        const char *type;
-        u2 access_flags;
-        union
-        {
-            primitive_type p;
-            union reference *r;
-        } value;
-    } *fields;
-} ObjectRef;
-
 typedef struct ArrayRef
 {
     u1 t;
@@ -63,7 +47,7 @@ typedef struct ArrayRef
 
 typedef union reference
 {
-    ObjectRef object_ref;
+    struct ClassImpl *object_ref;
     union
     {
         char *string;

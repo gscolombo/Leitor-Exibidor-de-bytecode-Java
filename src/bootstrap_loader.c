@@ -1,6 +1,6 @@
 #include "bootstrap_loader.h"
 
-static char *ROOT_FOLDER;
+static const char *ROOT_FOLDER;
 
 Class *bootstrap_loader(char *path, MethodArea *method_area, const char *class_name)
 {
@@ -14,20 +14,22 @@ Class *bootstrap_loader(char *path, MethodArea *method_area, const char *class_n
             return cls;
 
         // Else, load and parse classfile...
-        path = strcat(ROOT_FOLDER, "/");
-        path = strcat(path, class_name);
-        path = strcat(path, ".class");
+
+        char path[255];
+        snprintf(path, strlen(ROOT_FOLDER) + 1 + strlen(class_name) + 6 + 1, "%s/%s.class", ROOT_FOLDER, class_name);
+
         cls = create_and_load_class(path);
 
         // ...then add to method area
-        method_area->classes = (Class *)realloc(method_area->classes, sizeof(method_area->classes) + sizeof(Class));
+        method_area->classes = (Class *)realloc(method_area->classes, sizeof(Class) * (1 + method_area->num_classes));
 
         if (method_area->classes != NULL)
         {
             method_area->num_classes++;
             size_t i = method_area->num_classes - 1;
 
-            method_area->classes[i] = *cls; free(cls);
+            method_area->classes[i] = *cls;
+            free(cls);
             return &method_area->classes[i];
         }
     }
@@ -40,7 +42,8 @@ Class *bootstrap_loader(char *path, MethodArea *method_area, const char *class_n
         if (method_area->classes != NULL)
         {
             method_area->num_classes = 1;
-            method_area->classes[0] = *cls; free(cls);
+            method_area->classes[0] = *cls;
+            free(cls);
             return &method_area->classes[0];
         }
     }
