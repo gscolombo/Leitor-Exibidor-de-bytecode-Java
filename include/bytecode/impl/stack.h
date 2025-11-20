@@ -4,6 +4,7 @@
 #include "Frame.h"
 #include "interpreter.h"
 
+void pop_(Frame *);
 void dup(Frame *);
 void dup2(Frame *);
 

@@ -6,7 +6,7 @@ void iadd(Frame *f)
     v2 = pop_operand(f).value.t._int;
     v1 = pop_operand(f).value.t._int;
 
-    dtype result = initialize_var(INT);
+    dtype result = initialize_var(INT, f);
     result.value.t._int = v1 + v2;
     push_operand(f, result);
 
@@ -19,7 +19,7 @@ void isub(Frame *f)
     v2 = pop_operand(f).value.t._int;
     v1 = pop_operand(f).value.t._int;
 
-    dtype result = initialize_var(INT);
+    dtype result = initialize_var(INT, f);
     result.value.t._int = v1 - v2;
     push_operand(f, result);
 
@@ -32,7 +32,7 @@ void imul(Frame *f)
     v2 = pop_operand(f).value.t._int;
     v1 = pop_operand(f).value.t._int;
 
-    dtype result = initialize_var(INT);
+    dtype result = initialize_var(INT, f);
     result.value.t._int = v1 * v2;
     push_operand(f, result);
 

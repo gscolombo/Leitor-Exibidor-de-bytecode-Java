@@ -5,5 +5,6 @@
 #include "interpreter.h"
 
 void multianewarray(Frame *);
+void if_null(Frame *);
 
 #endif

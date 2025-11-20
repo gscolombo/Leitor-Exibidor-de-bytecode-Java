@@ -25,7 +25,7 @@ dtype pop_operand(Frame *f)
     return d;
 }
 
-dtype initialize_var(type_enum t)
+dtype initialize_var(type_enum t, Frame *f)
 {
     dtype var;
     switch (t)
@@ -39,6 +39,17 @@ dtype initialize_var(type_enum t)
         break;
     }
 
+    if (t == REFERENCE)
+    {
+        allocref(f);
+
+        var.value.ref = (reference *)malloc(sizeof(reference));
+        if (!var.value.ref)
+            exit(1);
+
+        f->method->refs[f->method->ref_count - 1] = var.value.ref;
+    }
+
     return var;
 }
 
@@ -49,8 +60,9 @@ void invoke_method(Class *class, Method *method, dtype *local_variables, Frame *
     frame->pc = 0;
     frame->local_variables = local_variables;
     frame->previous_frame = caller;
-    frame->method = method;           // current method
-    frame->class = class;             // current class
+    frame->method = method; // current method
+    frame->class = class;   // current class
+    frame->class_name = class->name;
     frame->method_area = method_area; // pointer to global method area
 
     OperandStack op_stack;
@@ -65,10 +77,12 @@ void invoke_method(Class *class, Method *method, dtype *local_variables, Frame *
         execute_method(frame);
 
     // ...and free allocated memory
-    for (u4 k = 0; k < frame->method->ref_count; k++)
-        free(frame->method->refs[k]);
-    free(frame->method->refs);
-    frame->method->ref_count = 0; // Reset ref count
+    if (!frame->previous_frame)
+    {
+        for (u4 k = 0; k < frame->method->ref_count; k++)
+            free(frame->method->refs[k]);
+        free(frame->method->refs);
+    }
 
     free(frame->local_variables);
     free(frame->operand_stack.stack);

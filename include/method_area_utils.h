@@ -6,11 +6,12 @@
 #include "reader.h"
 #include "cp/writer.h"
 #include "MethodArea.h"
+#include "bytecode/utils.h"
 #include "free.h"
 
 Class *lookup_class(const char *, const MethodArea *);
-
 Method *lookup_method(const char *, const char *, const Class *);
+Field *lookup_field(const char *, const char *, const Class *);
 
 Class *create_and_load_class(const char *);
 

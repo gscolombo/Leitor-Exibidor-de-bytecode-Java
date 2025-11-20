@@ -15,17 +15,16 @@ static void create_multiarray(Frame *f, int32_t counts[], u1 dims, reference *mu
         case CONSTANT_Class:
         case CONSTANT_String:
             allocref(f);
-            if (f->method->refs)
-            {
-                f->method->ref_count++;
-                multiarray->array_ref.array.t = (u1)c.type;
-                multiarray->array_ref.array.arraylength = counts[dims];
-                multiarray->array_ref.array.dims = dims + 1;
-                multiarray->array_ref.array.values = (reference *)calloc(counts[dims], sizeof(reference));
+            multiarray->value.array_ref.array.t = (u1)c.type;
+            multiarray->value.array_ref.array.class_name = c.value.strref;
+            multiarray->value.array_ref.array.arraylength = counts[dims];
+            multiarray->value.array_ref.array.dims = dims + 1;
+            multiarray->value.array_ref.array.values = (reference *)calloc(counts[dims], sizeof(reference));
 
-                if (multiarray->array_ref.array.values)
-                    f->method->refs[f->method->ref_count - 1] = multiarray->array_ref.array.values;
-            }
+            if (!multiarray->value.array_ref.array.values)
+                exit(1);
+
+            f->method->refs[f->method->ref_count - 1] = multiarray->value.array_ref.array.values;
             break;
         // TODO: Handle primitive types
         default:
@@ -35,25 +34,20 @@ static void create_multiarray(Frame *f, int32_t counts[], u1 dims, reference *mu
     else
     {
         allocref(f);
-        if (f->method->refs)
+        reference *ma = (reference *)calloc(counts[dims], sizeof(reference));
+        if (ma)
         {
-            f->method->ref_count++;
-            reference *ma = (reference *)calloc(counts[dims], sizeof(reference));
-            if (ma)
-            {
-                f->method->refs[f->method->ref_count - 1] = ma;
-                ArrayRef aref = {
-                    .t = 0,
-                    .arraylength = counts[dims],
-                    .dims = dims + 1,
-                    .values = ma};
+            f->method->refs[f->method->ref_count - 1] = ma;
+            ArrayRef aref = {
+                .t = 0,
+                .class_name = NULL,
+                .arraylength = counts[dims],
+                .dims = dims + 1,
+                .values = ma};
 
-                multiarray->array_ref.array = aref;
-                for (u1 d = 0; d < counts[dims]; d++)
-                {
-                    create_multiarray(f, counts, dims - 1, &((reference *)multiarray->array_ref.array.values)[d]);
-                }
-            }
+            multiarray->value.array_ref.array = aref;
+            for (u1 d = 0; d < counts[dims]; d++)
+                create_multiarray(f, counts, dims - 1, &((reference *)multiarray->value.array_ref.array.values)[d]);
         }
     }
 }
@@ -66,10 +60,25 @@ void multianewarray(Frame *f)
     for (u1 i = 0; i < dims; i++)
         counts[dims - (i + 1)] = pop_operand(f).value.t._int;
 
-    dtype multiarray = initialize_var(REFERENCE);
-    create_multiarray(f, counts, dims - 1, &multiarray.value.ref);
+    dtype multiarray = initialize_var(REFERENCE, f);
+    multiarray.value.ref->type = REF_ARRAY;
+    create_multiarray(f, counts, dims - 1, multiarray.value.ref);
 
     push_operand(f, multiarray);
 
     f->pc += 4;
+}
+
+void if_null(Frame *f)
+{
+    u1 *code = f->method->bytecode.code;
+    u2 offset = (code[f->pc + 1] << 8) | code[f->pc + 2];
+
+    bool isnull = pop_operand(f).value.ref->type == REF_NULL;
+    bool branch = (code[f->pc] == 198) ? isnull : !isnull; // Choose between ifnull and ifnonnull
+
+    if (branch)
+        f->pc += offset;
+    else
+        f->pc += 3;
 }

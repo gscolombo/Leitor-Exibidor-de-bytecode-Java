@@ -23,6 +23,7 @@ typedef struct Frame
     struct Frame *previous_frame;
     Method *method;
     Class *class;
+    const char *class_name; // For pointer update
     MethodArea *method_area;
 } Frame;
 

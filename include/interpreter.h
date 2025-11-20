@@ -11,6 +11,6 @@ void push_operand(Frame *, dtype);
 
 dtype pop_operand(Frame *);
 
-dtype initialize_var(type_enum);
+dtype initialize_var(type_enum, Frame *);
 
 #endif

@@ -26,7 +26,8 @@ cp_info *parse_constant_pool(FILE *fptr, u2 count)
             break;
 
         case CONSTANT_Integer:
-        case CONSTANT_Float: {
+        case CONSTANT_Float:
+        {
             u4 ibytes = read_u4(fptr);
             cp->info._4Bn.bytes = ibytes;
             if (cp->tag == CONSTANT_Integer)
@@ -37,7 +38,8 @@ cp_info *parse_constant_pool(FILE *fptr, u2 count)
         }
 
         case CONSTANT_Long:
-        case CONSTANT_Double: {
+        case CONSTANT_Double:
+        {
             u4 high_bytes = read_u4(fptr);
             u4 low_bytes = read_u4(fptr);
 
@@ -58,7 +60,8 @@ cp_info *parse_constant_pool(FILE *fptr, u2 count)
             cp->info.NameAndType.descriptor_index = read_u2(fptr);
             break;
 
-        case CONSTANT_UTF8: {
+        case CONSTANT_UTF8:
+        {
             u2 l = read_u2(fptr);
             cp->info.UTF8.length = l;
 
@@ -157,7 +160,7 @@ char *decode_modified_utf8_str(u2 length, const u1 *bytes)
         {
             u1 y = bytes[pos + 1];
             u2 code_point = ((x & 0x1F) << 6) | (y & 0x3F);
-            str[i++] = code_point == 0 ? L'\0' : (char)code_point; // The null character is represented by two bytes (0xC0,0x80);
+            str[i++] = code_point == 0 ? '\0' : (char)code_point; // The null character is represented by two bytes (0xC0,0x80);
             pos += 2;
         }
         else if ((x & 0xF0) == 0xE0)
@@ -170,7 +173,7 @@ char *decode_modified_utf8_str(u2 length, const u1 *bytes)
         }
     }
 
-    str[i] = L'\0';
+    str[i] = '\0';
     return str;
 }
 

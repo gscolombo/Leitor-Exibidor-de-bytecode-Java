@@ -34,30 +34,42 @@ typedef union
     float _float;
     double _double;
     bool boolean;
-    u4 *returnAddress;
+    u4 returnAddress;
 } primitive_type;
 
 typedef struct ArrayRef
 {
     u1 t;
+    const char *class_name;
     u4 arraylength;
     u1 dims;
     void *values; // If dims > 1, it must point to a reference
 } ArrayRef;
 
-typedef union reference
+typedef struct reference
 {
-    struct ClassImpl *object_ref;
+    enum
+    {
+        REF_NULL,
+        REF_STRING,
+        REF_OBJECT,
+        REF_ARRAY
+    } type;
+
     union
     {
-        char *string;
-        ArrayRef array;
-    } array_ref;
+        struct ClassImpl *object_ref;
+        union
+        {
+            char *string;
+            ArrayRef array;
+        } array_ref;
+    } value;
 } reference;
 
 typedef union java_type
 {
-    reference ref;
+    reference *ref;
     primitive_type t;
 } java_type;
 

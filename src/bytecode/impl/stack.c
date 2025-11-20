@@ -20,3 +20,13 @@ void dup2(Frame *f)
 
     f->pc++;
 }
+
+void pop_(Frame *f)
+{
+    (void)pop_operand(f);
+    
+    if (f->method->bytecode.code[f->pc] == 0x58)
+        (void)pop_operand(f);
+
+    f->pc++;
+}

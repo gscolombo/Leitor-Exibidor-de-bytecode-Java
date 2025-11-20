@@ -12,7 +12,7 @@ void _print(Frame *f, const char *descriptor, char rettype, char e)
     case 'L':
         if (!strcmp(descriptor, "(Ljava/lang/String;)V"))
         {
-            char *str = pop_operand(f).value.ref.array_ref.string;
+            char *str = pop_operand(f).value.ref->value.array_ref.string;
             printf("%s%c", str, e);
         }
         // TODO: Define logic for class references
@@ -49,39 +49,39 @@ void _print(Frame *f, const char *descriptor, char rettype, char e)
 
 void init_stringbuffer(Frame *f, dtype *objectref)
 {
+    allocref(f);
+
     // Pre-allocate a string with the default capacity of 16 characters
     char *strbuf = (char *)calloc(16, sizeof(char));
 
-    allocref(f);
-    if (f->method->refs && strbuf)
-    {
-        f->method->ref_count++;
-        f->method->refs[f->method->ref_count - 1] = strbuf;
-        objectref->value.ref.array_ref.string = strbuf;
-    }
+    if (!strbuf)
+        exit(1);
+
+    f->method->refs[f->method->ref_count - 1] = strbuf;
+    objectref->value.ref->value.array_ref.string = strbuf;
 }
 
 void strbuf_append(Frame *f)
 {
     // TODO: Handle other argument types besides string
-    char *arg = pop_operand(f).value.ref.array_ref.string;
+    char *arg = pop_operand(f).value.ref->value.array_ref.string;
     dtype strbuf = pop_operand(f);
-    strcat(strbuf.value.ref.array_ref.string, arg); // Concatenate strings
-    push_operand(f, strbuf);                        // Return reference to objectref (like areturn)
+    strcat(strbuf.value.ref->value.array_ref.string, arg); // Concatenate strings
+    push_operand(f, strbuf);                         // Return reference to objectref (like areturn)
 }
 
 void strbuf_tostring(Frame *f)
 {
     dtype strbuf = pop_operand(f);
-    char *str = strbuf.value.ref.array_ref.string;
+    char *str = strbuf.value.ref->value.array_ref.string;
 
     u4 i = 0;
     for (i; i < f->method->ref_count; i++)
         if (f->method->refs[i] == str)
             break;
 
-    strbuf.value.ref.array_ref.string = (char *)realloc(str, strlen(str) + 1); // Adjust string size
-    f->method->refs[i] = strbuf.value.ref.array_ref.string;
+    strbuf.value.ref->value.array_ref.string = (char *)realloc(str, strlen(str) + 1); // Adjust string size
+    f->method->refs[i] = strbuf.value.ref->value.array_ref.string;
     push_operand(f, strbuf); // Return reference to objectref (like areturn)
 }
 
@@ -91,4 +91,12 @@ void allocref(Frame *f)
         f->method->refs = malloc(sizeof(void **));
     else
         f->method->refs = (void **)realloc(f->method->refs, ((f->method->ref_count + 1) * sizeof(void **)));
+
+    if (!f->method->refs)
+    {
+        printf("Error during allocation for reference variable.");
+        exit(1);
+    }
+
+    f->method->ref_count++;
 }

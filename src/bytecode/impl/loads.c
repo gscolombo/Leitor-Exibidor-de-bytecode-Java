@@ -40,7 +40,7 @@ void aload_n(Frame *f)
 void Taload(Frame *f)
 {
     int32_t idx = pop_operand(f).value.t._int;
-    ArrayRef arrayref = pop_operand(f).value.ref.array_ref.array;
+    ArrayRef arrayref = pop_operand(f).value.ref->value.array_ref.array;
 
     dtype v;
     u1 type = f->method->bytecode.code[f->pc] - 46;
@@ -48,35 +48,35 @@ void Taload(Frame *f)
     switch (type)
     {
     case 0:
-        v = initialize_var(INT);
+        v = initialize_var(INT, f);
         v.value.t._int = ((int32_t *)arrayref.values)[idx];
         break;
     case 1:
-        v = initialize_var(LONG);
+        v = initialize_var(LONG, f);
         v.value.t._long = ((int64_t *)arrayref.values)[idx];
         break;
     case 2:
-        v = initialize_var(FLOAT);
+        v = initialize_var(FLOAT, f);
         v.value.t._float = ((float *)arrayref.values)[idx];
         break;
     case 3:
-        v = initialize_var(DOUBLE);
+        v = initialize_var(DOUBLE, f);
         v.value.t._double = ((double *)arrayref.values)[idx];
         break;
     case 4:
-        v = initialize_var(REFERENCE);
-        v.value.ref = ((reference *)arrayref.values)[idx];
+        v = initialize_var(REFERENCE, f);
+        *v.value.ref = ((reference *)arrayref.values)[idx];
         break;
     case 5:
-        v = initialize_var(BYTE);
+        v = initialize_var(BYTE, f);
         v.value.t._int = ((int8_t *)arrayref.values)[idx];
         break;
     case 6:
-        v = initialize_var(CHAR);
+        v = initialize_var(CHAR, f);
         v.value.t._int = ((u2 *)arrayref.values)[idx];
         break;
     case 7:
-        v = initialize_var(SHORT);
+        v = initialize_var(SHORT, f);
         v.value.t._int = (int32_t)((int16_t *)arrayref.values)[idx];
         break;
     default:

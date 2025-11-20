@@ -11,7 +11,7 @@ void istore(Frame *f)
 
 void astore(Frame *f)
 {
-    reference objectref = pop_operand(f).value.ref;
+    reference *objectref = pop_operand(f).value.ref;
     u1 idx = f->method->bytecode.code[f->pc + 1];
 
     f->local_variables[idx].value.ref = objectref;
@@ -39,7 +39,7 @@ void dstore_n(Frame *f)
 
 void astore_n(Frame *f)
 {
-    reference r = pop_operand(f).value.ref;
+    reference *r = pop_operand(f).value.ref;
     int idx = f->method->bytecode.code[f->pc] - 75;
 
     f->local_variables[idx].value.ref = r;
@@ -55,8 +55,8 @@ void Tastore(Frame *f)
         (void)pop_operand(f);
 
     int32_t idx = pop_operand(f).value.t._int;
-    ArrayRef arrayref = pop_operand(f).value.ref.array_ref.array;
-
+    ArrayRef arrayref = pop_operand(f).value.ref->value.array_ref.array;
+    
     if (arrayref.values)
         switch (type)
         {
@@ -73,7 +73,7 @@ void Tastore(Frame *f)
             ((double *)arrayref.values)[idx] = op.value.t._double;
             break;
         case 4:
-            ((reference *)arrayref.values)[idx] = op.value.ref;
+            ((reference *)arrayref.values)[idx] = *op.value.ref;
             break;
         case 5:
             ((int8_t *)arrayref.values)[idx] = op.value.t.byte;

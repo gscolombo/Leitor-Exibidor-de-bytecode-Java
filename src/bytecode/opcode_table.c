@@ -3,7 +3,7 @@
 const OpcodeInfo opcode_table[202] = {
     /* Constants */
     {"nop", NULL},
-    {"aconst_null"},
+    {"aconst_null", &aconst_null},
     {"iconst_m1", &iconst_i},
     {"iconst_0", &iconst_i},
     {"iconst_1", &iconst_i},
@@ -93,8 +93,8 @@ const OpcodeInfo opcode_table[202] = {
     {"sastore", &Tastore},
 
     /* Operand Stack */
-    {"pop"},
-    {"pop2"},
+    {"pop", &pop_},
+    {"pop2", &pop_},
     {"dup", &dup},
     {"dup_x1"},
     {"dup_x2"},
@@ -195,9 +195,9 @@ const OpcodeInfo opcode_table[202] = {
 
     /* References */
     {"getstatic", &getstatic},
-    {"putstatic"},
-    {"getfield"},
-    {"putfield"},
+    {"putstatic", &putstatic},
+    {"getfield", &getfield},
+    {"putfield", &putfield},
     {"invokevirtual", &invokevirtual},
     {"invokespecial", &invokespecial},
     {"invokestatic", &invokestatic},
@@ -205,7 +205,7 @@ const OpcodeInfo opcode_table[202] = {
     {"invokedynamic"},
     {"new", &new},
     {"newarray", &newarray},
-    {"anewarray"},
+    {"anewarray", &anewarray},
     {"arraylength", &_arraylength},
     {"athrow"},
     {"checkcast"},
@@ -216,8 +216,8 @@ const OpcodeInfo opcode_table[202] = {
     /* Extended */
     {"wide"},
     {"multianewarray", &multianewarray},
-    {"ifnull"},
-    {"ifnonnull"},
+    {"ifnull", &if_null},
+    {"ifnonnull", &if_null},
     {"goto_w"},
     {"jsr_w"},
 };

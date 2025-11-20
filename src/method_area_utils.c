@@ -23,6 +23,18 @@ Method *lookup_method(const char *method_name, const char *method_descriptor, co
     return NULL;
 }
 
+Field *lookup_field(const char *field_name, const char *field_descriptor, const Class *class)
+{
+    for (u2 i = 0; i < class->field_count; i++)
+    {
+        if (!strcmp(field_name, class->fields[i].name) &&
+            !strcmp(field_descriptor, class->fields[i].type))
+            return &class->fields[i];
+    }
+
+    return NULL;
+}
+
 static void set_runtimecp(Class *cls, ClassFile *cf)
 {
     cls->constants_count = cf->constant_pool_count;
@@ -68,57 +80,11 @@ static void set_class_fields(Class *cls, ClassFile *cf)
         cls->fields[i].name = get_constant_UTF8_value(cf->fields[i].name_index, cf->constant_pool);
         cls->fields[i].type = get_constant_UTF8_value(cf->fields[i].descriptor_index, cf->constant_pool);
         cls->fields[i].access_flags = cf->fields[i].access_flags;
-
-        if (cf->fields[i].access_flags & 0x0008) // Initialize constant value of static field
-        {
-            java_type _const;
-            RuntimeConstant c = cls->runtime_cp[cf->fields[i].attributes->info.ConstantValue.constantvalue_index];
-            switch (c.type)
-            {
-            case CONSTANT_Long:
-                _const.t._long = c.value.l;
-                break;
-            case CONSTANT_Float:
-                _const.t._float = c.value.f;
-                break;
-            case CONSTANT_Double:
-                _const.t._double = c.value.d;
-                break;
-            case CONSTANT_Integer:
-                switch (*cls->fields[i].type)
-                {
-                case 'B':
-                    _const.t.byte = c.value.i;
-                    break;
-                case 'C':
-                    _const.t._char = c.value.i;
-                    break;
-                case 'S':
-                    _const.t._short = c.value.i;
-                    break;
-                case 'Z':
-                    _const.t.boolean = c.value.i;
-                    break;
-                case 'I':
-                    _const.t._int = c.value.i;
-                    break;
-                default:
-                    break;
-                }
-                break;
-            case CONSTANT_String:
-                _const.ref.array_ref.string = c.value.strref;
-                break;
-            default:
-                break;
-            }
-
-            cls->fields[i].value = _const;
-        }
+        cls->fields[i].attrs = cf->fields[i].attributes;
     }
 }
 
-static u2 count_args(const char *params)
+static u2 count_args(char *params)
 {
     u2 nargs = 0;
     char *p = params + 1; // Skip first parenthesis
@@ -127,6 +93,8 @@ static u2 count_args(const char *params)
     {
         switch (*p)
         {
+        case '[':
+            break;
         case 'L':
             nargs++;
             while (*p != ';')

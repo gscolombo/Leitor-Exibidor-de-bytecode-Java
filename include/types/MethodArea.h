@@ -12,7 +12,8 @@ typedef struct FieldImpl
     char *name;
     char *type;
     u2 access_flags;
-    java_type value;
+    dtype value;
+    attribute *attrs;
 } Field;
 
 typedef struct MethodImpl
