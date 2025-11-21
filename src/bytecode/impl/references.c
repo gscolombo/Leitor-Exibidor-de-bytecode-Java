@@ -120,6 +120,30 @@ void putfield(Frame *f)
     f->pc += 3;
 }
 
+static dtype *set_local_vars(Frame *f, Method *method, bool include_this)
+{
+    u2 max_locals = method->bytecode.max_locals;
+
+    if (max_locals)
+    {
+        u2 nargs = method->bytecode.nargs + (int)include_this;
+
+        dtype args[nargs];
+        for (u2 i = 0; i < nargs; i++)
+            args[nargs - (i + 1)] = pop_operand(f);
+
+        dtype *local_variables = (dtype *)calloc(max_locals, sizeof(dtype));
+
+        if (local_variables)
+            for (u2 i = 0; i < nargs; i++)
+                local_variables[i * (args[i].cat + 1)] = args[i];
+
+        return local_variables;
+    }
+
+    return NULL;
+}
+
 void invokespecial(Frame *f)
 {
     u1 *code = f->method->bytecode.code;
@@ -156,10 +180,7 @@ void invokespecial(Frame *f)
             // TODO: Search recursively on super classes, if any
         }
 
-        const u2 nargs = method->bytecode.nargs + 1;
-        dtype *local_vars = (dtype *)calloc(method->bytecode.max_locals, sizeof(dtype));
-        for (u2 i = 0; i < nargs; i++)
-            local_vars[nargs - (i + 1)] = pop_operand(f);
+        dtype *local_vars = set_local_vars(f, method, true);
 
         invoke_method(class, method, local_vars, f, f->method_area);
     }
@@ -219,10 +240,7 @@ void invokevirtual(Frame *f)
             // TODO: Search recursively on super classes, if any
         }
 
-        const u2 nargs = method->bytecode.nargs + 1;
-        dtype *local_vars = (dtype *)calloc(method->bytecode.max_locals, sizeof(dtype));
-        for (u2 i = 0; i < nargs; i++)
-            local_vars[nargs - (i + 1)] = pop_operand(f);
+        dtype *local_vars = set_local_vars(f, method, true);
 
         invoke_method(class, method, local_vars, f, f->method_area);
     }
@@ -264,11 +282,7 @@ void invokestatic(Frame *f)
             exit(1);
         }
 
-        u2 nargs = method->bytecode.nargs;
-        dtype *local_variables = (dtype *)calloc(method->bytecode.max_locals, sizeof(dtype));
-
-        for (u2 i = 0; i < nargs; i++)
-            local_variables[nargs - (i + 1)] = pop_operand(f);
+        dtype *local_variables = set_local_vars(f, method, false);
 
         invoke_method(class, method, local_variables, f, f->method_area);
 
@@ -314,22 +328,20 @@ void invokeinterface(Frame *f)
     }
 
     // Look for interface method in objectref class
-    u2 nargs = interface_method->bytecode.nargs + 1;
+    u2 this_arg = f->operand_stack.top - interface_method->bytecode.nargs;
 
-    dtype *localvars = (dtype *)calloc(nargs, sizeof(dtype));
-    for (u2 i = 0; i < nargs; i++)
-        localvars[nargs - (i + 1)] = pop_operand(f);
-
-    Class *objectref = localvars[0].value.ref->value.object_ref;
+    Class *objectref = f->operand_stack.stack[this_arg].value.ref->value.object_ref;
     Method *instance_method = lookup_method(method_name, method_descriptor, objectref);
 
     if (!instance_method)
     {
-        printf("Instance method %s declared by interface %s not found in class %s.", method_name, interface->name, instance_method->name);
+        printf("Instance method %s declared by interface %s not found in class %s.",
+               method_name, interface->name, instance_method->name);
         exit(1);
         // TODO: Look for instance method in superclasses of objectref class.
     }
 
+    dtype *localvars = set_local_vars(f, instance_method, true);
     invoke_method(objectref, instance_method, localvars, f, f->method_area);
 
     f->pc += 5;

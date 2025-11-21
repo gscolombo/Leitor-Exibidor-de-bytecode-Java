@@ -67,7 +67,7 @@ void strbuf_append(Frame *f)
     char *arg = pop_operand(f).value.ref->value.array_ref.string;
     dtype strbuf = pop_operand(f);
     strcat(strbuf.value.ref->value.array_ref.string, arg); // Concatenate strings
-    push_operand(f, strbuf);                         // Return reference to objectref (like areturn)
+    push_operand(f, strbuf);                               // Return reference to objectref (like areturn)
 }
 
 void strbuf_tostring(Frame *f)

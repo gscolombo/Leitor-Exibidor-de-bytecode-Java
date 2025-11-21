@@ -29,7 +29,6 @@ void istore_n(Frame *f)
 
 void dstore_n(Frame *f)
 {
-    (void)pop_operand(f).value.t._double;
     double value = pop_operand(f).value.t._double;
     int idx = f->method->bytecode.code[f->pc] - 71;
 
@@ -50,9 +49,6 @@ void Tastore(Frame *f)
 {
     u1 type = f->method->bytecode.code[f->pc] - 79;
     dtype op = pop_operand(f);
-
-    if (op.cat == CAT2)
-        (void)pop_operand(f);
 
     int32_t idx = pop_operand(f).value.t._int;
     ArrayRef arrayref = pop_operand(f).value.ref->value.array_ref.array;

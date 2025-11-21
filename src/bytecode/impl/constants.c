@@ -31,7 +31,6 @@ void dconst_d(Frame *f)
     dtype d = initialize_var(DOUBLE, f);
     d.value.t._double = (float)(f->method->bytecode.code[f->pc] - 14);
     push_operand(f, d);
-    push_operand(f, d);
     f->pc++;
 }
 
@@ -64,7 +63,7 @@ void ldc_(Frame *f)
     u1 b1 = f->method->bytecode.code[f->pc + 1];
     u1 b2 = f->method->bytecode.code[f->pc + 2];
 
-    index = mode > 0 ? (b1 << 8) | b2 : b1;
+    index = mode > 0 ? ((b1 << 8) | b2) : b1;
 
     RuntimeConstant c = f->class->runtime_cp[index - 1];
 
@@ -81,12 +80,10 @@ void ldc_(Frame *f)
     case CONSTANT_Long:
         var = initialize_var(LONG, f);
         var.value.t._long = c.value.l;
-        push_operand(f, var);
         break;
     case CONSTANT_Double:
         var = initialize_var(DOUBLE, f);
         var.value.t._double = c.value.d;
-        push_operand(f, var);
         break;
     case CONSTANT_String:
         var = initialize_var(REFERENCE, f);

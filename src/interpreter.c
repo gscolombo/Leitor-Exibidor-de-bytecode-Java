@@ -6,10 +6,7 @@ void execute_method(Frame *f)
     u4 l = f->method->bytecode.code_length;
 
     while (f->pc < l)
-    {
-        // printf("%u: %s\n", f->pc, opcode_table[code[f->pc]].mnemonic);
         opcode_table[code[f->pc]].exec(f);
-    }
 }
 
 inline void push_operand(Frame *f, dtype d)
@@ -52,7 +49,6 @@ dtype initialize_var(type_enum t, Frame *f)
 
     return var;
 }
-
 
 void invoke_method(Class *class, Method *method, dtype *local_variables, Frame *caller, MethodArea *method_area)
 {
