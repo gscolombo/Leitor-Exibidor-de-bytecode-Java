@@ -31,8 +31,6 @@ typedef struct MethodImpl
         u4 code_length;
         u1 *code;
     } bytecode;
-    u4 ref_count;
-    void **refs;
 } Method;
 
 typedef struct
@@ -67,6 +65,8 @@ typedef struct
 {
     size_t num_classes;
     Class *classes;
+    u4 ref_count;
+    void **refs;
 } MethodArea;
 
 #endif

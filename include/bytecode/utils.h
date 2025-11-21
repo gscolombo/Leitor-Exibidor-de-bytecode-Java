@@ -13,6 +13,7 @@ void init_stringbuffer(Frame *, dtype *);
 void strbuf_append(Frame *);
 void strbuf_tostring(Frame *);
 
+void appendref(Frame *, void *);
 void allocref(Frame *);
 
 #endif

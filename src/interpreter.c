@@ -47,11 +47,12 @@ dtype initialize_var(type_enum t, Frame *f)
         if (!var.value.ref)
             exit(1);
 
-        f->method->refs[f->method->ref_count - 1] = var.value.ref;
+        appendref(f, var.value.ref);
     }
 
     return var;
 }
+
 
 void invoke_method(Class *class, Method *method, dtype *local_variables, Frame *caller, MethodArea *method_area)
 {
@@ -77,13 +78,6 @@ void invoke_method(Class *class, Method *method, dtype *local_variables, Frame *
         execute_method(frame);
 
     // ...and free allocated memory
-    if (!frame->previous_frame)
-    {
-        for (u4 k = 0; k < frame->method->ref_count; k++)
-            free(frame->method->refs[k]);
-        free(frame->method->refs);
-    }
-
     free(frame->local_variables);
     free(frame->operand_stack.stack);
     free(frame);

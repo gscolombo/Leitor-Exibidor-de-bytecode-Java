@@ -24,7 +24,7 @@ static void create_multiarray(Frame *f, int32_t counts[], u1 dims, reference *mu
             if (!multiarray->value.array_ref.array.values)
                 exit(1);
 
-            f->method->refs[f->method->ref_count - 1] = multiarray->value.array_ref.array.values;
+            appendref(f, multiarray->value.array_ref.array.values);
             break;
         // TODO: Handle primitive types
         default:
@@ -37,7 +37,7 @@ static void create_multiarray(Frame *f, int32_t counts[], u1 dims, reference *mu
         reference *ma = (reference *)calloc(counts[dims], sizeof(reference));
         if (ma)
         {
-            f->method->refs[f->method->ref_count - 1] = ma;
+            f->method_area->refs[f->method_area->ref_count - 1] = ma;
             ArrayRef aref = {
                 .t = 0,
                 .class_name = NULL,

@@ -385,7 +385,7 @@ void newarray(Frame *f)
     if (!array)
         exit(1);
 
-    f->method->refs[f->method->ref_count - 1] = array;
+    appendref(f, array);
 
     dtype arrayref = initialize_var(REFERENCE, f);
     ArrayRef a = {
@@ -418,7 +418,7 @@ void anewarray(Frame *f)
     if (!array)
         exit(1);
 
-    f->method->refs[f->method->ref_count - 1] = array;
+    appendref(f, array);
 
     aarray.value.ref->value.array_ref.array.t = ref.type;
     aarray.value.ref->value.array_ref.array.class_name = ref.value.strref;
@@ -531,7 +531,7 @@ void new(Frame *f)
             exit(1);
 
         memcpy(objectref, class, sizeof(Class));
-        f->method->refs[f->method->ref_count - 1] = objectref;
+        appendref(f, objectref);
 
         // Allocate memory for class instance fields
         allocref(f);
@@ -541,7 +541,7 @@ void new(Frame *f)
             exit(1);
 
         memcpy(objectref->fields, class->fields, sizeof(Field) * objectref->field_count);
-        f->method->refs[f->method->ref_count - 1] = objectref;
+        appendref(f, objectref->fields);
 
         initialize_constant_fields(f, objectref);
 

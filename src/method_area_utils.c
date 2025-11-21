@@ -148,8 +148,6 @@ static void set_class_methods(Class *cls, ClassFile *cf)
             cls->methods[i].bytecode.code = (u1 *)malloc(cf->methods[i].attributes->info.Code.code_length);
             memcpy(cls->methods[i].bytecode.code, cf->methods[i].attributes->info.Code.code, cf->methods[i].attributes->info.Code.code_length);
         }
-
-        cls->methods[i].ref_count = 0;
     }
 }
 
@@ -177,6 +175,10 @@ Class *create_and_load_class(const char *path)
 
 void cleanup(MethodArea method_area)
 {
+    for (size_t i = 0; i < method_area.ref_count; i++)
+        free(method_area.refs[i]);
+    free(method_area.refs);
+
     for (size_t i = 0; i < method_area.num_classes; i++)
     {
         Class cls = method_area.classes[i];

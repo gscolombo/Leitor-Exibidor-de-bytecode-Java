@@ -57,7 +57,7 @@ void init_stringbuffer(Frame *f, dtype *objectref)
     if (!strbuf)
         exit(1);
 
-    f->method->refs[f->method->ref_count - 1] = strbuf;
+    f->method_area->refs[f->method_area->ref_count - 1] = strbuf;
     objectref->value.ref->value.array_ref.string = strbuf;
 }
 
@@ -75,28 +75,33 @@ void strbuf_tostring(Frame *f)
     dtype strbuf = pop_operand(f);
     char *str = strbuf.value.ref->value.array_ref.string;
 
-    u4 i = 0;
-    for (i; i < f->method->ref_count; i++)
-        if (f->method->refs[i] == str)
+    u4 i;
+    for (i = 0; i < f->method_area->ref_count; i++)
+        if (f->method_area->refs[i] == str)
             break;
 
     strbuf.value.ref->value.array_ref.string = (char *)realloc(str, strlen(str) + 1); // Adjust string size
-    f->method->refs[i] = strbuf.value.ref->value.array_ref.string;
+    f->method_area->refs[i] = strbuf.value.ref->value.array_ref.string;
     push_operand(f, strbuf); // Return reference to objectref (like areturn)
+}
+
+inline void appendref(Frame *f, void *ref)
+{
+    f->method_area->refs[f->method_area->ref_count - 1] = ref;
 }
 
 void allocref(Frame *f)
 {
-    if (!f->method->ref_count)
-        f->method->refs = malloc(sizeof(void **));
+    if (!f->method_area->ref_count)
+        f->method_area->refs = malloc(sizeof(void *));
     else
-        f->method->refs = (void **)realloc(f->method->refs, ((f->method->ref_count + 1) * sizeof(void **)));
+        f->method_area->refs = (void **)realloc(f->method_area->refs, ((f->method_area->ref_count + 1) * sizeof(void *)));
 
-    if (!f->method->refs)
+    if (!f->method_area->refs)
     {
         printf("Error during allocation for reference variable.");
         exit(1);
     }
 
-    f->method->ref_count++;
+    f->method_area->ref_count++;
 }

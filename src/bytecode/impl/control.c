@@ -62,49 +62,7 @@ void lookupswitch(Frame *f)
 void Treturn(Frame *f)
 {
     dtype ret = pop_operand(f);
-
-    if (f->method->bytecode.code[f->pc] == 0xb0 && ret.value.ref->type != REF_NULL)
-    {
-        dtype retcpy = initialize_var(REFERENCE, f->previous_frame);
-        memcpy(retcpy.value.ref, ret.value.ref, sizeof(reference));
-
-        if (!strcmp(f->method->rettype, "Ljava/lang/String;"))
-        {
-            allocref(f->previous_frame);
-
-            char *str = ret.value.ref->value.array_ref.string;
-            size_t length = strlen(str) + 1;
-            retcpy.value.ref->value.array_ref.string = (char *)malloc(length * sizeof(char));
-            memcpy(retcpy.value.ref->value.array_ref.string, str, length);
-
-            f->previous_frame->method->refs[f->previous_frame->method->ref_count - 1] = retcpy.value.ref->value.array_ref.string;
-        }
-        else
-        {
-            allocref(f->previous_frame);
-            allocref(f->previous_frame);
-
-            retcpy.value.ref->value.object_ref = (Class *)malloc(sizeof(Class));
-            if (!retcpy.value.ref->value.object_ref)
-                exit(1);
-
-            memcpy(retcpy.value.ref->value.object_ref, ret.value.ref->value.object_ref, sizeof(Class));
-
-            u2 field_count = retcpy.value.ref->value.object_ref->field_count;
-            retcpy.value.ref->value.object_ref->fields = (Field *)calloc(field_count, sizeof(Field));
-            if (!retcpy.value.ref->value.object_ref->fields)
-                exit(1);
-
-            memcpy(retcpy.value.ref->value.object_ref->fields, ret.value.ref->value.object_ref->fields, sizeof(Field) * field_count);
-
-            f->previous_frame->method->refs[f->previous_frame->method->ref_count - 1] = retcpy.value.ref->value.object_ref;
-            f->previous_frame->method->refs[f->previous_frame->method->ref_count - 1] = retcpy.value.ref->value.object_ref->fields;
-        }
-
-        push_operand(f->previous_frame, retcpy);
-    }
-    else
-        push_operand(f->previous_frame, ret);
+    push_operand(f->previous_frame, ret);
 
     f->pc = f->method->bytecode.code_length;
 }
