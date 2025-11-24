@@ -1,11 +1,14 @@
 #include "bytecode/impl/comparisons.h"
 
-static const enum Cond { EQ,
-                         NE,
-                         LT,
-                         GE,
-                         GT,
-                         LE };
+enum Cond
+{
+    EQ,
+    NE,
+    LT,
+    GE,
+    GT,
+    LE
+};
 
 static int16_t icompare(enum Cond cond, const int32_t v1, const int32_t v2, const int16_t branch)
 {

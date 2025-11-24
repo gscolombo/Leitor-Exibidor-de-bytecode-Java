@@ -68,7 +68,7 @@ ClassFile read_classfile(FILE *fptr, bool show_bytes)
         const size_t fsize = ftell(fptr);
 
         if (show_bytes)
-            printf("Size: %lu bytes.\n", fsize);
+            printf("Size: %u bytes.\n", fsize);
         fseek(fptr, 0, SEEK_SET);
 
         cf.magic = read_u4(fptr);
