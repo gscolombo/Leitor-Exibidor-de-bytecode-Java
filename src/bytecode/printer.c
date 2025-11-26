@@ -1,11 +1,178 @@
-#include "bytecode/printer.h"
+/* --- Início: helpers e show_opcodes corrigidos --- */
 
-void show_opcodes(const u1 *code, u4 length, const cp_info *cp)
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdint.h>
+#include "bytecode/printer.h"
+#include "types/cp/constants.h"
+
+/* Resolve uma entrada da constant pool e retorna string alocada (caller free()). */
+static char *resolve_cp_entry(const cp_info *cp, u2 cp_count, u2 index)
 {
+    if (index < 1 || index > cp_count) {
+        char *s = malloc(32);
+        snprintf(s, 32, "<invalid cp index #%u>", index);
+        return s;
+    }
+
+    const cp_info *entry = &cp[index - 1];
+    char *s = NULL;
+
+    switch (entry->tag) {
+    case CONSTANT_Class: {
+        u2 name_index = entry->info.Class.name_index;
+        if (name_index >= 1 && name_index <= cp_count &&
+            cp[name_index - 1].tag == CONSTANT_UTF8) {
+            const char *name = cp[name_index - 1].info.UTF8.str;
+            s = malloc(strlen(name) + 16);
+            sprintf(s, "Class %s", name);
+        } else {
+            s = strdup("<invalid Class>");
+        }
+        break;
+    }
+
+    case CONSTANT_Fieldref:
+    case CONSTANT_Methodref:
+    case CONSTANT_InterfaceMethodref: {
+        /* No teu header, campo é 'Ref' que contém class_index e name_and_type_index */
+        u2 class_index = entry->info.Ref.class_index;
+        u2 name_type_index = entry->info.Ref.name_and_type_index;
+
+        const char *class_name = "<invalid>";
+        const char *nt_name = "<invalid>";
+        const char *nt_desc = "<invalid>";
+
+        if (class_index >= 1 && class_index <= cp_count &&
+            cp[class_index - 1].tag == CONSTANT_Class) {
+            u2 ci = cp[class_index - 1].info.Class.name_index;
+            if (ci >= 1 && ci <= cp_count && cp[ci - 1].tag == CONSTANT_UTF8)
+                class_name = cp[ci - 1].info.UTF8.str;
+        }
+
+        if (name_type_index >= 1 && name_type_index <= cp_count &&
+            cp[name_type_index - 1].tag == CONSTANT_NameAndType) {
+            u2 nidx = cp[name_type_index - 1].info.NameAndType.name_index;
+            u2 tidx = cp[name_type_index - 1].info.NameAndType.descriptor_index;
+            if (nidx >= 1 && nidx <= cp_count && cp[nidx - 1].tag == CONSTANT_UTF8)
+                nt_name = cp[nidx - 1].info.UTF8.str;
+            if (tidx >= 1 && tidx <= cp_count && cp[tidx - 1].tag == CONSTANT_UTF8)
+                nt_desc = cp[tidx - 1].info.UTF8.str;
+        }
+
+        s = malloc(strlen(class_name) + strlen(nt_name) + strlen(nt_desc) + 32);
+        if (entry->tag == CONSTANT_Fieldref)
+            sprintf(s, "Fieldref %s.%s:%s", class_name, nt_name, nt_desc);
+        else if (entry->tag == CONSTANT_Methodref)
+            sprintf(s, "Methodref %s.%s:%s", class_name, nt_name, nt_desc);
+        else
+            sprintf(s, "InterfaceMethodref %s.%s:%s", class_name, nt_name, nt_desc);
+
+        break;
+    }
+
+    case CONSTANT_NameAndType: {
+        const char *n = "<invalid>", *d = "<invalid>";
+        u2 nidx = entry->info.NameAndType.name_index;
+        u2 didx = entry->info.NameAndType.descriptor_index;
+        if (nidx >= 1 && nidx <= cp_count && cp[nidx - 1].tag == CONSTANT_UTF8)
+            n = cp[nidx - 1].info.UTF8.str;
+        if (didx >= 1 && didx <= cp_count && cp[didx - 1].tag == CONSTANT_UTF8)
+            d = cp[didx - 1].info.UTF8.str;
+        s = malloc(strlen(n) + strlen(d) + 16);
+        sprintf(s, "NameAndType %s:%s", n, d);
+        break;
+    }
+
+    case CONSTANT_UTF8: {
+        const char *u = entry->info.UTF8.str;
+        s = malloc(strlen(u) + 8);
+        sprintf(s, "UTF8 %s", u);
+        break;
+    }
+
+    case CONSTANT_String: {
+        u2 str_idx = entry->info.String.string_index;
+        const char *val = "<invalid>";
+        if (str_idx >= 1 && str_idx <= cp_count && cp[str_idx - 1].tag == CONSTANT_UTF8)
+            val = cp[str_idx - 1].info.UTF8.str;
+        s = malloc(strlen(val) + 16);
+        sprintf(s, "String %s", val);
+        break;
+    }
+
+    case CONSTANT_Integer: {
+        int i = entry->info._4Bn.number.i;
+        char tmp[64];
+        snprintf(tmp, sizeof(tmp), "Integer %d", i);
+        s = strdup(tmp);
+        break;
+    }
+
+    case CONSTANT_Float: {
+        float f = entry->info._4Bn.number.f;
+        char tmp[64];
+        snprintf(tmp, sizeof(tmp), "Float %g", f);
+        s = strdup(tmp);
+        break;
+    }
+
+    case CONSTANT_Long: {
+        long l = entry->info._8Bn.number.l;
+        char tmp[64];
+        snprintf(tmp, sizeof(tmp), "Long %ld", l);
+        s = strdup(tmp);
+        break;
+    }
+
+    case CONSTANT_Double: {
+        double d = entry->info._8Bn.number.d;
+        char tmp[64];
+        snprintf(tmp, sizeof(tmp), "Double %g", d);
+        s = strdup(tmp);
+        break;
+    }
+
+    default:
+        s = malloc(32);
+        snprintf(s, 32, "<cp tag %u>", entry->tag);
+        break;
+    }
+
+    return s;
+}
+
+/* map newarray numeric code to human name */
+static const char *newarray_type_name(u1 code)
+{
+    switch (code) {
+    case 4: return "boolean";
+    case 5: return "char";
+    case 6: return "float";
+    case 7: return "double";
+    case 8: return "byte";
+    case 9: return "short";
+    case 10: return "int";
+    case 11: return "long";
+    default: return "unknown";
+    }
+}
+
+/* Helper to read signed 16-bit from two bytes */
+static int16_t read_i16_from_bytes(const u1 *code, u4 hi_index, u4 lo_index) {
+    return (int16_t)((code[hi_index] << 8) | code[lo_index]);
+}
+
+/* NOTE: ALTEREI A ASSINATURA para receber cp_count (mais seguro) */
+void show_opcodes(const u1 *code, u4 length, const cp_info *cp, u2 cp_count)
+{
+    if (!code) return;
+
     u4 i = 0;
     while (i < length)
     {
-        // Ignore reserved opcodes
+        /* Preserve comportamento anterior: ignorar opcodes reservados */
         if (code[i] > 0xC9)
         {
             i++;
@@ -13,145 +180,106 @@ void show_opcodes(const u1 *code, u4 length, const cp_info *cp)
         }
 
         const OpcodeInfo opcode = opcode_table[code[i]];
-        printf("      %4u: %s", i, opcode.mnemonic);
+        printf("      %4u: %-15s", i, opcode.mnemonic);
 
-        // operandos imediatos ou índices na constant pool
         switch (code[i])
         {
-        case 0x10: // bipush, 1 byte imediato
-            if (i + 1 < length)
-                printf(" %d", (u1)code[i + 1]);
-            i += 2;
-            break;
-
-        case 0x11: // sipush, 2 bytes imediato
-            if (i + 2 < length)
-            {
-                u2 val = (code[i + 1] << 8) | code[i + 2];
-                printf(" %d", val);
-            }
-            i += 3;
-            break;
-
-        case 0x12: // ldc, 1 byte índice
-            if (i + 1 < length)
-            {
-                char *constant_value = get_constant_UTF8_value(code[i + 1], cp);
-                printf(" #%u <%s>", code[i + 1], constant_value);
-                free(constant_value);
+        case 0x10: { // bipush (signed byte)
+            if (i + 1 < length) {
+                int8_t val = (int8_t)code[i + 1];
+                printf("%d (0x%02X)", val, code[i+1]);
             }
             i += 2;
             break;
+        }
 
-        case 0x13: // ldc_w, 2 bytes índice
-        case 0x14: // ldc2_w, 2 bytes índice
-        case 0xB2: // getstatic
-        case 0xB3: // putstatic
-        case 0xB4: // getfield
-        case 0xB5: // putfield
-        case 0xB6: // invokevirtual
-        case 0xB7: // invokespecial
-        case 0xB8: // invokestatic
-        case 0xB9: // invokeinterface
-        case 0xBB: // new
-        case 0xBD: // anewarray
-            if (i + 2 < length)
-            {
-                u2 idx = (code[i + 1] << 8) | code[i + 2];
-                char *constant_value = get_constant_UTF8_value(idx, cp);
-                printf(" #%u <%s>", idx, constant_value);
-                free(constant_value);
+        case 0x11: { // sipush (signed 2 bytes)
+            if (i + 2 < length) {
+                int16_t val = read_i16_from_bytes(code, i + 1, i + 2);
+                printf("%d (0x%02X 0x%02X)", val, code[i+1], code[i+2]);
             }
             i += 3;
             break;
+        }
 
-        case 0xC5: // multianewarray
-            if (i + 3 < length)
-            {
-                u2 idx = (code[i + 1] << 8) | code[i + 2];
-                char *constant_value = get_constant_UTF8_value(idx, cp);
-                u1 dim = code[i + 3];
-                printf(" #%u <%s> dim %u", idx, constant_value, dim);
-                free(constant_value);
-            }
-            i += 4;
-            break;
-
-        case 0x84: // iinc, 1 byte imediato não-negativo, 1 byte imediato
-            if (i + 2 < length)
-            {
-                printf(" %u by %i", (u1)code[i + 1], (uint8_t)code[i + 2]);
-            }
-            i += 3;
-            break;
-
-        case 0x99: // ifeq
-        case 0x9A: // ifne
-        case 0x9B: // iflt
-        case 0x9C: // ifle
-        case 0x9D: // ifgt
-        case 0x9E: // ifge
-        case 0x9F: // if_icmpeq
-        case 0xA0: // if_icmpne
-        case 0xA1: // if_icmplt
-        case 0xA2: // if_icmpge
-        case 0xA3: // if_icmpgt
-        case 0xA4: // if_icmple
-        case 0xA5: // if_acmpeq
-        case 0xA6: // if_acmpne
-        case 0xA7: // goto
-        case 0xC6: // ifnull
-        case 0xC7: // ifnonnull
-            if (i + 2 < length)
-            {
-                int16_t offset = (code[i + 1] << 8) | code[i + 2];
-                printf(" %u (%c%i)", offset + i, offset > 0 ? '+' : '\0', offset); // branch address
-                i += 3;
-            }
-            break;
-
-        case 0xBC: // newarray, 1 byte imediato
-            if (i + 1 < length)
-            {
-                printf(" %u", code[i + 1]);
-                switch (code[i + 1])
-                {
-                case 4:
-                    printf(" (boolean)");
-                    break;
-                case 5:
-                    printf(" (char)");
-                    break;
-                case 6:
-                    printf(" (float)");
-                    break;
-                case 7:
-                    printf(" (double)");
-                    break;
-                case 8:
-                    printf(" (byte)");
-                    break;
-                case 9:
-                    printf(" (short)");
-                    break;
-                case 10:
-                    printf(" (int)");
-                    break;
-                case 11:
-                    printf(" (long)");
-                    break;
-                default:
-                    printf(" unknown type");
-                    break;
-                }
+        case 0x12: { // ldc (u1 index)
+            if (i + 1 < length) {
+                u1 idx = code[i + 1];
+                char *resolved = resolve_cp_entry(cp, cp_count, idx);
+                printf("#%u (%s) [bytes: 0x%02X]", idx, resolved, code[i+1]);
+                free(resolved);
             }
             i += 2;
             break;
+        }
 
-        case 0xAA: // tableswitch
+        case 0x13: case 0x14: /* ldc_w / ldc2_w */
+        case 0xB2: case 0xB3: case 0xB4: case 0xB5:
+        case 0xB6: case 0xB7: case 0xB8: case 0xBB:
+        case 0xBD: case 0xC5:
+        {
+            if (i + 2 < length) {
+                u2 idx = (u2)((code[i+1] << 8) | code[i+2]);
+                char *resolved = resolve_cp_entry(cp, cp_count, idx);
+                printf("#%u (%s) [bytes: 0x%02X 0x%02X]", idx, resolved, code[i+1], code[i+2]);
+                free(resolved);
+            }
+            if (code[i] == 0xC5) i += 4; /* multianewarray has extra dim byte */
+            else i += 3;
+            break;
+        }
+
+        case 0xB9: { /* invokeinterface: indexbyte1,indexbyte2,count,0 */
+            if (i + 4 < length) {
+                u2 idx = (u2)((code[i+1] << 8) | code[i+2]);
+                u1 count = code[i+3];
+                u1 zero = code[i+4];
+                char *resolved = resolve_cp_entry(cp, cp_count, idx);
+                printf("#%u (%s) count=%u reserved=0x%02X [bytes: 0x%02X 0x%02X 0x%02X 0x%02X]",
+                       idx, resolved, count, zero, code[i+1], code[i+2], code[i+3], code[i+4]);
+                free(resolved);
+            }
+            i += 5;
+            break;
+        }
+
+        case 0x84: { /* iinc: index (u1), const (signed byte) */
+            if (i + 2 < length) {
+                u1 idx = code[i+1];
+                int8_t cons = (int8_t)code[i+2];
+                printf("%u by %d [bytes: 0x%02X 0x%02X]", idx, cons, code[i+1], code[i+2]);
+            }
+            i += 3;
+            break;
+        }
+
+        case 0x99: case 0x9A: case 0x9B: case 0x9C: case 0x9D: case 0x9E:
+        case 0x9F: case 0xA0: case 0xA1: case 0xA2: case 0xA3: case 0xA4:
+        case 0xA5: case 0xA6: case 0xA7: case 0xC6: case 0xC7:
+        {
+            if (i + 2 < length) {
+                int16_t offset = read_i16_from_bytes(code, i + 1, i + 2);
+                int target = (int)i + offset;
+                printf("target=%d (offset=%+d) [bytes: 0x%02X 0x%02X]", target, offset, code[i+1], code[i+2]);
+            }
+            i += 3;
+            break;
+        }
+
+        case 0xBC: { /* newarray */
+            if (i + 1 < length) {
+                u1 t = code[i+1];
+                const char *name = newarray_type_name(t);
+                printf("%u (%s) [byte: 0x%02X]", t, name, code[i+1]);
+            }
+            i += 2;
+            break;
+        }
+
+        case 0xAA: { /* tableswitch */
+            /* Reaplicar implementação já existente (preservar pad & leitura) */
             u4 start = i;
-            while ((++i) % 4 != 0)
-                continue;
+            while ((++i) % 4 != 0) continue;
 
             int32_t _default = get_switch_32B_values(i, code);
             i += 4;
@@ -168,14 +296,18 @@ void show_opcodes(const u1 *code, u4 length, const cp_info *cp)
                 {
                     u4 jump_offset = get_switch_32B_values(i, code);
                     i += 4;
-                    printf("                 %4u: %u (%c%i)\n", j, start + jump_offset, jump_offset > 0 ? '+' : '\0', jump_offset);
+                    int target = start + jump_offset;
+                    printf("                 %4d: %d (offset=%+d)\n", j + low, target, jump_offset);
                 }
-                printf("                 %4cdefault: %u (%c%i)", '\0', start + _default, _default > 0 ? '+' : '\0', _default);
+                int default_target = start + _default;
+                printf("                 default: %d (offset=%+d)", default_target, _default);
             }
 
             break;
+        }
 
         default:
+            /* sem operandos extras */
             i += 1;
             break;
         }
@@ -183,3 +315,5 @@ void show_opcodes(const u1 *code, u4 length, const cp_info *cp)
         printf("\n");
     }
 }
+
+/* --- Fim: helpers e show_opcodes corrigidos --- */
