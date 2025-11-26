@@ -216,7 +216,7 @@ void show_opcodes(const u1 *code, u4 length, const cp_info *cp, u2 cp_count)
         case 0x13: case 0x14: /* ldc_w / ldc2_w */
         case 0xB2: case 0xB3: case 0xB4: case 0xB5:
         case 0xB6: case 0xB7: case 0xB8: case 0xBB:
-        case 0xBD: case 0xC5:
+        case 0xBD:
         {
             if (i + 2 < length) {
                 u2 idx = (u2)((code[i+1] << 8) | code[i+2]);
@@ -224,8 +224,19 @@ void show_opcodes(const u1 *code, u4 length, const cp_info *cp, u2 cp_count)
                 printf("#%u (%s) [bytes: 0x%02X 0x%02X]", idx, resolved, code[i+1], code[i+2]);
                 free(resolved);
             }
-            if (code[i] == 0xC5) i += 4; /* multianewarray has extra dim byte */
-            else i += 3;
+            i += 3;
+            break;
+        }
+
+        case 0xC5: { /* multianewarray */
+            if (i + 3 < length) {
+                u2 idx = (u2)((code[i+1] << 8) | code[i+2]);
+                u1 dim = code[i+3];
+                char *resolved = resolve_cp_entry(cp, cp_count, idx);
+                printf("#%u (%s) dim %u [bytes: 0x%02X 0x%02X 0x%02X]", idx, resolved, dim, code[i+1], code[i+2], code[i+3]);
+                free(resolved);
+            }
+            i += 4;
             break;
         }
 
@@ -265,7 +276,7 @@ void show_opcodes(const u1 *code, u4 length, const cp_info *cp, u2 cp_count)
             i += 3;
             break;
         }
-
+        
         case 0xBC: { /* newarray */
             if (i + 1 < length) {
                 u1 t = code[i+1];
@@ -305,6 +316,33 @@ void show_opcodes(const u1 *code, u4 length, const cp_info *cp, u2 cp_count)
 
             break;
         }
+
+        case 0xAB: { /* lookupswitch */
+            u4 start = i; /* posição do opcode */
+            /* consumir padding: avançar para a próxima posição 4-byte alinhada após o opcode */
+            while ((++i) % 4 != 0)
+                printf(" [pad 0x%02X]", code[i]); /* opcional: mostrar bytes de padding */
+            /* agora i está no começo dos 4-byte do default */
+            int32_t _default = get_switch_32B_values(i, code);
+            i += 4;
+            int32_t npairs = get_switch_32B_values(i, code);
+            i += 4;
+
+            printf(" npairs=%d\n", npairs);
+
+            for (int32_t p = 0; p < npairs; ++p) {
+                int32_t match = get_switch_32B_values(i, code); i += 4;
+                int32_t jump_offset = get_switch_32B_values(i, code); i += 4;
+                int target = (int)start + jump_offset;
+                printf("                 match %d -> target=%d (offset=%+d)\n", match, target, jump_offset);
+            }
+
+            int default_target = (int)start + _default;
+            printf("                 default -> target=%d (offset=%+d)", default_target, _default);
+            break;
+        }
+
+
 
         default:
             /* sem operandos extras */
