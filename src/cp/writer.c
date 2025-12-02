@@ -1,5 +1,30 @@
 #include "cp/writer.h"
 
+static char *replace_newlines(char *s)
+{
+    int newlines = 0;
+    
+    for (char *c = s; c < s + strlen(s); c++)
+        if (*c == '\n')
+            newlines++;
+
+    size_t l = strlen(s) + (newlines * 2) + 1;
+
+    char *str = (char *)malloc(l * sizeof(char) + 1);
+    size_t i, j;
+    for (i = 0, j = 0; i < strlen(s); i++, j++) 
+        if (s[i] == '\n')
+        {
+            str[j] = '\\';
+            str[++j] = 'n';
+        }
+        else
+            str[j] = s[i];
+
+    str[j] = '\0';
+    return str;
+}
+
 void show_constants(u2 count, cp_info *_cp)
 {
     u2 i = 1;
@@ -38,8 +63,6 @@ void show_constants(u2 count, cp_info *_cp)
             char *ref_name = _cp[_cp[name_and_type_index - 1].info.NameAndType.name_index - 1].info.UTF8.str;
             char *ref_type = _cp[_cp[name_and_type_index - 1].info.NameAndType.descriptor_index - 1].info.UTF8.str;
 
-            ref_name = !strcmp(ref_name, "<init>") ? "\"<init>\"" : ref_name;
-
             printf("%s#%u = %s\t\t\t#%u.#%u\t\t// %s.%s:%s\n",
                    pad, i, ref, cls_index, name_and_type_index, cls, ref_name, ref_type);
             break;
@@ -49,14 +72,10 @@ void show_constants(u2 count, cp_info *_cp)
             u2 str_index = cp->info.String.string_index;
             char *str = _cp[str_index - 1].info.UTF8.str;
 
-            if (str[0] == '\n')
-                str[0] = '\0';
-
-            size_t l;
-            if ((l = strlen(str)) > 0 && str[l - 1] == '\n')
-                str[l - 1] = 0;
+            str = replace_newlines(str);
 
             printf("%s#%u = String\t\t\t#%u\t\t// %s\n", pad, i, str_index, str);
+            free(str);
             break;
         }
         case CONSTANT_Integer:
@@ -83,14 +102,11 @@ void show_constants(u2 count, cp_info *_cp)
         }
         case CONSTANT_UTF8:
             char *str = cp->info.UTF8.str;
-            if (str[0] == '\n')
-                str[0] = '\0';
 
-            size_t l;
-            if ((l = strlen(str)) > 0 && str[l - 1] == '\n')
-                str[l - 1] = 0;
+            str = replace_newlines(str);
 
             printf("%s#%u = UTF-8\t\t\t%s\n", pad, i, str);
+            free(str);
             break;
         case CONSTANT_MethodHandle:
             printf("%s#%u = MethodHandle\n", pad, i);
@@ -197,14 +213,6 @@ char *get_constant_UTF8_value(u2 i, const cp_info *cp)
     default:
         break;
     }
-
-    if (s[0] == '\n')
-        s[0] = '\0';
-
-    size_t l = strlen(s);
-    if (l > 0)
-        if (s[l - 1] == '\n')
-            s[l - 1] = 0;
 
     return s;
 }

@@ -1,5 +1,4 @@
 #include "parser.h"
-#include "reader.h"
 
 cp_info *parse_constant_pool(FILE *fptr, u2 count)
 {
@@ -27,7 +26,8 @@ cp_info *parse_constant_pool(FILE *fptr, u2 count)
             break;
 
         case CONSTANT_Integer:
-        case CONSTANT_Float: {
+        case CONSTANT_Float:
+        {
             u4 ibytes = read_u4(fptr);
             cp->info._4Bn.bytes = ibytes;
             if (cp->tag == CONSTANT_Integer)
@@ -38,7 +38,8 @@ cp_info *parse_constant_pool(FILE *fptr, u2 count)
         }
 
         case CONSTANT_Long:
-        case CONSTANT_Double: {
+        case CONSTANT_Double:
+        {
             u4 high_bytes = read_u4(fptr);
             u4 low_bytes = read_u4(fptr);
 
@@ -59,7 +60,8 @@ cp_info *parse_constant_pool(FILE *fptr, u2 count)
             cp->info.NameAndType.descriptor_index = read_u2(fptr);
             break;
 
-        case CONSTANT_UTF8: {
+        case CONSTANT_UTF8:
+        {
             u2 l = read_u2(fptr);
             cp->info.UTF8.length = l;
 
@@ -158,7 +160,7 @@ char *decode_modified_utf8_str(u2 length, const u1 *bytes)
         {
             u1 y = bytes[pos + 1];
             u2 code_point = ((x & 0x1F) << 6) | (y & 0x3F);
-            str[i++] = code_point == 0 ? L'\0' : (char)code_point; // The null character is represented by two bytes (0xC0,0x80);
+            str[i++] = code_point == 0 ? '\0' : (char)code_point; // The null character is represented by two bytes (0xC0,0x80);
             pos += 2;
         }
         else if ((x & 0xF0) == 0xE0)
@@ -171,7 +173,7 @@ char *decode_modified_utf8_str(u2 length, const u1 *bytes)
         }
     }
 
-    str[i] = L'\0';
+    str[i] = '\0';
     return str;
 }
 
@@ -185,7 +187,7 @@ float decode_float_bytes(u4 b)
         return NAN;
     else
     {
-        int s, e, m;
+        int32_t s, e, m;
         s = ((b >> 31) == 0) ? 1 : -1;
         e = ((b >> 23) & 0xFF);
         m = (e == 0) ? (b & 0x7FFFFF) << 1 : (b & 0x7FFFFF) | 0x800000;
@@ -194,28 +196,28 @@ float decode_float_bytes(u4 b)
     }
 }
 
-long decode_long_bytes(u4 hb, u4 lb)
+int64_t decode_long_bytes(u4 hb, u4 lb)
 {
-    return ((long)hb << 32) | lb;
+    return ((int64_t)hb << 32) | lb;
 }
 
 double decode_double_bytes(u4 hb, u4 lb)
 {
-    long b = decode_long_bytes(hb, lb);
+    int64_t b = decode_long_bytes(hb, lb);
 
     if (b == 0x7ff0000000000000L)
         return INFINITY;
     else if (b == (long)0xfff0000000000000L)
         return -INFINITY;
     else if (((0x7ff0000000000001L <= b) && (b <= 0x7fffffffffffffffL)) ||
-             (((long)0xfff0000000000001L <= b) && (b <= (long)0xffffffffffffffffL)))
+             (((int64_t)0xfff0000000000001L <= b) && (b <= (int64_t)0xffffffffffffffffL)))
         return NAN;
     else
     {
-        int s, e;
-        long m;
+        int32_t s, e;
+        int64_t m;
         s = ((b >> 63) == 0) ? 1 : -1;
-        e = (int)((b >> 52) & 0x7ffL);
+        e = (int32_t)((b >> 52) & 0x7ffL);
         m = (e == 0) ? (b & 0xfffffffffffffL) << 1 : (b & 0xfffffffffffffL) | 0x10000000000000L;
 
         return s * m * pow(2, e - 1075);

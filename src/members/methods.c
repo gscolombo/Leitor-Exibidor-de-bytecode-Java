@@ -63,17 +63,17 @@ void show_methods(const ClassFile *cf)
 
             // Handle <init> method
             int is_init = !strcmp(method_name, "<init>");
-            if (is_init)
-            {
-                char *classname = cp[cp[cf->this_class - 1].info.Class.name_index - 1].info.UTF8.str;
-                for (char *wcptr = classname; wcptr < classname + strlen(classname) - 1; wcptr++)
-                    if (*wcptr == L'/')
-                    {
-                        *wcptr = L'.';
-                        break;
-                    }
-                method_name = classname;
-            }
+            // if (is_init)
+            // {
+            //     char *classname = cp[cp[cf->this_class - 1].info.Class.name_index - 1].info.UTF8.str;
+            //     for (char *wcptr = classname; wcptr < classname + strlen(classname) - 1; wcptr++)
+            //         if (*wcptr == L'/')
+            //         {
+            //             *wcptr = L'.';
+            //             break;
+            //         }
+            //     method_name = classname;
+            // }
 
             // Get parameters descriptor length
             char *params_end = strchr(method_desc, L')') + 1;
@@ -162,7 +162,7 @@ void show_methods(const ClassFile *cf)
                             ai->info.Code.max_locals,
                             ai->info.Code.code_length);
 
-                        show_opcodes(ai->info.Code.code, ai->info.Code.code_length, cp);
+                        show_opcodes(ai->info.Code.code, ai->info.Code.code_length, cp, cf->constant_pool_count);
                     }
 
                     else {
