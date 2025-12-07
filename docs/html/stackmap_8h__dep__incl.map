@@ -31,7 +31,7 @@
 <area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="129,440,129,475,124,475,124,440"/>
 <area shape="rect" id="Node000011" href="$parser_8c.html" title="Implementação do parser do constant pool e utilitários de decodificação." alt="" coords="883,475,997,500"/>
 <area shape="poly" id="edge11_Node000010_Node000011" title=" " alt="" coords="951,441,945,475,939,474,946,440"/>
-<area shape="rect" id="Node000012" href="$main_8c.html" title=" " alt="" coords="1022,475,1111,500"/>
+<area shape="rect" id="Node000012" href="$main_8c.html" title="Ponto de entrada do leitor&#45;exibidor de bytecode Java." alt="" coords="1022,475,1111,500"/>
 <area shape="poly" id="edge12_Node000010_Node000012" title=" " alt="" coords="985,432,1049,472,1047,477,982,436"/>
 <area shape="rect" id="Node000013" href="$reader_8c.html" title="Implementação das funções de leitura de arquivos .class e utilitários de leitura." alt="" coords="761,475,858,500"/>
 <area shape="poly" id="edge13_Node000010_Node000013" title=" " alt="" coords="919,435,834,477,832,472,917,430"/>

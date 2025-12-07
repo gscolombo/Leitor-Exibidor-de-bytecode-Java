@@ -1,5 +1,5 @@
 <map id="src/main.c" name="src/main.c">
-<area shape="rect" id="Node000001" title=" " alt="" coords="318,5,407,31"/>
+<area shape="rect" id="Node000001" title="Ponto de entrada do leitor&#45;exibidor de bytecode Java." alt="" coords="318,5,407,31"/>
 <area shape="rect" id="Node000002" href="$utils_8h.html" title="Funções auxiliares para manipulação de inteiros, flags, nomes de atributos e descritores utilizados n..." alt="" coords="246,225,309,251"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="352,33,310,82,288,116,273,153,270,183,274,211,268,212,265,183,268,151,284,113,305,79,348,29"/>
 <area shape="rect" id="Node000013" href="$reader_8h.html" title="Funções de leitura de arquivos .class e utilitários de leitura de inteiros." alt="" coords="325,79,400,104"/>

@@ -10,7 +10,7 @@
 <area shape="poly" id="edge18_Node000001_Node000006" title=" " alt="" coords="685,42,740,151,736,153,681,45"/>
 <area shape="rect" id="Node000008" href="$reader_8h.html" title="Funções de leitura de arquivos .class e utilitários de leitura de inteiros." alt="" coords="873,152,999,177"/>
 <area shape="poly" id="edge19_Node000001_Node000008" title=" " alt="" coords="705,35,916,150,914,154,703,40"/>
-<area shape="rect" id="Node000010" href="$main_8c.html" title=" " alt="" coords="1009,225,1098,251"/>
+<area shape="rect" id="Node000010" href="$main_8c.html" title="Ponto de entrada do leitor&#45;exibidor de bytecode Java." alt="" coords="1009,225,1098,251"/>
 <area shape="poly" id="edge21_Node000001_Node000010" title=" " alt="" coords="742,28,805,44,877,68,949,103,983,125,1014,150,1029,168,1040,188,1053,224,1048,226,1035,191,1025,171,1010,154,980,129,947,108,875,73,804,49,740,34"/>
 <area shape="rect" id="Node000013" href="$cp_2writer_8h.html" title="Funções para exibição do Constant Pool de um ClassFile." alt="" coords="84,79,225,104"/>
 <area shape="poly" id="edge14_Node000001_Node000013" title=" " alt="" coords="601,32,226,83,225,78,600,26"/>

@@ -26,27 +26,27 @@ var NAVTREE =
 [
   [ "Leitor-Exibidor-de-bytecode-Java", "index.html", [
     [ "Namespaces", "namespaces.html", [
-      [ "Namespace List", "namespaces.html", "namespaces_dup" ]
+      [ "Lista de Namespaces", "namespaces.html", "namespaces_dup" ]
     ] ],
     [ "Classes", "annotated.html", [
-      [ "Class List", "annotated.html", "annotated_dup" ],
-      [ "Class Index", "classes.html", null ],
-      [ "Class Members", "functions.html", [
-        [ "All", "functions.html", null ],
-        [ "Functions", "functions_func.html", null ],
-        [ "Variables", "functions_vars.html", null ]
+      [ "Lista de Classes", "annotated.html", "annotated_dup" ],
+      [ "Índice dos Componentes", "classes.html", null ],
+      [ "Membros de classe", "functions.html", [
+        [ "Todos", "functions.html", null ],
+        [ "Funções", "functions_func.html", null ],
+        [ "Variáveis", "functions_vars.html", null ]
       ] ]
     ] ],
-    [ "Files", "files.html", [
-      [ "File List", "files.html", "files_dup" ],
-      [ "File Members", "globals.html", [
-        [ "All", "globals.html", null ],
-        [ "Functions", "globals_func.html", null ],
-        [ "Variables", "globals_vars.html", null ],
-        [ "Typedefs", "globals_type.html", null ],
-        [ "Enumerations", "globals_enum.html", null ],
-        [ "Enumerator", "globals_eval.html", null ],
-        [ "Macros", "globals_defs.html", null ]
+    [ "Arquivos", "files.html", [
+      [ "Lista de Arquivos", "files.html", "files_dup" ],
+      [ "Membros dos Arquivos", "globals.html", [
+        [ "Todos", "globals.html", null ],
+        [ "Funções", "globals_func.html", null ],
+        [ "Variáveis", "globals_vars.html", null ],
+        [ "Definições de Tipos", "globals_type.html", null ],
+        [ "Enumerações", "globals_enum.html", null ],
+        [ "Enumeradores", "globals_eval.html", null ],
+        [ "Definições e Macros", "globals_defs.html", null ]
       ] ]
     ] ]
   ] ]
@@ -58,5 +58,5 @@ var NAVTREEINDEX =
 "structattribute.html#ae86da0a3a5b6c4d86f0e3e208076e6f7"
 ];
 
-var SYNCONMSG = 'click to disable panel synchronisation';
-var SYNCOFFMSG = 'click to enable panel synchronisation';
+var SYNCONMSG = 'clique para desativar a sincronização do painel';
+var SYNCOFFMSG = 'clique para ativar a sincronização do painel';

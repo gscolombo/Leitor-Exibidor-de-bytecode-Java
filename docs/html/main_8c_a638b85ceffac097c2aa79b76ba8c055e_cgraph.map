@@ -1,5 +1,5 @@
 <map id="main" name="main">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,475,60,500"/>
+<area shape="rect" id="Node000001" title="Função principal do programa leitor&#45;exibidor de bytecode." alt="" coords="5,475,60,500"/>
 <area shape="rect" id="Node000002" href="$Classfile_8c.html#ae4a7da079d90be01c1701b60743fb2bc" title="Libera toda a memória alocada em um ClassFile." alt="" coords="112,449,220,475"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="60,480,98,472,99,477,61,485"/>
 <area shape="rect" id="Node000005" href="$reader_8c.html#ac9b5c5d0cb1274d8187768e755b1837c" title="Abre um arquivo .class em modo binário." alt="" coords="109,499,223,524"/>
