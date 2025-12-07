@@ -1,0 +1,63 @@
+<map id="main" name="main">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,475,60,500"/>
+<area shape="rect" id="Node000002" href="$Classfile_8c.html#ae4a7da079d90be01c1701b60743fb2bc" title="Libera toda a memória alocada em um ClassFile." alt="" coords="112,449,220,475"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="60,480,98,472,99,477,61,485"/>
+<area shape="rect" id="Node000005" href="$reader_8c.html#ac9b5c5d0cb1274d8187768e755b1837c" title="Abre um arquivo .class em modo binário." alt="" coords="109,499,223,524"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="61,490,96,496,95,501,60,495"/>
+<area shape="rect" id="Node000006" href="$reader_8c.html#af10f651434e3008e094eb6d9d9c48f25" title="Lê um arquivo .class inteiro e popula uma estrutura ClassFile." alt="" coords="111,287,221,312"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="41,473,146,322,150,325,45,476"/>
+<area shape="rect" id="Node000019" href="$writer_8c.html#ae93e892dfa2ab60858ee0317710677f8" title="Exibe em stdout todas as informações relevantes de um ClassFile." alt="" coords="108,549,224,575"/>
+<area shape="poly" id="edge27_Node000001_Node000019" title=" " alt="" coords="54,498,109,533,125,541,122,546,107,538,51,503"/>
+<area shape="rect" id="Node000003" href="$Classfile_8c.html#adc1c4615212878b4fdfa2c04428e3af4" title="Libera um array de atributos associado a fields, methods ou ao attribute Code." alt="" coords="276,449,395,475"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="220,459,262,459,262,465,220,465"/>
+<area shape="poly" id="edge4_Node000003_Node000003" title=" " alt="" coords="307,451,301,441,304,431,316,425,335,423,358,426,368,435,365,439,356,431,335,428,318,430,309,435,307,440,312,448"/>
+<area shape="rect" id="Node000004" href="$utils_8c.html#a53816f26df4f6332a074bb2dda5fa7e4" title="Converte um nome de atributo (wide&#45;string) para o enum correspondente." alt="" coords="673,397,819,423"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="394,452,659,418,660,423,395,457"/>
+<area shape="rect" id="Node000007" href="$parser_8c.html#aac2023dd273b325bbbda34ce46ea1a07" title="Faz o parse completo do constant pool a partir do stream do .class." alt="" coords="447,148,603,173"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="173,285,211,237,239,211,271,190,310,175,352,164,432,155,433,161,353,169,312,180,273,195,242,215,215,241,178,288"/>
+<area shape="rect" id="Node000013" href="$reader_8c.html#a68af7c01695b2d6b6533a5f68672df75" title="Lê 2 bytes (u2) do arquivo em ordem big&#45;endian." alt="" coords="709,317,783,343"/>
+<area shape="poly" id="edge25_Node000006_Node000013" title=" " alt="" coords="222,309,273,321,364,342,437,357,509,363,602,358,695,341,696,346,603,363,509,369,436,363,363,347,271,326,221,315"/>
+<area shape="rect" id="Node000015" href="$reader_8c.html#aecc14900440f32e9507ed9ecf45ad2d7" title="Lê 4 bytes (u4) do arquivo em ordem big&#45;endian." alt="" coords="709,255,783,280"/>
+<area shape="poly" id="edge26_Node000006_Node000015" title=" " alt="" coords="211,284,272,271,390,260,508,256,695,261,695,267,508,262,390,265,272,277,212,289"/>
+<area shape="rect" id="Node000017" href="$reader_8c.html#a54ff57168c90704e4ba29ccdd82038ba" title="Lê uma lista de member_info (fields ou methods) do arquivo e preenche o array." alt="" coords="279,287,392,312"/>
+<area shape="poly" id="edge18_Node000006_Node000017" title=" " alt="" coords="221,297,265,297,265,302,221,302"/>
+<area shape="rect" id="Node000008" href="$parser_8c.html#abbf6db13bd799587ea390a308a6719a4" title="Reconstrói um double (IEEE 754, 64 bits) a partir de duas palavras u4." alt="" coords="665,205,827,231"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="575,171,684,199,682,204,574,176"/>
+<area shape="rect" id="Node000009" href="$parser_8c.html#a637d67ba8a2673e42cabf3ac17494309" title="Combina duas palavras (alta/baixa) em um valor long (64 bits)." alt="" coords="889,180,1036,205"/>
+<area shape="poly" id="edge11_Node000007_Node000009" title=" " alt="" coords="603,164,876,184,876,189,603,169"/>
+<area shape="rect" id="Node000010" href="$parser_8c.html#ad745f15a0a7e7e3620cf4729a969810d" title="Reconstrói um float (IEEE 754) a partir de 4 bytes (u4)." alt="" coords="672,5,820,31"/>
+<area shape="poly" id="edge10_Node000007_Node000010" title=" " alt="" coords="534,146,580,94,612,65,649,40,663,33,666,38,652,44,616,69,583,98,538,149"/>
+<area shape="rect" id="Node000011" href="$parser_8c.html#aa81b86607105dcb441904d8c3847173e" title="Decodifica uma string em Modified UTF&#45;8 para wchar_t*." alt="" coords="651,55,841,80"/>
+<area shape="poly" id="edge12_Node000007_Node000011" title=" " alt="" coords="544,146,591,117,650,89,671,81,673,86,652,94,593,122,546,150"/>
+<area shape="rect" id="Node000012" href="$reader_8c.html#a48d093e8c8a3ab92d7c54fbfd2f4f852" title="Lê 1 byte (u1) do arquivo." alt="" coords="709,104,783,129"/>
+<area shape="poly" id="edge13_Node000007_Node000012" title=" " alt="" coords="589,145,694,124,695,129,590,151"/>
+<area shape="poly" id="edge14_Node000007_Node000013" title=" " alt="" coords="540,172,652,289,697,312,694,317,649,293,536,175"/>
+<area shape="poly" id="edge16_Node000007_Node000015" title=" " alt="" coords="566,171,604,190,619,204,628,216,637,228,652,240,696,257,694,262,649,244,634,232,624,220,615,207,601,195,564,176"/>
+<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="827,206,875,200,876,205,828,211"/>
+<area shape="rect" id="Node000014" href="$utils_8c.html#a599ab19da5360c7d96d84b862b612304" title="Inverte os dois bytes de um valor de 16 bits." alt="" coords="927,317,999,343"/>
+<area shape="poly" id="edge15_Node000013_Node000014" title=" " alt="" coords="784,327,913,327,913,333,784,333"/>
+<area shape="rect" id="Node000016" href="$utils_8c.html#abfc4df4feae08f92185e8001e544025b" title="Inverte a ordem dos quatro bytes de um valor de 32 bits." alt="" coords="927,255,999,280"/>
+<area shape="poly" id="edge17_Node000015_Node000016" title=" " alt="" coords="784,265,913,265,913,270,784,270"/>
+<area shape="poly" id="edge24_Node000017_Node000013" title=" " alt="" coords="392,289,446,285,525,279,559,280,603,285,654,296,700,310,698,315,652,301,602,290,559,285,525,285,447,290,393,295"/>
+<area shape="rect" id="Node000018" href="$reader_8c.html#add579a1b0c99c6c5be558f20ba702a1c" title="Lê um array de atributos a partir do arquivo e preenche a estrutura attribute." alt="" coords="464,324,585,349"/>
+<area shape="poly" id="edge19_Node000017_Node000018" title=" " alt="" coords="393,308,451,320,450,325,392,313"/>
+<area shape="poly" id="edge20_Node000018_Node000004" title=" " alt="" coords="565,347,695,390,693,395,563,352"/>
+<area shape="poly" id="edge22_Node000018_Node000013" title=" " alt="" coords="586,332,695,329,695,334,586,338"/>
+<area shape="poly" id="edge23_Node000018_Node000015" title=" " alt="" coords="565,321,695,280,696,286,567,326"/>
+<area shape="poly" id="edge21_Node000018_Node000018" title=" " alt="" coords="493,325,487,316,490,306,503,300,525,297,551,301,562,310,558,314,549,306,525,303,505,305,494,309,492,315,498,322"/>
+<area shape="rect" id="Node000020" href="$utils_8c.html#a54e5e04c761648da1cbda196724ffd37" title="Converte flags da JVM (u2) em uma string legível." alt="" coords="477,600,573,625"/>
+<area shape="poly" id="edge28_Node000019_Node000020" title=" " alt="" coords="224,564,399,585,463,597,462,602,398,590,224,569"/>
+<area shape="rect" id="Node000021" href="$cp_2writer_8c.html#a7e37d5fb2c6ad99c587bac7e9f17b536" title="Exibe todas as entradas do constant pool." alt="" coords="272,499,399,524"/>
+<area shape="poly" id="edge29_Node000019_Node000021" title=" " alt="" coords="209,547,278,525,280,531,210,552"/>
+<area shape="rect" id="Node000023" href="$fields_8c.html#a6290db4646e6000690c489c000103886" title="Exibe os campos de uma estrutura ClassFile." alt="" coords="286,600,385,625"/>
+<area shape="poly" id="edge31_Node000019_Node000023" title=" " alt="" coords="210,572,280,593,278,599,209,577"/>
+<area shape="rect" id="Node000025" href="$methods_8c.html#ac96be5d5338c1d8c222fe777b9f754e7" title="Exibe os métodos de uma estrutura ClassFile." alt="" coords="275,649,395,675"/>
+<area shape="poly" id="edge34_Node000019_Node000025" title=" " alt="" coords="184,573,223,603,273,636,285,642,283,646,271,640,220,608,181,577"/>
+<area shape="rect" id="Node000022" href="$utils_8c.html#ad84b8b6f6642d15fbdbd161044c8533f" title="Retorna o número de dígitos de um inteiro positivo." alt="" coords="477,499,572,524"/>
+<area shape="poly" id="edge30_Node000021_Node000022" title=" " alt="" coords="399,509,463,509,463,514,399,514"/>
+<area shape="poly" id="edge33_Node000023_Node000020" title=" " alt="" coords="385,610,462,610,462,615,385,615"/>
+<area shape="rect" id="Node000024" href="$utils_8c.html#a2da22ca95cc96ff610400450f1723cb2" title="Converte descritores da JVM para representações legíveis." alt="" coords="459,649,590,675"/>
+<area shape="poly" id="edge32_Node000023_Node000024" title=" " alt="" coords="385,623,462,643,461,648,384,628"/>
+<area shape="poly" id="edge36_Node000025_Node000020" title=" " alt="" coords="384,647,462,626,464,631,385,652"/>
+<area shape="poly" id="edge35_Node000025_Node000024" title=" " alt="" coords="396,659,445,659,445,665,396,665"/>
+</map>

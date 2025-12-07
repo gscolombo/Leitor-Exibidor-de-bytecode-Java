@@ -1,0 +1,22 @@
+<map id="parse_constant_pool" name="parse_constant_pool">
+<area shape="rect" id="Node000001" title="Faz o parse completo do constant pool a partir do stream do .class." alt="" coords="5,156,161,181"/>
+<area shape="rect" id="Node000002" href="$parser_8c.html#abbf6db13bd799587ea390a308a6719a4" title="Reconstrói um double (IEEE 754, 64 bits) a partir de duas palavras u4." alt="" coords="223,5,386,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="93,154,139,103,172,74,208,48,239,33,241,38,211,52,175,78,143,107,97,157"/>
+<area shape="rect" id="Node000003" href="$parser_8c.html#a637d67ba8a2673e42cabf3ac17494309" title="Combina duas palavras (alta/baixa) em um valor long (64 bits)." alt="" coords="448,31,595,56"/>
+<area shape="poly" id="edge4_Node000001_Node000003" title=" " alt="" coords="100,154,147,122,208,92,266,74,325,61,434,46,434,51,326,66,267,79,210,96,150,127,103,158"/>
+<area shape="rect" id="Node000004" href="$parser_8c.html#ad745f15a0a7e7e3620cf4729a969810d" title="Reconstrói um float (IEEE 754) a partir de 4 bytes (u4)." alt="" coords="231,107,379,132"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="140,153,233,132,234,138,142,159"/>
+<area shape="rect" id="Node000005" href="$parser_8c.html#aa81b86607105dcb441904d8c3847173e" title="Decodifica uma string em Modified UTF&#45;8 para wchar_t*." alt="" coords="209,156,400,181"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="162,166,196,166,196,171,162,171"/>
+<area shape="rect" id="Node000006" href="$reader_8c.html#a48d093e8c8a3ab92d7c54fbfd2f4f852" title="Lê 1 byte (u1) do arquivo." alt="" coords="267,205,342,231"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="142,179,254,204,253,209,140,184"/>
+<area shape="rect" id="Node000007" href="$reader_8c.html#a68af7c01695b2d6b6533a5f68672df75" title="Lê 2 bytes (u2) do arquivo em ordem big&#45;endian." alt="" coords="267,255,342,280"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="104,179,151,209,210,240,255,254,253,259,208,244,149,214,101,184"/>
+<area shape="rect" id="Node000009" href="$reader_8c.html#aecc14900440f32e9507ed9ecf45ad2d7" title="Lê 4 bytes (u4) do arquivo em ordem big&#45;endian." alt="" coords="267,304,342,329"/>
+<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="96,180,141,234,174,264,211,290,255,307,253,312,208,295,170,269,137,237,92,183"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="387,25,434,31,434,36,386,30"/>
+<area shape="rect" id="Node000008" href="$utils_8c.html#a599ab19da5360c7d96d84b862b612304" title="Inverte os dois bytes de um valor de 16 bits." alt="" coords="485,255,557,280"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="342,265,472,265,472,270,342,270"/>
+<area shape="rect" id="Node000010" href="$utils_8c.html#abfc4df4feae08f92185e8001e544025b" title="Inverte a ordem dos quatro bytes de um valor de 32 bits." alt="" coords="485,304,557,329"/>
+<area shape="poly" id="edge10_Node000009_Node000010" title=" " alt="" coords="342,314,472,314,472,319,342,319"/>
+</map>

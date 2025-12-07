@@ -1,0 +1,5 @@
+<map id="decode_double_bytes" name="decode_double_bytes">
+<area shape="rect" id="Node000001" title="Reconstrói um double (IEEE 754, 64 bits) a partir de duas palavras u4." alt="" coords="5,5,168,31"/>
+<area shape="rect" id="Node000002" href="$parser_8c.html#a637d67ba8a2673e42cabf3ac17494309" title="Combina duas palavras (alta/baixa) em um valor long (64 bits)." alt="" coords="216,5,363,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="168,15,202,15,202,21,168,21"/>
+</map>

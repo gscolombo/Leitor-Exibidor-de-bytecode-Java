@@ -1,0 +1,28 @@
+<map id="src/utils.c" name="src/utils.c">
+<area shape="rect" id="Node000001" title="Implementação de funções utilitárias para manipulação de endianness, conversão de flags,..." alt="" coords="221,5,305,31"/>
+<area shape="rect" id="Node000002" href="$utils_8h.html" title="Funções auxiliares para manipulação de inteiros, flags, nomes de atributos e descritores utilizados n..." alt="" coords="232,79,295,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="266,31,266,65,261,65,261,31"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,152,76,177"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="233,105,90,150,88,145,231,100"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="101,152,167,177"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="244,106,169,147,166,143,241,102"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="192,152,263,177"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="260,106,242,141,237,138,255,103"/>
+<area shape="rect" id="Node000006" href="$uinteger_8h.html" title=" " alt="" coords="273,299,360,324"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="269,104,313,284,308,286,264,105"/>
+<area shape="rect" id="Node000008" href="$attributes_8h.html" title=" " alt="" coords="408,225,505,251"/>
+<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="295,92,329,97,368,107,407,124,440,150,449,164,455,180,460,211,455,212,450,181,445,167,436,154,404,128,366,112,328,102,294,97"/>
+<area shape="rect" id="Node000012" href="$member_8h.html" title=" " alt="" coords="338,152,426,177"/>
+<area shape="poly" id="edge12_Node000002_Node000012" title=" " alt="" coords="284,102,352,142,349,147,281,106"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="281,372,352,397"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="319,324,319,358,314,358,314,324"/>
+<area shape="poly" id="edge9_Node000008_Node000006" title=" " alt="" coords="435,253,353,295,350,290,433,248"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="385,299,457,324"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="453,252,435,288,430,285,448,250"/>
+<area shape="rect" id="Node000010" href="$stackmap_8h.html" title=" " alt="" coords="481,299,579,324"/>
+<area shape="poly" id="edge10_Node000008_Node000010" title=" " alt="" coords="471,249,510,287,506,291,467,253"/>
+<area shape="rect" id="Node000011" href="$annotation_8h.html" title=" " alt="" coords="603,299,707,324"/>
+<area shape="poly" id="edge11_Node000008_Node000011" title=" " alt="" coords="489,248,611,291,609,296,488,253"/>
+<area shape="poly" id="edge13_Node000012_Node000006" title=" " alt="" coords="379,179,330,287,325,285,374,177"/>
+<area shape="poly" id="edge14_Node000012_Node000008" title=" " alt="" coords="396,175,436,214,433,218,392,179"/>
+</map>

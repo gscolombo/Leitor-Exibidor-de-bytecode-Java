@@ -1,0 +1,51 @@
+<map id="include/reader.h" name="include/reader.h">
+<area shape="rect" id="Node000001" title="Funções de leitura de arquivos .class e utilitários de leitura de inteiros." alt="" coords="438,5,565,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,225,72,251"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="438,26,333,43,275,59,220,81,170,112,125,149,59,217,55,213,121,145,167,107,217,76,273,54,332,38,437,21"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="310,225,381,251"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="440,33,398,51,379,64,364,80,348,112,341,147,340,182,343,211,338,212,335,182,336,147,343,110,359,77,376,60,395,46,438,28"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="670,225,741,251"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="514,29,687,213,683,216,510,33"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="816,79,880,104"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="561,28,798,76,803,77,802,82,797,81,560,33"/>
+<area shape="rect" id="Node000006" href="$Classfile_8h.html" title="Estruturas e funções para representar e liberar um arquivo .class Java (ClassFile)." alt="" coords="374,79,463,104"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="490,33,444,72,441,67,486,29"/>
+<area shape="rect" id="Node000007" href="$uinteger_8h.html" title=" " alt="" coords="439,372,526,397"/>
+<area shape="poly" id="edge31_Node000001_Node000007" title=" " alt="" coords="535,28,613,61,658,84,700,111,736,142,760,176,767,194,768,213,765,232,755,252,723,276,661,308,524,369,521,364,659,303,720,271,751,249,760,231,763,213,762,195,756,178,732,145,697,115,655,89,611,66,533,33"/>
+<area shape="rect" id="Node000009" href="$member_8h.html" title=" " alt="" coords="557,225,645,251"/>
+<area shape="poly" id="edge32_Node000001_Node000009" title=" " alt="" coords="509,30,565,151,593,211,588,214,560,153,504,32"/>
+<area shape="rect" id="Node000015" href="$utils_8h.html" title="Funções auxiliares para manipulação de inteiros, flags, nomes de atributos e descritores utilizados n..." alt="" coords="457,152,519,177"/>
+<area shape="poly" id="edge25_Node000001_Node000015" title=" " alt="" coords="503,31,493,139,488,138,498,31"/>
+<area shape="rect" id="Node000016" href="$parser_8h.html" title="Prototótipos para o parser do constant pool e utilitários de decodificação." alt="" coords="155,152,229,177"/>
+<area shape="poly" id="edge26_Node000001_Node000016" title=" " alt="" coords="438,24,393,29,344,40,295,56,250,81,223,109,204,140,200,137,218,106,246,77,293,51,343,34,393,24,437,19"/>
+<area shape="poly" id="edge6_Node000006_Node000003" title=" " alt="" coords="415,106,360,214,355,212,410,103"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="424,103,480,358,475,359,419,105"/>
+<area shape="poly" id="edge9_Node000006_Node000009" title=" " alt="" coords="448,102,490,122,532,150,564,181,588,212,584,215,560,184,529,154,487,126,446,106"/>
+<area shape="rect" id="Node000014" href="$constants_8h.html" title=" " alt="" coords="189,225,286,251"/>
+<area shape="poly" id="edge16_Node000006_Node000014" title=" " alt="" coords="405,107,264,219,261,214,402,102"/>
+<area shape="poly" id="edge18_Node000006_Node000015" title=" " alt="" coords="432,102,469,140,465,144,428,106"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="447,445,518,471"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="485,398,485,432,480,432,480,398"/>
+<area shape="poly" id="edge10_Node000009_Node000007" title=" " alt="" coords="594,253,503,363,499,360,590,249"/>
+<area shape="rect" id="Node000010" href="$attributes_8h.html" title=" " alt="" coords="699,299,797,324"/>
+<area shape="poly" id="edge11_Node000009_Node000010" title=" " alt="" coords="626,248,713,290,711,295,624,253"/>
+<area shape="poly" id="edge13_Node000010_Node000007" title=" " alt="" coords="706,327,540,371,538,366,705,321"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="824,372,896,397"/>
+<area shape="poly" id="edge12_Node000010_Node000011" title=" " alt="" coords="767,322,831,362,828,367,765,326"/>
+<area shape="rect" id="Node000012" href="$stackmap_8h.html" title=" " alt="" coords="573,372,672,397"/>
+<area shape="poly" id="edge14_Node000010_Node000012" title=" " alt="" coords="729,326,656,367,654,363,727,322"/>
+<area shape="rect" id="Node000013" href="$annotation_8h.html" title=" " alt="" coords="696,372,800,397"/>
+<area shape="poly" id="edge15_Node000010_Node000013" title=" " alt="" coords="751,324,751,358,745,358,745,324"/>
+<area shape="poly" id="edge17_Node000014_Node000007" title=" " alt="" coords="258,249,453,363,450,367,256,253"/>
+<area shape="poly" id="edge20_Node000015_Node000002" title=" " alt="" coords="457,172,301,192,86,228,85,223,300,187,456,167"/>
+<area shape="poly" id="edge19_Node000015_Node000003" title=" " alt="" coords="466,180,382,221,380,217,464,175"/>
+<area shape="poly" id="edge21_Node000015_Node000004" title=" " alt="" coords="520,174,658,219,657,224,519,179"/>
+<area shape="poly" id="edge22_Node000015_Node000007" title=" " alt="" coords="490,178,486,358,481,358,485,178"/>
+<area shape="poly" id="edge24_Node000015_Node000009" title=" " alt="" coords="508,175,573,216,570,220,505,180"/>
+<area shape="poly" id="edge23_Node000015_Node000010" title=" " alt="" coords="495,176,514,212,529,232,547,249,580,268,616,283,687,300,685,306,614,288,578,273,544,253,525,236,510,215,490,179"/>
+<area shape="poly" id="edge27_Node000016_Node000002" title=" " alt="" coords="168,180,77,222,75,217,166,175"/>
+<area shape="poly" id="edge28_Node000016_Node000003" title=" " alt="" coords="218,175,309,217,307,222,216,180"/>
+<area shape="poly" id="edge30_Node000016_Node000014" title=" " alt="" coords="202,176,225,212,220,215,197,179"/>
+<area shape="rect" id="Node000017" title=" " alt="" coords="97,225,165,251"/>
+<area shape="poly" id="edge29_Node000016_Node000017" title=" " alt="" coords="184,179,152,217,148,213,180,176"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="read_u4" name="read_u4">
+<area shape="rect" id="Node000001" title="Lê 4 bytes (u4) do arquivo em ordem big&#45;endian." alt="" coords="5,5,80,31"/>
+<area shape="rect" id="Node000002" href="$utils_8c.html#abfc4df4feae08f92185e8001e544025b" title="Inverte a ordem dos quatro bytes de um valor de 32 bits." alt="" coords="128,5,200,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="80,15,114,15,114,21,80,21"/>
+</map>

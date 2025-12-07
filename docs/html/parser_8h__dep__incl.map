@@ -1,0 +1,12 @@
+<map id="include/cp/parser.h" name="include/cp/parser.h">
+<area shape="rect" id="Node000001" title="Prototótipos para o parser do constant pool e utilitários de decodificação." alt="" coords="53,5,197,31"/>
+<area shape="rect" id="Node000002" href="$reader_8h.html" title="Funções de leitura de arquivos .class e utilitários de leitura de inteiros." alt="" coords="119,79,246,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="145,40,175,77,171,80,141,43"/>
+<area shape="rect" id="Node000003" href="$parser_8c.html" title="Implementação do parser do constant pool e utilitários de decodificação." alt="" coords="5,152,120,177"/>
+<area shape="poly" id="edge5_Node000001_Node000003" title=" " alt="" coords="117,44,70,153,65,151,112,42"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="153,113,84,154,81,149,150,109"/>
+<area shape="rect" id="Node000004" href="$main_8c.html" title=" " alt="" coords="145,152,234,177"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="188,118,191,152,186,152,182,118"/>
+<area shape="rect" id="Node000005" href="$reader_8c.html" title="Implementação das funções de leitura de arquivos .class e utilitários de leitura." alt="" coords="258,152,355,177"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="216,108,288,149,285,154,213,113"/>
+</map>

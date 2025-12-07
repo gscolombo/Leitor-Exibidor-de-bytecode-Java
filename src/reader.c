@@ -1,5 +1,29 @@
+/**
+ * @file reader.c
+ * @brief Implementação das funções de leitura de arquivos .class e utilitários de leitura.
+ *
+ * Implementa leitor de inteiros em big-endian (u1, u2, u4), abertura de arquivos
+ * .class e a leitura completa da estrutura ClassFile, além de helpers para
+ * leitura de member_info e atributos.
+ *
+ * Observações:
+ * - As funções que alocam memória (por exemplo, ao ler arrays, constant pool,
+ *   attributes) deixam a responsabilidade de liberar essa memória para o
+ *   chamador, normalmente através de free_classfile() ou funções auxiliares.
+ * - O código assume que o arquivo passado está em formato .class válido.
+ */
+
 #include "reader.h"
 
+/**
+ * @brief Lê 1 byte (u1) do arquivo.
+ *
+ * Faz uma leitura direta de 1 byte do stream `fptr`.
+ *
+ * @param fptr Ponteiro para o FILE de onde será lido o byte.
+ * @return u1 Valor lido (0..255). Se a leitura falhar, o valor retornado é indeterminado
+ *         (seguindo o comportamento de fread).
+ */
 u1 read_u1(FILE *fptr)
 {
     u1 u;
@@ -8,6 +32,15 @@ u1 read_u1(FILE *fptr)
     return u;
 }
 
+/**
+ * @brief Lê 2 bytes (u2) do arquivo em ordem big-endian.
+ *
+ * Lê 2 bytes do stream e, se a arquitetura for little-endian, faz o swap de byte
+ * para retornar o valor corretamente em u2.
+ *
+ * @param fptr Ponteiro para o FILE de onde serão lidos os 2 bytes.
+ * @return u2 Valor 16-bit lido em ordem big-endian.
+ */
 u2 read_u2(FILE *fptr)
 {
     u2 u;
@@ -21,6 +54,15 @@ u2 read_u2(FILE *fptr)
     return u;
 }
 
+/**
+ * @brief Lê 4 bytes (u4) do arquivo em ordem big-endian.
+ *
+ * Lê 4 bytes do stream e, se a arquitetura for little-endian, faz o swap de byte
+ * para retornar o valor corretamente em u4.
+ *
+ * @param fptr Ponteiro para o FILE de onde serão lidos os 4 bytes.
+ * @return u4 Valor 32-bit lido em ordem big-endian.
+ */
 u4 read_u4(FILE *fptr)
 {
     u4 u;
@@ -34,6 +76,16 @@ u4 read_u4(FILE *fptr)
     return u;
 }
 
+/**
+ * @brief Abre um arquivo .class em modo binário.
+ *
+ * Verifica se o caminho termina com a extensão ".class" e tenta abrir o arquivo
+ * em leitura binária ("rb"). Em caso de caminho inválido ou extensão incorreta,
+ * imprime uma mensagem e retorna NULL.
+ *
+ * @param path Caminho para o arquivo que se deseja abrir.
+ * @return FILE* Ponteiro para o arquivo aberto em modo binário, ou NULL em erro.
+ */
 FILE *open_classfile(const char *path)
 {
     size_t l;
@@ -55,6 +107,29 @@ FILE *open_classfile(const char *path)
     return NULL;
 }
 
+/**
+ * @brief Lê um arquivo .class inteiro e popula uma estrutura ClassFile.
+ *
+ * A função procura o tamanho do arquivo, imprime-o, reposiciona o ponteiro e
+ * realiza a leitura sequencial dos componentes do classfile:
+ * - magic, versões
+ * - constant pool (via parse_constant_pool)
+ * - access flags, this_class, super_class
+ * - interfaces (aloca e preenche se necessário)
+ * - fields (aloca e chama read_member)
+ * - methods (aloca e chama read_member)
+ * - attributes_count (lê o valor; atributos de classe podem ser lidos por outra função)
+ *
+ * Observações importantes:
+ * - A função fecha o FILE passado (fclose) antes de retornar.
+ * - O chamador é responsável por liberar a memória alocada dentro do ClassFile
+ *   (constant_pool, arrays, atributos) usando free_classfile().
+ *
+ * @param fptr Ponteiro para FILE já aberto (deve ser um .class).
+ * @return ClassFile Estrutura preenchida com os dados lidos. Campos não inicializados
+ *         podem ocorrer se houver erro de leitura; é recomendado usar free_classfile
+ *         após o uso.
+ */
 ClassFile read_classfile(FILE *fptr)
 {
     ClassFile cf;
@@ -75,7 +150,7 @@ ClassFile read_classfile(FILE *fptr)
         cf.this_class = read_u2(fptr);
         cf.super_class = read_u2(fptr);
 
-        // Interfaces
+        /* Interfaces */
         cf.interfaces_count = read_u2(fptr);
         cf.interfaces = NULL;
 
@@ -88,13 +163,13 @@ ClassFile read_classfile(FILE *fptr)
             }
         }
 
-        // Fields
+        /* Fields */
         cf.fields_count = read_u2(fptr);
         cf.fields = (member_info *)calloc(cf.fields_count, sizeof(member_info));
         if (cf.fields != NULL)
             read_member(cf.constant_pool, cf.fields_count, cf.fields, fptr);
 
-        // Methods
+        /* Methods */
         cf.methods_count = read_u2(fptr);
         cf.methods = (member_info *)calloc(cf.methods_count, sizeof(member_info));
         if (cf.methods != NULL)
@@ -108,6 +183,20 @@ ClassFile read_classfile(FILE *fptr)
     return cf;
 }
 
+/**
+ * @brief Lê uma lista de member_info (fields ou methods) do arquivo e preenche o array.
+ *
+ * Para cada member, a função lê:
+ * - access_flags (u2)
+ * - name_index (u2)
+ * - descriptor_index (u2)
+ * - attributes_count (u2) e, se > 0, aloca e lê os atributos via read_attributes()
+ *
+ * @param cp Ponteiro para o constant pool (cp_info *) associado ao classfile.
+ * @param count Número de elementos (member_info) a serem lidos.
+ * @param info Ponteiro para o primeiro elemento de um array de member_info já alocado.
+ * @param fptr Ponteiro para o FILE de onde os dados serão lidos.
+ */
 void read_member(const cp_info *cp, u2 count, member_info *info, FILE *fptr)
 {
     u2 attr_count;
@@ -128,6 +217,26 @@ void read_member(const cp_info *cp, u2 count, member_info *info, FILE *fptr)
     }
 }
 
+/**
+ * @brief Lê um array de atributos a partir do arquivo e preenche a estrutura `attribute`.
+ *
+ * Para cada atributo, a função:
+ * - lê attribute_name_index (u2) e attribute_length (u4)
+ * - obtém o nome do atributo a partir do constant pool e converte para o tipo de atributo
+ *   (via convert_attr_name)
+ * - de acordo com o tipo (ex: ConstantValue, Code, LineNumberTable) faz leituras específicas
+ *   e aloca buffers (code, exception_table, sub-attributes) conforme necessário.
+ *
+ * Observações:
+ * - Esta função acessa campos específicos do union `attribute.info` com base no tipo.
+ * - Caso o atributo possua sub-estruturas alocadas, estas ficam sob responsabilidade do
+ *   chamador liberar posteriormente (por exemplo, através de free_attributes).
+ *
+ * @param cp Ponteiro para o constant pool (cp_info *) para resolução de nomes.
+ * @param n Número de atributos a serem lidos.
+ * @param fptr Ponteiro para o FILE de onde os atributos serão lidos.
+ * @param attr Ponteiro para o array de `attribute` previamente alocado que será preenchido.
+ */
 void read_attributes(const cp_info *cp, u2 n, FILE *fptr, attribute *attr)
 {
     u2 c;
