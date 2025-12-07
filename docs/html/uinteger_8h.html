@@ -94,6 +94,9 @@ $(document).ready(function(){initNavTree('uinteger_8h.html',''); initResizable()
   <div class="headertitle"><div class="title">uinteger.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Definições de tipos inteiros sem sinal utilizados pela JVM e pelo leitor/exibidor de bytecode.  
+<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;stdint.h&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for uinteger.h:</div>
@@ -110,59 +113,84 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:ad9f4cdb6757615aae2fad89dab3c5470" id="r_ad9f4cdb6757615aae2fad89dab3c5470"><td class="memItemLeft" align="right" valign="top">typedef uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="uinteger_8h.html#ad9f4cdb6757615aae2fad89dab3c5470">u1</a></td></tr>
-<tr class="separator:ad9f4cdb6757615aae2fad89dab3c5470"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a732cde1300aafb73b0ea6c2558a7a54f" id="r_a732cde1300aafb73b0ea6c2558a7a54f"><td class="memItemLeft" align="right" valign="top">typedef uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="uinteger_8h.html#a732cde1300aafb73b0ea6c2558a7a54f">u2</a></td></tr>
-<tr class="separator:a732cde1300aafb73b0ea6c2558a7a54f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae5be1f726785414dd1b77d60df074c9d" id="r_ae5be1f726785414dd1b77d60df074c9d"><td class="memItemLeft" align="right" valign="top">typedef uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="uinteger_8h.html#ae5be1f726785414dd1b77d60df074c9d">u4</a></td></tr>
-<tr class="separator:ae5be1f726785414dd1b77d60df074c9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8026a39c502750413402a90d9d8bae3c" id="r_a8026a39c502750413402a90d9d8bae3c"><td class="memItemLeft" align="right" valign="top">typedef uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="uinteger_8h.html#a8026a39c502750413402a90d9d8bae3c">u1</a></td></tr>
+<tr class="memdesc:a8026a39c502750413402a90d9d8bae3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inteiro sem sinal de 8 bits.  <br /></td></tr>
+<tr class="separator:a8026a39c502750413402a90d9d8bae3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa76d8c8015643c6a837661a10142016e" id="r_aa76d8c8015643c6a837661a10142016e"><td class="memItemLeft" align="right" valign="top">typedef uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="uinteger_8h.html#aa76d8c8015643c6a837661a10142016e">u2</a></td></tr>
+<tr class="memdesc:aa76d8c8015643c6a837661a10142016e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inteiro sem sinal de 16 bits.  <br /></td></tr>
+<tr class="separator:aa76d8c8015643c6a837661a10142016e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4af10c3137cf79c12265e8d288070711" id="r_a4af10c3137cf79c12265e8d288070711"><td class="memItemLeft" align="right" valign="top">typedef uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="uinteger_8h.html#a4af10c3137cf79c12265e8d288070711">u4</a></td></tr>
+<tr class="memdesc:a4af10c3137cf79c12265e8d288070711"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inteiro sem sinal de 32 bits.  <br /></td></tr>
+<tr class="separator:a4af10c3137cf79c12265e8d288070711"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Typedef Documentation</h2>
-<a id="ad9f4cdb6757615aae2fad89dab3c5470" name="ad9f4cdb6757615aae2fad89dab3c5470"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad9f4cdb6757615aae2fad89dab3c5470">&#9670;&#160;</a></span>u1</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Definições de tipos inteiros sem sinal utilizados pela JVM e pelo leitor/exibidor de bytecode. </p>
+<p>A especificação da JVM utiliza tipos inteiros padronizados:</p><ul>
+<li>u1 → inteiro sem sinal de 1 byte</li>
+<li>u2 → inteiro sem sinal de 2 bytes</li>
+<li>u4 → inteiro sem sinal de 4 bytes</li>
+</ul>
+<p>Estes tipos são empregados em praticamente todas as estruturas do formato <code>.class</code>, incluindo constant pool, atributos, tabelas de exceções, versões, índices e comprimentos. </p>
+
+<p class="definition">Definition in file <a class="el" href="uinteger_8h_source.html">uinteger.h</a>.</p>
+</div><h2 class="groupheader">Typedef Documentation</h2>
+<a id="a8026a39c502750413402a90d9d8bae3c" name="a8026a39c502750413402a90d9d8bae3c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8026a39c502750413402a90d9d8bae3c">&#9670;&#160;</a></span>u1</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef uint8_t <a class="el" href="uinteger_8h.html#ad9f4cdb6757615aae2fad89dab3c5470">u1</a></td>
+          <td class="memname"><a class="el" href="uinteger_8h.html#a8026a39c502750413402a90d9d8bae3c">u1</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="uinteger_8h_source.html#l00006">6</a> of file <a class="el" href="uinteger_8h_source.html">uinteger.h</a>.</p>
+<p>Inteiro sem sinal de 8 bits. </p>
+<p>Representa valores entre 0 e 255. <br  />
+ Usado para bytes individuais lidos diretamente do arquivo .class. </p>
+
+<p class="definition">Definition at line <a class="el" href="uinteger_8h_source.html#l00027">27</a> of file <a class="el" href="uinteger_8h_source.html">uinteger.h</a>.</p>
 
 </div>
 </div>
-<a id="a732cde1300aafb73b0ea6c2558a7a54f" name="a732cde1300aafb73b0ea6c2558a7a54f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a732cde1300aafb73b0ea6c2558a7a54f">&#9670;&#160;</a></span>u2</h2>
+<a id="aa76d8c8015643c6a837661a10142016e" name="aa76d8c8015643c6a837661a10142016e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa76d8c8015643c6a837661a10142016e">&#9670;&#160;</a></span>u2</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef uint16_t <a class="el" href="uinteger_8h.html#a732cde1300aafb73b0ea6c2558a7a54f">u2</a></td>
+          <td class="memname"><a class="el" href="uinteger_8h.html#aa76d8c8015643c6a837661a10142016e">u2</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="uinteger_8h_source.html#l00007">7</a> of file <a class="el" href="uinteger_8h_source.html">uinteger.h</a>.</p>
+<p>Inteiro sem sinal de 16 bits. </p>
+<p>Representa valores entre 0 e 65535. <br  />
+ Utilizado frequentemente para índices do constant pool, contagem de elementos e valores de certos campos estruturais da JVM. </p>
+
+<p class="definition">Definition at line <a class="el" href="uinteger_8h_source.html#l00037">37</a> of file <a class="el" href="uinteger_8h_source.html">uinteger.h</a>.</p>
 
 </div>
 </div>
-<a id="ae5be1f726785414dd1b77d60df074c9d" name="ae5be1f726785414dd1b77d60df074c9d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae5be1f726785414dd1b77d60df074c9d">&#9670;&#160;</a></span>u4</h2>
+<a id="a4af10c3137cf79c12265e8d288070711" name="a4af10c3137cf79c12265e8d288070711"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4af10c3137cf79c12265e8d288070711">&#9670;&#160;</a></span>u4</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef uint32_t <a class="el" href="uinteger_8h.html#ae5be1f726785414dd1b77d60df074c9d">u4</a></td>
+          <td class="memname"><a class="el" href="uinteger_8h.html#a4af10c3137cf79c12265e8d288070711">u4</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="uinteger_8h_source.html#l00008">8</a> of file <a class="el" href="uinteger_8h_source.html">uinteger.h</a>.</p>
+<p>Inteiro sem sinal de 32 bits. </p>
+<p>Representa valores entre 0 e 4.294.967.295. <br  />
+ Usado para comprimentos maiores, valores numéricos (Integer, Float), offsets e partes do encoding de tipos 64 bits (Long, Double). </p>
+
+<p class="definition">Definition at line <a class="el" href="uinteger_8h_source.html#l00047">47</a> of file <a class="el" href="uinteger_8h_source.html">uinteger.h</a>.</p>
 
 </div>
 </div>

@@ -94,6 +94,9 @@ $(document).ready(function(){initNavTree('methods_8h.html',''); initResizable();
   <div class="headertitle"><div class="title">methods.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Declarações para exibição (printing) dos métodos (methods) de um <a class="el" href="structClassFile.html" title="Representa um arquivo .class Java carregado em memória.">ClassFile</a>.  
+<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;stdlib.h&gt;</code><br />
 <code>#include &lt;string.h&gt;</code><br />
 <code>#include &lt;stdio.h&gt;</code><br />
@@ -117,13 +120,22 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:aacb04e05595cdc07f2c88b4d6ab1d85e" id="r_aacb04e05595cdc07f2c88b4d6ab1d85e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="methods_8h.html#aacb04e05595cdc07f2c88b4d6ab1d85e">show_methods</a> (const <a class="el" href="structClassFile.html">ClassFile</a> *)</td></tr>
-<tr class="memdesc:aacb04e05595cdc07f2c88b4d6ab1d85e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exibe os métodos de uma estrutura <a class="el" href="structClassFile.html" title="Representa um arquivo .class Java carregado em memória.">ClassFile</a>.  <br /></td></tr>
-<tr class="separator:aacb04e05595cdc07f2c88b4d6ab1d85e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac96be5d5338c1d8c222fe777b9f754e7" id="r_ac96be5d5338c1d8c222fe777b9f754e7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="methods_8h.html#ac96be5d5338c1d8c222fe777b9f754e7">show_methods</a> (const <a class="el" href="structClassFile.html">ClassFile</a> *cf)</td></tr>
+<tr class="memdesc:ac96be5d5338c1d8c222fe777b9f754e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exibe os métodos (methods) definidos em um <a class="el" href="structClassFile.html" title="Representa um arquivo .class Java carregado em memória.">ClassFile</a>.  <br /></td></tr>
+<tr class="separator:ac96be5d5338c1d8c222fe777b9f754e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Function Documentation</h2>
-<a id="aacb04e05595cdc07f2c88b4d6ab1d85e" name="aacb04e05595cdc07f2c88b4d6ab1d85e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aacb04e05595cdc07f2c88b4d6ab1d85e">&#9670;&#160;</a></span>show_methods()</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Declarações para exibição (printing) dos métodos (methods) de um <a class="el" href="structClassFile.html" title="Representa um arquivo .class Java carregado em memória.">ClassFile</a>. </p>
+<p>Este header declara a função responsável por percorrer e imprimir os métodos (<a class="el" href="structmember__info.html" title="Representa um campo (field) ou método (method) definido em um ClassFile.">member_info</a>) presentes em uma estrutura <code><a class="el" href="structClassFile.html" title="Representa um arquivo .class Java carregado em memória.">ClassFile</a></code>. A implementação normalmente resolve nomes e descritores no constant pool e utiliza utilitários como <code><a class="el" href="utils_8c.html#a2da22ca95cc96ff610400450f1723cb2" title="Converte descritores da JVM para representações legíveis.">parse_descriptor()</a></code> e <code><a class="el" href="utils_8c.html#a54e5e04c761648da1cbda196724ffd37" title="Converte flags da JVM (u2) em uma string legível.">parse_flags()</a></code> para formatar a saída de forma legível.</p>
+<p>Observações:</p><ul>
+<li>A função apenas exibe informações; não altera nem libera a estrutura <code><a class="el" href="structClassFile.html" title="Representa um arquivo .class Java carregado em memória.">ClassFile</a></code>.</li>
+<li>Os nomes e descritores devem já estar disponíveis no constant pool (UTF-8 decodificado em <code>wchar_t *</code>) antes da chamada. </li>
+</ul>
+
+<p class="definition">Definition in file <a class="el" href="methods_8h_source.html">methods.h</a>.</p>
+</div><h2 class="groupheader">Function Documentation</h2>
+<a id="ac96be5d5338c1d8c222fe777b9f754e7" name="ac96be5d5338c1d8c222fe777b9f754e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac96be5d5338c1d8c222fe777b9f754e7">&#9670;&#160;</a></span>show_methods()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -138,113 +150,164 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Exibe os métodos de uma estrutura <a class="el" href="structClassFile.html" title="Representa um arquivo .class Java carregado em memória.">ClassFile</a>. </p>
+<p>Exibe os métodos (methods) definidos em um <a class="el" href="structClassFile.html" title="Representa um arquivo .class Java carregado em memória.">ClassFile</a>. </p>
+<p>Para cada método, a função imprime detalhes como:</p><ul>
+<li>modificadores/flags de acesso (formatadas com parse_flags)</li>
+<li>nome do método (resolvido via constant pool)</li>
+<li>assinatura/descritor do método (resolvido e convertido por parse_descriptor)</li>
+<li>informações sobre atributos do método (Code, Exceptions, LineNumberTable, etc.)</li>
+</ul>
+<p>A função deve produzir uma saída legível, similar à ferramenta <code>javap</code>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">ClassFile*</td><td>Ponteiro para a estrutura <a class="el" href="structClassFile.html" title="Representa um arquivo .class Java carregado em memória.">ClassFile</a> que contém os métodos. </td></tr>
+    <tr><td class="paramname">cf</td><td>Ponteiro constante para a estrutura <a class="el" href="structClassFile.html" title="Representa um arquivo .class Java carregado em memória.">ClassFile</a> cujos métodos serão exibidos. Se NULL, a função deve retornar sem produzir saída.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Exibe os métodos (methods) definidos em um <a class="el" href="structClassFile.html" title="Representa um arquivo .class Java carregado em memória.">ClassFile</a>.</p>
+<p>Para cada método, esta função:</p><ul>
+<li>Recupera nome e descritor no constant pool</li>
+<li>Trata o método <code>&lt;init&gt;</code> (construtor), substituindo seu nome pelo nome da classe</li>
+<li>Separa a lista de parâmetros e o tipo de retorno</li>
+<li>Converte descritores JVM para texto legível via <a class="el" href="utils_8c.html#a2da22ca95cc96ff610400450f1723cb2" title="Converte descritores da JVM para representações legíveis.">parse_descriptor()</a></li>
+<li>Converte flags ACC_* em texto via <a class="el" href="utils_8c.html#a54e5e04c761648da1cbda196724ffd37" title="Converte flags da JVM (u2) em uma string legível.">parse_flags()</a></li>
+</ul>
+<p>Exemplo de saída:</p>
+<div class="fragment"><div class="line"><span class="keyword">public</span> <span class="keywordtype">void</span> exemplo(<span class="keywordtype">int</span>, <span class="keywordtype">float</span>);</div>
+<div class="line">    descriptor: (IF)V</div>
+<div class="line">    flags: (0x0001) ACC_PUBLIC</div>
+</div><!-- fragment --><p>A função não altera o conteúdo original do <code><a class="el" href="structClassFile.html" title="Representa um arquivo .class Java carregado em memória.">ClassFile</a></code> e libera toda memória auxiliar alocada dinamicamente durante o processo.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cf</td><td>Ponteiro para a estrutura <a class="el" href="structClassFile.html" title="Representa um arquivo .class Java carregado em memória.">ClassFile</a> contendo os métodos. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="methods_8c_source.html#l00028">28</a> of file <a class="el" href="methods_8c_source.html">methods.c</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   29</span>{</div>
-<div class="line"><span class="lineno">   30</span>    <span class="keywordflow">if</span> (cf-&gt;<a class="code hl_variable" href="structClassFile.html#a2309d843091aad79aed04ce92470a434">constant_pool</a> == NULL)</div>
-<div class="line"><span class="lineno">   31</span>        <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">   32</span> </div>
-<div class="line"><span class="lineno">   33</span>    <a class="code hl_struct" href="structcp__info.html">cp_info</a> *cp = cf-&gt;<a class="code hl_variable" href="structClassFile.html#a2309d843091aad79aed04ce92470a434">constant_pool</a>;</div>
-<div class="line"><span class="lineno">   34</span> </div>
-<div class="line"><span class="lineno">   35</span>    <a class="code hl_typedef" href="uinteger_8h.html#a732cde1300aafb73b0ea6c2558a7a54f">u2</a> count = cf-&gt;<a class="code hl_variable" href="structClassFile.html#aacfb45d4af64216324b1ae5269c870d5">methods_count</a>;</div>
-<div class="line"><span class="lineno">   36</span>    <span class="keywordtype">char</span> nl;</div>
-<div class="line"><span class="lineno">   37</span>    <span class="keywordflow">if</span> (count &gt; 0 &amp;&amp; cf-&gt;<a class="code hl_variable" href="structClassFile.html#adba7beed3206835516cd158f28ed8813">methods</a> != NULL)</div>
-<div class="line"><span class="lineno">   38</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; count; i++)</div>
-<div class="line"><span class="lineno">   39</span>        {</div>
-<div class="line"><span class="lineno">   40</span>            nl = i == (size_t)(count - 1) ? <span class="charliteral">&#39; &#39;</span> : <span class="charliteral">&#39;\n&#39;</span>;</div>
-<div class="line"><span class="lineno">   41</span>            <a class="code hl_struct" href="structmember__info.html">member_info</a> method = cf-&gt;<a class="code hl_variable" href="structClassFile.html#adba7beed3206835516cd158f28ed8813">methods</a>[i];</div>
-<div class="line"><span class="lineno">   42</span> </div>
-<div class="line"><span class="lineno">   43</span>            <a class="code hl_typedef" href="uinteger_8h.html#a732cde1300aafb73b0ea6c2558a7a54f">u2</a> access_flags = method.<a class="code hl_variable" href="structmember__info.html#a3cf07d7c00b99056e31af689a7caa880">access_flags</a>;</div>
-<div class="line"><span class="lineno">   44</span>            <span class="keywordtype">wchar_t</span> *method_name = cp[method.<a class="code hl_variable" href="structmember__info.html#a1b6fd3937f4b9f934acf4a8c5671d6ba">name_index</a> - 1].<a class="code hl_variable" href="structcp__info.html#a20a126ca5acfc92f2fcfee569fb602e2">info</a>.<a class="code hl_variable" href="unionConstant.html#a125aad68432d28d091d601953ff27de1">UTF8</a>.<a class="code hl_variable" href="unionConstant.html#ad0b76003d8bacbee1058791aabe4a98e">str</a>;</div>
-<div class="line"><span class="lineno">   45</span>            <span class="keywordtype">wchar_t</span> *method_desc = cp[method.<a class="code hl_variable" href="structmember__info.html#a7f59e9d84b0c7da9ef9f0c2205047319">descriptor_index</a> - 1].<a class="code hl_variable" href="structcp__info.html#a20a126ca5acfc92f2fcfee569fb602e2">info</a>.<a class="code hl_variable" href="unionConstant.html#a125aad68432d28d091d601953ff27de1">UTF8</a>.<a class="code hl_variable" href="unionConstant.html#ad0b76003d8bacbee1058791aabe4a98e">str</a>;</div>
-<div class="line"><span class="lineno">   46</span> </div>
-<div class="line"><span class="lineno">   47</span>            <span class="comment">// Handle &lt;init&gt; method</span></div>
-<div class="line"><span class="lineno">   48</span>            <span class="keywordtype">int</span> is_init = !wcscmp(method_name, L<span class="stringliteral">&quot;&lt;init&gt;&quot;</span>);</div>
-<div class="line"><span class="lineno">   49</span>            <span class="keywordflow">if</span> (is_init)</div>
-<div class="line"><span class="lineno">   50</span>            {</div>
-<div class="line"><span class="lineno">   51</span>                <span class="keywordtype">wchar_t</span> *classname = cp[cp[cf-&gt;<a class="code hl_variable" href="structClassFile.html#a2d33db0a560a71b94bc572dd1e4ec03a">this_class</a> - 1].<a class="code hl_variable" href="structcp__info.html#a20a126ca5acfc92f2fcfee569fb602e2">info</a>.<a class="code hl_variable" href="unionConstant.html#a66c21a8bd15413b306d25bf23ba5e56c">Class</a>.<a class="code hl_variable" href="unionConstant.html#a2dcf6f0668a0bee777f90aa39a3eadf0">name_index</a> - 1].<a class="code hl_variable" href="structcp__info.html#a20a126ca5acfc92f2fcfee569fb602e2">info</a>.<a class="code hl_variable" href="unionConstant.html#a125aad68432d28d091d601953ff27de1">UTF8</a>.<a class="code hl_variable" href="unionConstant.html#ad0b76003d8bacbee1058791aabe4a98e">str</a>;</div>
-<div class="line"><span class="lineno">   52</span> </div>
-<div class="line"><span class="lineno">   53</span>                <span class="keywordflow">for</span> (<span class="keywordtype">wchar_t</span> *wcptr = classname; wcptr &lt; classname + wcslen(classname) - 1; wcptr++)</div>
-<div class="line"><span class="lineno">   54</span>                    <span class="keywordflow">if</span> (*wcptr == L<span class="charliteral">&#39;/&#39;</span>)</div>
-<div class="line"><span class="lineno">   55</span>                    {</div>
-<div class="line"><span class="lineno">   56</span>                        *wcptr = L<span class="charliteral">&#39;.&#39;</span>;</div>
-<div class="line"><span class="lineno">   57</span>                        <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">   58</span>                    }</div>
-<div class="line"><span class="lineno">   59</span> </div>
-<div class="line"><span class="lineno">   60</span>                method_name = classname;</div>
-<div class="line"><span class="lineno">   61</span>            }</div>
-<div class="line"><span class="lineno">   62</span> </div>
-<div class="line"><span class="lineno">   63</span>            <span class="comment">// Get parameters descriptor length</span></div>
-<div class="line"><span class="lineno">   64</span>            <span class="keywordtype">wchar_t</span> *params_end = wcschr(method_desc, L<span class="charliteral">&#39;)&#39;</span>) + 1;</div>
-<div class="line"><span class="lineno">   65</span> </div>
-<div class="line"><span class="lineno">   66</span>            <span class="keywordtype">size_t</span> params_desc_len = params_end - method_desc;</div>
-<div class="line"><span class="lineno">   67</span>            <span class="keywordtype">size_t</span> ret_desc_len = wcslen(params_end);</div>
-<div class="line"><span class="lineno">   68</span> </div>
-<div class="line"><span class="lineno">   69</span>            <span class="comment">// Split descriptor</span></div>
-<div class="line"><span class="lineno">   70</span>            <span class="keywordtype">wchar_t</span> *params_desc = (<span class="keywordtype">wchar_t</span> *)calloc(params_desc_len + 1, <span class="keyword">sizeof</span>(<span class="keywordtype">wchar_t</span>));</div>
-<div class="line"><span class="lineno">   71</span>            <span class="keywordflow">if</span> (params_desc)</div>
-<div class="line"><span class="lineno">   72</span>            {</div>
-<div class="line"><span class="lineno">   73</span>                wcsncpy(params_desc, method_desc, params_desc_len);</div>
-<div class="line"><span class="lineno">   74</span>                params_desc[params_desc_len] = L<span class="charliteral">&#39;\0&#39;</span>;</div>
-<div class="line"><span class="lineno">   75</span>            }</div>
-<div class="line"><span class="lineno">   76</span> </div>
-<div class="line"><span class="lineno">   77</span>            <span class="keywordtype">wchar_t</span> *ret_desc = (<span class="keywordtype">wchar_t</span> *)calloc(ret_desc_len + 1, <span class="keyword">sizeof</span>(<span class="keywordtype">wchar_t</span>));</div>
-<div class="line"><span class="lineno">   78</span>            <span class="keywordflow">if</span> (ret_desc)</div>
-<div class="line"><span class="lineno">   79</span>            {</div>
-<div class="line"><span class="lineno">   80</span>                wcsncpy(ret_desc, params_end, ret_desc_len);</div>
-<div class="line"><span class="lineno">   81</span>                ret_desc[ret_desc_len] = L<span class="charliteral">&#39;\0&#39;</span>;</div>
-<div class="line"><span class="lineno">   82</span>            }</div>
-<div class="line"><span class="lineno">   83</span> </div>
-<div class="line"><span class="lineno">   84</span>            <span class="comment">// Parse descriptors</span></div>
-<div class="line"><span class="lineno">   85</span>            <span class="keywordtype">wchar_t</span> *params_str = NULL, *ret_str = NULL;</div>
-<div class="line"><span class="lineno">   86</span> </div>
-<div class="line"><span class="lineno">   87</span>            <span class="keywordflow">if</span> (!is_init)</div>
-<div class="line"><span class="lineno">   88</span>                ret_str = <a class="code hl_function" href="utils_8c.html#a2da22ca95cc96ff610400450f1723cb2">parse_descriptor</a>(ret_desc, NULL);</div>
-<div class="line"><span class="lineno">   89</span> </div>
-<div class="line"><span class="lineno">   90</span>            params_str = <a class="code hl_function" href="utils_8c.html#a2da22ca95cc96ff610400450f1723cb2">parse_descriptor</a>(params_desc, L<span class="stringliteral">&quot;,&quot;</span>);</div>
-<div class="line"><span class="lineno">   91</span> </div>
-<div class="line"><span class="lineno">   92</span>            <span class="comment">// Parse flags</span></div>
-<div class="line"><span class="lineno">   93</span>            <span class="keywordtype">char</span> *flags = <a class="code hl_function" href="utils_8c.html#a54e5e04c761648da1cbda196724ffd37">parse_flags</a>(access_flags, 12, <span class="stringliteral">&quot;, &quot;</span>, <a class="code hl_variable" href="methods_8c.html#a2769db74d6d6d1c037edd8c20d42ff18">flag_map</a>);</div>
-<div class="line"><span class="lineno">   94</span>            <span class="keywordtype">char</span> *kws = <a class="code hl_function" href="utils_8c.html#a54e5e04c761648da1cbda196724ffd37">parse_flags</a>(access_flags, 9, <span class="stringliteral">&quot; &quot;</span>, <a class="code hl_variable" href="methods_8c.html#a89a35c441eec7096e88c90d5aacf8929">flag_kw_map</a>);</div>
-<div class="line"><span class="lineno">   95</span> </div>
-<div class="line"><span class="lineno">   96</span>            printf(<span class="stringliteral">&quot; %s %ls%ls%ls;\n    descriptor: %ls\n    flags: (0x%04x) %s\n%c&quot;</span>,</div>
-<div class="line"><span class="lineno">   97</span>                   kws, ret_str ? ret_str : L<span class="stringliteral">&quot;&quot;</span>, method_name, params_str, method_desc, access_flags, flags, nl);</div>
-<div class="line"><span class="lineno">   98</span> </div>
-<div class="line"><span class="lineno">   99</span>            free(flags), free(kws);</div>
-<div class="line"><span class="lineno">  100</span>            free(params_desc), free(ret_desc);</div>
-<div class="line"><span class="lineno">  101</span>            free(params_str), free(ret_str);</div>
-<div class="line"><span class="lineno">  102</span>        }</div>
-<div class="line"><span class="lineno">  103</span>}</div>
-<div class="ttc" id="amethods_8c_html_a2769db74d6d6d1c037edd8c20d42ff18"><div class="ttname"><a href="methods_8c.html#a2769db74d6d6d1c037edd8c20d42ff18">flag_map</a></div><div class="ttdeci">static const FlagMap flag_map[12]</div><div class="ttdef"><b>Definition</b> <a href="methods_8c_source.html#l00003">methods.c:3</a></div></div>
-<div class="ttc" id="amethods_8c_html_a89a35c441eec7096e88c90d5aacf8929"><div class="ttname"><a href="methods_8c.html#a89a35c441eec7096e88c90d5aacf8929">flag_kw_map</a></div><div class="ttdeci">static const FlagMap flag_kw_map[9]</div><div class="ttdef"><b>Definition</b> <a href="methods_8c_source.html#l00017">methods.c:17</a></div></div>
+<p class="definition">Definition at line <a class="el" href="methods_8c_source.html#l00080">80</a> of file <a class="el" href="methods_8c_source.html">methods.c</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   81</span>{</div>
+<div class="line"><span class="lineno">   82</span>    <span class="keywordflow">if</span> (cf-&gt;<a class="code hl_variable" href="structClassFile.html#a2309d843091aad79aed04ce92470a434">constant_pool</a> == NULL)</div>
+<div class="line"><span class="lineno">   83</span>        <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">   84</span> </div>
+<div class="line"><span class="lineno">   85</span>    <a class="code hl_struct" href="structcp__info.html">cp_info</a> *cp = cf-&gt;<a class="code hl_variable" href="structClassFile.html#a2309d843091aad79aed04ce92470a434">constant_pool</a>;</div>
+<div class="line"><span class="lineno">   86</span>    <a class="code hl_typedef" href="uinteger_8h.html#aa76d8c8015643c6a837661a10142016e">u2</a> count = cf-&gt;<a class="code hl_variable" href="structClassFile.html#aacfb45d4af64216324b1ae5269c870d5">methods_count</a>;</div>
+<div class="line"><span class="lineno">   87</span>    <span class="keywordtype">char</span> nl;</div>
+<div class="line"><span class="lineno">   88</span> </div>
+<div class="line"><span class="lineno">   89</span>    <span class="keywordflow">if</span> (count &gt; 0 &amp;&amp; cf-&gt;<a class="code hl_variable" href="structClassFile.html#adba7beed3206835516cd158f28ed8813">methods</a> != NULL)</div>
+<div class="line"><span class="lineno">   90</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; count; i++)</div>
+<div class="line"><span class="lineno">   91</span>        {</div>
+<div class="line"><span class="lineno">   92</span>            <span class="comment">/* Último método não imprime newline extra */</span></div>
+<div class="line"><span class="lineno">   93</span>            nl = i == (size_t)(count - 1) ? <span class="charliteral">&#39; &#39;</span> : <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><span class="lineno">   94</span> </div>
+<div class="line"><span class="lineno">   95</span>            <a class="code hl_struct" href="structmember__info.html">member_info</a> method = cf-&gt;<a class="code hl_variable" href="structClassFile.html#adba7beed3206835516cd158f28ed8813">methods</a>[i];</div>
+<div class="line"><span class="lineno">   96</span>            <a class="code hl_typedef" href="uinteger_8h.html#aa76d8c8015643c6a837661a10142016e">u2</a> access_flags = method.<a class="code hl_variable" href="structmember__info.html#a3cf07d7c00b99056e31af689a7caa880">access_flags</a>;</div>
+<div class="line"><span class="lineno">   97</span> </div>
+<div class="line"><span class="lineno">   98</span>            <span class="keywordtype">wchar_t</span> *method_name = cp[method.<a class="code hl_variable" href="structmember__info.html#a1b6fd3937f4b9f934acf4a8c5671d6ba">name_index</a> - 1].<a class="code hl_variable" href="structcp__info.html#a20a126ca5acfc92f2fcfee569fb602e2">info</a>.<a class="code hl_variable" href="unionConstant.html#a125aad68432d28d091d601953ff27de1">UTF8</a>.<a class="code hl_variable" href="unionConstant.html#ad0b76003d8bacbee1058791aabe4a98e">str</a>;</div>
+<div class="line"><span class="lineno">   99</span>            <span class="keywordtype">wchar_t</span> *method_desc = cp[method.<a class="code hl_variable" href="structmember__info.html#a7f59e9d84b0c7da9ef9f0c2205047319">descriptor_index</a> - 1].<a class="code hl_variable" href="structcp__info.html#a20a126ca5acfc92f2fcfee569fb602e2">info</a>.<a class="code hl_variable" href="unionConstant.html#a125aad68432d28d091d601953ff27de1">UTF8</a>.<a class="code hl_variable" href="unionConstant.html#ad0b76003d8bacbee1058791aabe4a98e">str</a>;</div>
+<div class="line"><span class="lineno">  100</span> </div>
+<div class="line"><span class="lineno">  101</span>            <span class="comment">/* -------------------------------------------------------------------</span></div>
+<div class="line"><span class="lineno">  102</span><span class="comment">             *  Tratamento especial para &lt;init&gt;</span></div>
+<div class="line"><span class="lineno">  103</span><span class="comment">             * -------------------------------------------------------------------</span></div>
+<div class="line"><span class="lineno">  104</span><span class="comment">             * Em Java, o construtor é mostrado como o nome da classe</span></div>
+<div class="line"><span class="lineno">  105</span><span class="comment">             * em vez de &quot;&lt;init&gt;&quot;. Aqui fazemos essa substituição.</span></div>
+<div class="line"><span class="lineno">  106</span><span class="comment">             */</span></div>
+<div class="line"><span class="lineno">  107</span>            <span class="keywordtype">int</span> is_init = !wcscmp(method_name, L<span class="stringliteral">&quot;&lt;init&gt;&quot;</span>);</div>
+<div class="line"><span class="lineno">  108</span>            <span class="keywordflow">if</span> (is_init)</div>
+<div class="line"><span class="lineno">  109</span>            {</div>
+<div class="line"><span class="lineno">  110</span>                <span class="comment">/* Recupera o nome da classe (this_class → CONSTANT_Class → Utf8) */</span></div>
+<div class="line"><span class="lineno">  111</span>                <span class="keywordtype">wchar_t</span> *classname = cp[cp[cf-&gt;<a class="code hl_variable" href="structClassFile.html#a2d33db0a560a71b94bc572dd1e4ec03a">this_class</a> - 1].<a class="code hl_variable" href="structcp__info.html#a20a126ca5acfc92f2fcfee569fb602e2">info</a>.<a class="code hl_variable" href="unionConstant.html#a66c21a8bd15413b306d25bf23ba5e56c">Class</a>.<a class="code hl_variable" href="unionConstant.html#a2dcf6f0668a0bee777f90aa39a3eadf0">name_index</a> - 1].<a class="code hl_variable" href="structcp__info.html#a20a126ca5acfc92f2fcfee569fb602e2">info</a>.<a class="code hl_variable" href="unionConstant.html#a125aad68432d28d091d601953ff27de1">UTF8</a>.<a class="code hl_variable" href="unionConstant.html#ad0b76003d8bacbee1058791aabe4a98e">str</a>;</div>
+<div class="line"><span class="lineno">  112</span> </div>
+<div class="line"><span class="lineno">  113</span>                <span class="comment">/* Converte primeiro &#39;/&#39; encontrado em &#39;.&#39; */</span></div>
+<div class="line"><span class="lineno">  114</span>                <span class="keywordflow">for</span> (<span class="keywordtype">wchar_t</span> *wcptr = classname; wcptr &lt; classname + wcslen(classname) - 1; wcptr++)</div>
+<div class="line"><span class="lineno">  115</span>                    <span class="keywordflow">if</span> (*wcptr == L<span class="charliteral">&#39;/&#39;</span>)</div>
+<div class="line"><span class="lineno">  116</span>                    {</div>
+<div class="line"><span class="lineno">  117</span>                        *wcptr = L<span class="charliteral">&#39;.&#39;</span>;</div>
+<div class="line"><span class="lineno">  118</span>                        <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  119</span>                    }</div>
+<div class="line"><span class="lineno">  120</span> </div>
+<div class="line"><span class="lineno">  121</span>                method_name = classname;</div>
+<div class="line"><span class="lineno">  122</span>            }</div>
+<div class="line"><span class="lineno">  123</span> </div>
+<div class="line"><span class="lineno">  124</span>            <span class="comment">/* -------------------------------------------------------------------</span></div>
+<div class="line"><span class="lineno">  125</span><span class="comment">             *  Separação do descritor em parâmetros e tipo de retorno</span></div>
+<div class="line"><span class="lineno">  126</span><span class="comment">             * -------------------------------------------------------------------</span></div>
+<div class="line"><span class="lineno">  127</span><span class="comment">             */</span></div>
+<div class="line"><span class="lineno">  128</span>            <span class="keywordtype">wchar_t</span> *params_end = wcschr(method_desc, L<span class="charliteral">&#39;)&#39;</span>) + 1;</div>
+<div class="line"><span class="lineno">  129</span>            <span class="keywordtype">size_t</span> params_desc_len = params_end - method_desc;</div>
+<div class="line"><span class="lineno">  130</span>            <span class="keywordtype">size_t</span> ret_desc_len = wcslen(params_end);</div>
+<div class="line"><span class="lineno">  131</span> </div>
+<div class="line"><span class="lineno">  132</span>            <span class="comment">/* Copia substring dos parâmetros */</span></div>
+<div class="line"><span class="lineno">  133</span>            <span class="keywordtype">wchar_t</span> *params_desc = (<span class="keywordtype">wchar_t</span> *)calloc(params_desc_len + 1, <span class="keyword">sizeof</span>(<span class="keywordtype">wchar_t</span>));</div>
+<div class="line"><span class="lineno">  134</span>            <span class="keywordflow">if</span> (params_desc)</div>
+<div class="line"><span class="lineno">  135</span>            {</div>
+<div class="line"><span class="lineno">  136</span>                wcsncpy(params_desc, method_desc, params_desc_len);</div>
+<div class="line"><span class="lineno">  137</span>                params_desc[params_desc_len] = L<span class="charliteral">&#39;\0&#39;</span>;</div>
+<div class="line"><span class="lineno">  138</span>            }</div>
+<div class="line"><span class="lineno">  139</span> </div>
+<div class="line"><span class="lineno">  140</span>            <span class="comment">/* Copia substring do tipo de retorno */</span></div>
+<div class="line"><span class="lineno">  141</span>            <span class="keywordtype">wchar_t</span> *ret_desc = (<span class="keywordtype">wchar_t</span> *)calloc(ret_desc_len + 1, <span class="keyword">sizeof</span>(<span class="keywordtype">wchar_t</span>));</div>
+<div class="line"><span class="lineno">  142</span>            <span class="keywordflow">if</span> (ret_desc)</div>
+<div class="line"><span class="lineno">  143</span>            {</div>
+<div class="line"><span class="lineno">  144</span>                wcsncpy(ret_desc, params_end, ret_desc_len);</div>
+<div class="line"><span class="lineno">  145</span>                ret_desc[ret_desc_len] = L<span class="charliteral">&#39;\0&#39;</span>;</div>
+<div class="line"><span class="lineno">  146</span>            }</div>
+<div class="line"><span class="lineno">  147</span> </div>
+<div class="line"><span class="lineno">  148</span>            <span class="comment">/* Converte descritores */</span></div>
+<div class="line"><span class="lineno">  149</span>            <span class="keywordtype">wchar_t</span> *params_str = <a class="code hl_function" href="utils_8c.html#a2da22ca95cc96ff610400450f1723cb2">parse_descriptor</a>(params_desc, L<span class="stringliteral">&quot;,&quot;</span>);</div>
+<div class="line"><span class="lineno">  150</span>            <span class="keywordtype">wchar_t</span> *ret_str = NULL;</div>
+<div class="line"><span class="lineno">  151</span>            <span class="keywordflow">if</span> (!is_init)  <span class="comment">/* Construtores não têm tipo de retorno */</span></div>
+<div class="line"><span class="lineno">  152</span>                ret_str = <a class="code hl_function" href="utils_8c.html#a2da22ca95cc96ff610400450f1723cb2">parse_descriptor</a>(ret_desc, NULL);</div>
+<div class="line"><span class="lineno">  153</span> </div>
+<div class="line"><span class="lineno">  154</span>            <span class="comment">/* Converte flags */</span></div>
+<div class="line"><span class="lineno">  155</span>            <span class="keywordtype">char</span> *flags = <a class="code hl_function" href="utils_8c.html#a54e5e04c761648da1cbda196724ffd37">parse_flags</a>(access_flags, 12, <span class="stringliteral">&quot;, &quot;</span>, <a class="code hl_variable" href="methods_8c.html#a2769db74d6d6d1c037edd8c20d42ff18">flag_map</a>);</div>
+<div class="line"><span class="lineno">  156</span>            <span class="keywordtype">char</span> *kws   = <a class="code hl_function" href="utils_8c.html#a54e5e04c761648da1cbda196724ffd37">parse_flags</a>(access_flags, 9, <span class="stringliteral">&quot; &quot;</span>, <a class="code hl_variable" href="methods_8c.html#a89a35c441eec7096e88c90d5aacf8929">flag_kw_map</a>);</div>
+<div class="line"><span class="lineno">  157</span> </div>
+<div class="line"><span class="lineno">  158</span>            <span class="comment">/* -------------------------------------------------------------------</span></div>
+<div class="line"><span class="lineno">  159</span><span class="comment">             *  Impressão final</span></div>
+<div class="line"><span class="lineno">  160</span><span class="comment">             * -------------------------------------------------------------------</span></div>
+<div class="line"><span class="lineno">  161</span><span class="comment">             */</span></div>
+<div class="line"><span class="lineno">  162</span>            printf(<span class="stringliteral">&quot; %s %ls%ls%ls;\n    descriptor: %ls\n    flags: (0x%04x) %s\n%c&quot;</span>,</div>
+<div class="line"><span class="lineno">  163</span>                   kws,</div>
+<div class="line"><span class="lineno">  164</span>                   ret_str ? ret_str : L<span class="stringliteral">&quot;&quot;</span>,  <span class="comment">/* tipo de retorno */</span></div>
+<div class="line"><span class="lineno">  165</span>                   method_name,               <span class="comment">/* nome do método */</span></div>
+<div class="line"><span class="lineno">  166</span>                   params_str,                <span class="comment">/* lista de parâmetros */</span></div>
+<div class="line"><span class="lineno">  167</span>                   method_desc,               <span class="comment">/* descritor bruto original */</span></div>
+<div class="line"><span class="lineno">  168</span>                   access_flags,</div>
+<div class="line"><span class="lineno">  169</span>                   flags,</div>
+<div class="line"><span class="lineno">  170</span>                   nl);</div>
+<div class="line"><span class="lineno">  171</span> </div>
+<div class="line"><span class="lineno">  172</span>            <span class="comment">/* Liberação de memória alocada dinamicamente */</span></div>
+<div class="line"><span class="lineno">  173</span>            free(flags);</div>
+<div class="line"><span class="lineno">  174</span>            free(kws);</div>
+<div class="line"><span class="lineno">  175</span>            free(params_desc);</div>
+<div class="line"><span class="lineno">  176</span>            free(ret_desc);</div>
+<div class="line"><span class="lineno">  177</span>            free(params_str);</div>
+<div class="line"><span class="lineno">  178</span>            free(ret_str);</div>
+<div class="line"><span class="lineno">  179</span>        }</div>
+<div class="line"><span class="lineno">  180</span>}</div>
+<div class="ttc" id="amethods_8c_html_a2769db74d6d6d1c037edd8c20d42ff18"><div class="ttname"><a href="methods_8c.html#a2769db74d6d6d1c037edd8c20d42ff18">flag_map</a></div><div class="ttdeci">static const FlagMap flag_map[12]</div><div class="ttdoc">Mapa de flags JVM (ACC_*) para métodos.</div><div class="ttdef"><b>Definition</b> <a href="methods_8c_source.html#l00024">methods.c:24</a></div></div>
+<div class="ttc" id="amethods_8c_html_a89a35c441eec7096e88c90d5aacf8929"><div class="ttname"><a href="methods_8c.html#a89a35c441eec7096e88c90d5aacf8929">flag_kw_map</a></div><div class="ttdeci">static const FlagMap flag_kw_map[9]</div><div class="ttdoc">Mapa de flags JVM convertidas para palavras-chave Java.</div><div class="ttdef"><b>Definition</b> <a href="methods_8c_source.html#l00045">methods.c:45</a></div></div>
 <div class="ttc" id="astructClassFile_html_a2309d843091aad79aed04ce92470a434"><div class="ttname"><a href="structClassFile.html#a2309d843091aad79aed04ce92470a434">ClassFile::constant_pool</a></div><div class="ttdeci">cp_info * constant_pool</div><div class="ttdef"><b>Definition</b> <a href="Classfile_8h_source.html#l00044">Classfile.h:44</a></div></div>
 <div class="ttc" id="astructClassFile_html_a2d33db0a560a71b94bc572dd1e4ec03a"><div class="ttname"><a href="structClassFile.html#a2d33db0a560a71b94bc572dd1e4ec03a">ClassFile::this_class</a></div><div class="ttdeci">u2 this_class</div><div class="ttdef"><b>Definition</b> <a href="Classfile_8h_source.html#l00046">Classfile.h:46</a></div></div>
 <div class="ttc" id="astructClassFile_html_aacfb45d4af64216324b1ae5269c870d5"><div class="ttname"><a href="structClassFile.html#aacfb45d4af64216324b1ae5269c870d5">ClassFile::methods_count</a></div><div class="ttdeci">u2 methods_count</div><div class="ttdef"><b>Definition</b> <a href="Classfile_8h_source.html#l00052">Classfile.h:52</a></div></div>
 <div class="ttc" id="astructClassFile_html_adba7beed3206835516cd158f28ed8813"><div class="ttname"><a href="structClassFile.html#adba7beed3206835516cd158f28ed8813">ClassFile::methods</a></div><div class="ttdeci">member_info * methods</div><div class="ttdef"><b>Definition</b> <a href="Classfile_8h_source.html#l00053">Classfile.h:53</a></div></div>
-<div class="ttc" id="astructcp__info_html"><div class="ttname"><a href="structcp__info.html">cp_info</a></div><div class="ttdef"><b>Definition</b> <a href="constants_8h_source.html#l00083">constants.h:84</a></div></div>
-<div class="ttc" id="astructcp__info_html_a20a126ca5acfc92f2fcfee569fb602e2"><div class="ttname"><a href="structcp__info.html#a20a126ca5acfc92f2fcfee569fb602e2">cp_info::info</a></div><div class="ttdeci">Constant info</div><div class="ttdef"><b>Definition</b> <a href="constants_8h_source.html#l00086">constants.h:86</a></div></div>
-<div class="ttc" id="astructmember__info_html"><div class="ttname"><a href="structmember__info.html">member_info</a></div><div class="ttdef"><b>Definition</b> <a href="member_8h_source.html#l00013">member.h:14</a></div></div>
-<div class="ttc" id="astructmember__info_html_a1b6fd3937f4b9f934acf4a8c5671d6ba"><div class="ttname"><a href="structmember__info.html#a1b6fd3937f4b9f934acf4a8c5671d6ba">member_info::name_index</a></div><div class="ttdeci">u2 name_index</div><div class="ttdef"><b>Definition</b> <a href="member_8h_source.html#l00016">member.h:16</a></div></div>
-<div class="ttc" id="astructmember__info_html_a3cf07d7c00b99056e31af689a7caa880"><div class="ttname"><a href="structmember__info.html#a3cf07d7c00b99056e31af689a7caa880">member_info::access_flags</a></div><div class="ttdeci">u2 access_flags</div><div class="ttdef"><b>Definition</b> <a href="member_8h_source.html#l00015">member.h:15</a></div></div>
-<div class="ttc" id="astructmember__info_html_a7f59e9d84b0c7da9ef9f0c2205047319"><div class="ttname"><a href="structmember__info.html#a7f59e9d84b0c7da9ef9f0c2205047319">member_info::descriptor_index</a></div><div class="ttdeci">u2 descriptor_index</div><div class="ttdef"><b>Definition</b> <a href="member_8h_source.html#l00017">member.h:17</a></div></div>
-<div class="ttc" id="auinteger_8h_html_a732cde1300aafb73b0ea6c2558a7a54f"><div class="ttname"><a href="uinteger_8h.html#a732cde1300aafb73b0ea6c2558a7a54f">u2</a></div><div class="ttdeci">uint16_t u2</div><div class="ttdef"><b>Definition</b> <a href="uinteger_8h_source.html#l00007">uinteger.h:7</a></div></div>
-<div class="ttc" id="aunionConstant_html_a125aad68432d28d091d601953ff27de1"><div class="ttname"><a href="unionConstant.html#a125aad68432d28d091d601953ff27de1">Constant::UTF8</a></div><div class="ttdeci">struct Constant::@28 UTF8</div></div>
-<div class="ttc" id="aunionConstant_html_a2dcf6f0668a0bee777f90aa39a3eadf0"><div class="ttname"><a href="unionConstant.html#a2dcf6f0668a0bee777f90aa39a3eadf0">Constant::name_index</a></div><div class="ttdeci">u2 name_index</div><div class="ttdef"><b>Definition</b> <a href="constants_8h_source.html#l00026">constants.h:26</a></div></div>
-<div class="ttc" id="aunionConstant_html_a66c21a8bd15413b306d25bf23ba5e56c"><div class="ttname"><a href="unionConstant.html#a66c21a8bd15413b306d25bf23ba5e56c">Constant::Class</a></div><div class="ttdeci">struct Constant::@22 Class</div></div>
-<div class="ttc" id="aunionConstant_html_ad0b76003d8bacbee1058791aabe4a98e"><div class="ttname"><a href="unionConstant.html#ad0b76003d8bacbee1058791aabe4a98e">Constant::str</a></div><div class="ttdeci">wchar_t * str</div><div class="ttdef"><b>Definition</b> <a href="constants_8h_source.html#l00065">constants.h:65</a></div></div>
+<div class="ttc" id="astructcp__info_html"><div class="ttname"><a href="structcp__info.html">cp_info</a></div><div class="ttdoc">Estrutura que representa uma entrada do constant pool.</div><div class="ttdef"><b>Definition</b> <a href="constants_8h_source.html#l00178">constants.h:179</a></div></div>
+<div class="ttc" id="astructcp__info_html_a20a126ca5acfc92f2fcfee569fb602e2"><div class="ttname"><a href="structcp__info.html#a20a126ca5acfc92f2fcfee569fb602e2">cp_info::info</a></div><div class="ttdeci">Constant info</div><div class="ttdoc">Conteúdo da entrada específico para cada tag.</div><div class="ttdef"><b>Definition</b> <a href="constants_8h_source.html#l00181">constants.h:181</a></div></div>
+<div class="ttc" id="astructmember__info_html"><div class="ttname"><a href="structmember__info.html">member_info</a></div><div class="ttdoc">Representa um campo (field) ou método (method) definido em um ClassFile.</div><div class="ttdef"><b>Definition</b> <a href="member_8h_source.html#l00055">member.h:56</a></div></div>
+<div class="ttc" id="astructmember__info_html_a1b6fd3937f4b9f934acf4a8c5671d6ba"><div class="ttname"><a href="structmember__info.html#a1b6fd3937f4b9f934acf4a8c5671d6ba">member_info::name_index</a></div><div class="ttdeci">u2 name_index</div><div class="ttdoc">Índice no constant pool para o nome UTF8 do membro.</div><div class="ttdef"><b>Definition</b> <a href="member_8h_source.html#l00058">member.h:58</a></div></div>
+<div class="ttc" id="astructmember__info_html_a3cf07d7c00b99056e31af689a7caa880"><div class="ttname"><a href="structmember__info.html#a3cf07d7c00b99056e31af689a7caa880">member_info::access_flags</a></div><div class="ttdeci">u2 access_flags</div><div class="ttdoc">Flags de acesso (ACC_*).</div><div class="ttdef"><b>Definition</b> <a href="member_8h_source.html#l00057">member.h:57</a></div></div>
+<div class="ttc" id="astructmember__info_html_a7f59e9d84b0c7da9ef9f0c2205047319"><div class="ttname"><a href="structmember__info.html#a7f59e9d84b0c7da9ef9f0c2205047319">member_info::descriptor_index</a></div><div class="ttdeci">u2 descriptor_index</div><div class="ttdoc">Índice para o descritor do membro (parâmetros e retorno).</div><div class="ttdef"><b>Definition</b> <a href="member_8h_source.html#l00059">member.h:59</a></div></div>
+<div class="ttc" id="auinteger_8h_html_aa76d8c8015643c6a837661a10142016e"><div class="ttname"><a href="uinteger_8h.html#aa76d8c8015643c6a837661a10142016e">u2</a></div><div class="ttdeci">uint16_t u2</div><div class="ttdoc">Inteiro sem sinal de 16 bits.</div><div class="ttdef"><b>Definition</b> <a href="uinteger_8h_source.html#l00037">uinteger.h:37</a></div></div>
+<div class="ttc" id="aunionConstant_html_a125aad68432d28d091d601953ff27de1"><div class="ttname"><a href="unionConstant.html#a125aad68432d28d091d601953ff27de1">Constant::UTF8</a></div><div class="ttdeci">struct Constant::@28 UTF8</div><div class="ttdoc">CONSTANT_UTF8: string UTF-8 modificada (JVM).</div></div>
+<div class="ttc" id="aunionConstant_html_a2dcf6f0668a0bee777f90aa39a3eadf0"><div class="ttname"><a href="unionConstant.html#a2dcf6f0668a0bee777f90aa39a3eadf0">Constant::name_index</a></div><div class="ttdeci">u2 name_index</div><div class="ttdoc">Índice de UTF8 para o nome.</div><div class="ttdef"><b>Definition</b> <a href="constants_8h_source.html#l00094">constants.h:94</a></div></div>
+<div class="ttc" id="aunionConstant_html_a66c21a8bd15413b306d25bf23ba5e56c"><div class="ttname"><a href="unionConstant.html#a66c21a8bd15413b306d25bf23ba5e56c">Constant::Class</a></div><div class="ttdeci">struct Constant::@22 Class</div><div class="ttdoc">CONSTANT_Class: contém índice para o nome da classe (UTF8).</div></div>
+<div class="ttc" id="aunionConstant_html_ad0b76003d8bacbee1058791aabe4a98e"><div class="ttname"><a href="unionConstant.html#ad0b76003d8bacbee1058791aabe4a98e">Constant::str</a></div><div class="ttdeci">wchar_t * str</div><div class="ttdoc">String decodificada (wide)</div><div class="ttdef"><b>Definition</b> <a href="constants_8h_source.html#l00145">constants.h:145</a></div></div>
 <div class="ttc" id="autils_8c_html_a2da22ca95cc96ff610400450f1723cb2"><div class="ttname"><a href="utils_8c.html#a2da22ca95cc96ff610400450f1723cb2">parse_descriptor</a></div><div class="ttdeci">wchar_t * parse_descriptor(const wchar_t *descriptor, wchar_t *sep)</div><div class="ttdoc">Converte descritores da JVM para representações legíveis.</div><div class="ttdef"><b>Definition</b> <a href="utils_8c_source.html#l00225">utils.c:225</a></div></div>
 <div class="ttc" id="autils_8c_html_a54e5e04c761648da1cbda196724ffd37"><div class="ttname"><a href="utils_8c.html#a54e5e04c761648da1cbda196724ffd37">parse_flags</a></div><div class="ttdeci">char * parse_flags(u2 flags, size_t n, const char *sep, const FlagMap flag_map[])</div><div class="ttdoc">Converte flags da JVM (u2) em uma string legível.</div><div class="ttdef"><b>Definition</b> <a href="utils_8c_source.html#l00090">utils.c:90</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="methods_8h_aacb04e05595cdc07f2c88b4d6ab1d85e_cgraph.svg" width="310" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="methods_8h_ac96be5d5338c1d8c222fe777b9f754e7_cgraph.svg" width="310" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

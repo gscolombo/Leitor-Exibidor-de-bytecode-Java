@@ -95,6 +95,9 @@ $(document).ready(function(){initNavTree('annotation_8h.html',''); initResizable
   <div class="headertitle"><div class="title">annotation.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Estruturas relacionadas a anotações presentes em atributos da JVM.  
+<a href="#details">More...</a></p>
 <div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
@@ -106,8 +109,10 @@ This graph shows which files directly or indirectly include this file:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structannotation.html">annotation</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Estrutura placeholder para representar uma anotação da JVM.  <a href="structannotation.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structelement__value.html">element_value</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Estrutura placeholder para representar valores de elementos dentro de anotações.  <a href="structelement__value.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
@@ -117,7 +122,25 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a64832d4f0ec635b1e530a03e83c871ad" id="r_a64832d4f0ec635b1e530a03e83c871ad"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structelement__value.html">element_value</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="annotation_8h.html#a64832d4f0ec635b1e530a03e83c871ad">element_value</a></td></tr>
 <tr class="separator:a64832d4f0ec635b1e530a03e83c871ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Typedef Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Estruturas relacionadas a anotações presentes em atributos da JVM. </p>
+<p>A especificação da JVM define estruturas detalhadas para representar anotações (annotations) e valores de elementos (<a class="el" href="structelement__value.html" title="Estrutura placeholder para representar valores de elementos dentro de anotações.">element_value</a>), utilizadas por atributos como:</p>
+<ul>
+<li>RuntimeVisibleAnnotations</li>
+<li>RuntimeInvisibleAnnotations</li>
+<li>RuntimeVisibleParameterAnnotations</li>
+<li>RuntimeInvisibleParameterAnnotations</li>
+<li>AnnotationDefault</li>
+</ul>
+<p>No entanto, neste projeto, essas estruturas são deixadas vazias porque:</p><ul>
+<li>As anotações <b>não são usadas pelo leitor-exibidor</b> atual,</li>
+<li>Sua implementação completa é extensa e não necessária para os objetivos do trabalho,</li>
+<li>O parser não lida com esses atributos em profundidade.</li>
+</ul>
+<p>Este arquivo existe para manter consistência com a estrutura formal da JVM e permitir futura extensão do parser caso seja necessário suportar anotações. </p>
+
+<p class="definition">Definition in file <a class="el" href="annotation_8h_source.html">annotation.h</a>.</p>
+</div><h2 class="groupheader">Typedef Documentation</h2>
 <a id="ab7b4a44658f73341ba971df16c9b6cdf" name="ab7b4a44658f73341ba971df16c9b6cdf"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab7b4a44658f73341ba971df16c9b6cdf">&#9670;&#160;</a></span>annotation</h2>
 

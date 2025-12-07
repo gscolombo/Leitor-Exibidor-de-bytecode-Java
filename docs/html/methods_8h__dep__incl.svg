@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title=" ">
+<g id="a_Node000001"><a xlink:title="Declarações para exibição (printing) dos métodos (methods) de um ClassFile.">
 <polygon fill="#999999" stroke="#666666" points="189,-74 33,-74 33,-55 189,-55 189,-74"/>
 <text text-anchor="middle" x="111" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">include/members/methods.h</text>
 </a>
@@ -38,7 +38,7 @@
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="methods_8c.html" target="_top" xlink:title=" ">
+<g id="a_Node000003"><a xlink:href="methods_8c.html" target="_top" xlink:title="Implementação das rotinas de exibição dos métodos definidos em um ClassFile.">
 <polygon fill="white" stroke="#666666" points="244,-19 110,-19 110,0 244,0 244,-19"/>
 <text text-anchor="middle" x="177" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">src/members/methods.c</text>
 </a>

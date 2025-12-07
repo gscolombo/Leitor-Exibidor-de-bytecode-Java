@@ -10,33 +10,33 @@
 <area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="597,17,756,25,852,33,948,46,1037,65,1110,89,1139,104,1161,122,1175,141,1180,163,1180,313,1176,330,1165,346,1149,361,1127,374,1071,397,1003,416,856,442,734,455,733,450,856,436,1002,410,1069,392,1124,369,1145,357,1161,343,1171,328,1175,312,1175,164,1170,143,1157,125,1136,109,1108,94,1035,70,947,52,851,39,755,30,597,23"/>
 <area shape="rect" id="Node000006" href="$Classfile_8h.html" title="Estruturas e funções para representar e liberar um arquivo .class Java (ClassFile)." alt="" coords="101,152,190,177"/>
 <area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="475,27,370,44,313,60,257,81,208,111,168,144,165,140,205,107,255,76,311,55,369,39,474,22"/>
-<area shape="rect" id="Node000009" href="$member_8h.html" title=" " alt="" coords="80,299,168,324"/>
+<area shape="rect" id="Node000009" href="$member_8h.html" title="Estruturas relacionadas a membros (fields e methods) do ClassFile." alt="" coords="80,299,168,324"/>
 <area shape="poly" id="edge25_Node000001_Node000009" title=" " alt="" coords="475,26,287,46,194,62,129,81,72,113,48,132,28,152,15,173,9,197,11,222,22,249,44,274,73,291,70,295,41,278,18,252,6,223,3,196,10,171,24,148,44,128,69,109,127,76,193,56,286,41,474,21"/>
 <area shape="rect" id="Node000014" href="$utils_8h.html" title="Funções auxiliares para manipulação de inteiros, flags, nomes de atributos e descritores utilizados n..." alt="" coords="469,225,531,251"/>
 <area shape="poly" id="edge26_Node000001_Node000014" title=" " alt="" coords="537,31,507,212,501,211,531,31"/>
 <area shape="rect" id="Node000015" href="$cp_2writer_8h.html" title="Funções para exibição do Constant Pool de um ClassFile." alt="" coords="391,152,481,177"/>
 <area shape="poly" id="edge27_Node000001_Node000015" title=" " alt="" coords="530,33,454,142,449,139,525,30"/>
-<area shape="rect" id="Node000016" href="$methods_8h.html" title=" " alt="" coords="727,79,817,104"/>
+<area shape="rect" id="Node000016" href="$methods_8h.html" title="Declarações para exibição (printing) dos métodos (methods) de um ClassFile." alt="" coords="727,79,817,104"/>
 <area shape="poly" id="edge35_Node000001_Node000016" title=" " alt="" coords="575,28,721,72,720,77,573,33"/>
-<area shape="rect" id="Node000017" href="$fields_8h.html" title=" " alt="" coords="268,79,337,104"/>
+<area shape="rect" id="Node000017" href="$fields_8h.html" title="Declarações para exibição (printing) dos campos (fields) de um ClassFile." alt="" coords="268,79,337,104"/>
 <area shape="poly" id="edge44_Node000001_Node000017" title=" " alt="" coords="499,33,351,78,349,73,498,28"/>
 <area shape="poly" id="edge6_Node000006_Node000002" title=" " alt="" coords="155,176,179,210,211,249,255,288,251,292,207,253,175,213,151,179"/>
-<area shape="rect" id="Node000007" href="$uinteger_8h.html" title=" " alt="" coords="203,445,290,471"/>
+<area shape="rect" id="Node000007" href="$uinteger_8h.html" title="Definições de tipos inteiros sem sinal utilizados pela JVM e pelo leitor/exibidor de bytecode." alt="" coords="203,445,290,471"/>
 <area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="101,177,57,195,38,209,22,227,19,238,22,250,36,283,55,314,79,342,106,367,161,408,211,437,208,442,158,413,102,371,75,346,51,317,31,286,17,252,14,237,18,224,34,205,55,190,99,172"/>
 <area shape="poly" id="edge9_Node000006_Node000009" title=" " alt="" coords="101,179,62,197,45,210,31,227,28,236,28,245,38,262,57,278,81,291,78,295,54,282,34,266,23,246,22,235,27,224,41,206,60,192,99,174"/>
-<area shape="rect" id="Node000013" href="$constants_8h.html" title=" " alt="" coords="42,225,139,251"/>
+<area shape="rect" id="Node000013" href="$constants_8h.html" title="Definições das constantes do Constant Pool e estruturas que representam cada tipo de entrada." alt="" coords="42,225,139,251"/>
 <area shape="poly" id="edge16_Node000006_Node000013" title=" " alt="" coords="138,179,110,216,106,213,134,176"/>
 <area shape="poly" id="edge18_Node000006_Node000014" title=" " alt="" coords="191,172,456,225,455,230,190,178"/>
 <area shape="rect" id="Node000008" title=" " alt="" coords="211,519,282,544"/>
 <area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="249,471,249,505,244,505,244,471"/>
 <area shape="poly" id="edge10_Node000009_Node000007" title=" " alt="" coords="134,322,189,396,226,434,222,438,184,399,129,326"/>
-<area shape="rect" id="Node000010" href="$attributes_8h.html" title=" " alt="" coords="498,372,595,397"/>
+<area shape="rect" id="Node000010" href="$attributes_8h.html" title="Estruturas e enumerações que representam atributos da JVM presentes em fields, methods e classes." alt="" coords="498,372,595,397"/>
 <area shape="poly" id="edge11_Node000009_Node000010" title=" " alt="" coords="168,317,485,370,484,376,167,323"/>
 <area shape="poly" id="edge12_Node000010_Node000005" title=" " alt="" coords="570,395,651,437,648,441,567,400"/>
 <area shape="poly" id="edge13_Node000010_Node000007" title=" " alt="" coords="499,400,304,446,303,441,498,395"/>
-<area shape="rect" id="Node000011" href="$stackmap_8h.html" title=" " alt="" coords="384,445,483,471"/>
+<area shape="rect" id="Node000011" href="$stackmap_8h.html" title="Estrutura placeholder para frames do atributo StackMapTable." alt="" coords="384,445,483,471"/>
 <area shape="poly" id="edge14_Node000010_Node000011" title=" " alt="" coords="530,400,465,440,462,436,527,395"/>
-<area shape="rect" id="Node000012" href="$annotation_8h.html" title=" " alt="" coords="507,445,611,471"/>
+<area shape="rect" id="Node000012" href="$annotation_8h.html" title="Estruturas relacionadas a anotações presentes em atributos da JVM." alt="" coords="507,445,611,471"/>
 <area shape="poly" id="edge15_Node000010_Node000012" title=" " alt="" coords="551,397,557,431,552,432,546,398"/>
 <area shape="poly" id="edge17_Node000013_Node000007" title=" " alt="" coords="117,248,150,268,182,297,205,330,222,367,243,431,238,433,217,369,200,333,178,300,147,273,114,253"/>
 <area shape="poly" id="edge19_Node000014_Node000002" title=" " alt="" coords="469,252,328,297,327,292,467,247"/>

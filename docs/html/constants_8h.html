@@ -96,6 +96,9 @@ $(document).ready(function(){initNavTree('constants_8h.html',''); initResizable(
   <div class="headertitle"><div class="title">constants.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Definições das constantes do <a class="el" href="unionConstant.html" title="Armazena o conteúdo real da entrada do constant pool dependendo da tag.">Constant</a> Pool e estruturas que representam cada tipo de entrada.  
+<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="uinteger_8h_source.html">uinteger.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for constants.h:</div>
@@ -113,39 +116,55 @@ This graph shows which files directly or indirectly include this file:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="unionConstant.html">Constant</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Armazena o conteúdo real da entrada do constant pool dependendo da tag.  <a href="unionConstant.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcp__info.html">cp_info</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Estrutura que representa uma entrada do constant pool.  <a href="structcp__info.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:a72b5b534aa409975da610a36f648fa0a" id="r_a72b5b534aa409975da610a36f648fa0a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="constants_8h.html#a72b5b534aa409975da610a36f648fa0a">CONSTANT_Class</a>&#160;&#160;&#160;7</td></tr>
+<tr class="memdesc:a72b5b534aa409975da610a36f648fa0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Entrada CONSTANT_Class: referencia um name_index para uma string UTF8.  <br /></td></tr>
 <tr class="separator:a72b5b534aa409975da610a36f648fa0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a008d43478c2e2973e7413f5d1c48095d" id="r_a008d43478c2e2973e7413f5d1c48095d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="constants_8h.html#a008d43478c2e2973e7413f5d1c48095d">CONSTANT_Fieldref</a>&#160;&#160;&#160;9</td></tr>
+<tr class="memdesc:a008d43478c2e2973e7413f5d1c48095d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Entrada CONSTANT_Fieldref: referência a um field via class_index + name_and_type_index.  <br /></td></tr>
 <tr class="separator:a008d43478c2e2973e7413f5d1c48095d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2a179cf178ea867c6ab1700508c269dd" id="r_a2a179cf178ea867c6ab1700508c269dd"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="constants_8h.html#a2a179cf178ea867c6ab1700508c269dd">CONSTANT_Methodref</a>&#160;&#160;&#160;10</td></tr>
+<tr class="memdesc:a2a179cf178ea867c6ab1700508c269dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Entrada CONSTANT_Methodref: referência a método de classe.  <br /></td></tr>
 <tr class="separator:a2a179cf178ea867c6ab1700508c269dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac0e92044d246c6e4d691116f89a70ebb" id="r_ac0e92044d246c6e4d691116f89a70ebb"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="constants_8h.html#ac0e92044d246c6e4d691116f89a70ebb">CONSTANT_InterfaceMethodref</a>&#160;&#160;&#160;11</td></tr>
+<tr class="memdesc:ac0e92044d246c6e4d691116f89a70ebb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Entrada CONSTANT_InterfaceMethodref: referência a método de interface.  <br /></td></tr>
 <tr class="separator:ac0e92044d246c6e4d691116f89a70ebb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0a7acbe175de56072a2f0a1a051418e1" id="r_a0a7acbe175de56072a2f0a1a051418e1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="constants_8h.html#a0a7acbe175de56072a2f0a1a051418e1">CONSTANT_String</a>&#160;&#160;&#160;8</td></tr>
+<tr class="memdesc:a0a7acbe175de56072a2f0a1a051418e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Entrada CONSTANT_String: referência a um literal de string (índice para UTF8).  <br /></td></tr>
 <tr class="separator:a0a7acbe175de56072a2f0a1a051418e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a856a6553a55d721970ca5450eb1ccd2c" id="r_a856a6553a55d721970ca5450eb1ccd2c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="constants_8h.html#a856a6553a55d721970ca5450eb1ccd2c">CONSTANT_Integer</a>&#160;&#160;&#160;3</td></tr>
+<tr class="memdesc:a856a6553a55d721970ca5450eb1ccd2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Entrada CONSTANT_Integer: literal inteiro de 32 bits.  <br /></td></tr>
 <tr class="separator:a856a6553a55d721970ca5450eb1ccd2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab914627ce5b25c4acfc98f2eacb78473" id="r_ab914627ce5b25c4acfc98f2eacb78473"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="constants_8h.html#ab914627ce5b25c4acfc98f2eacb78473">CONSTANT_Float</a>&#160;&#160;&#160;4</td></tr>
+<tr class="memdesc:ab914627ce5b25c4acfc98f2eacb78473"><td class="mdescLeft">&#160;</td><td class="mdescRight">Entrada CONSTANT_Float: literal float de 32 bits (IEEE754).  <br /></td></tr>
 <tr class="separator:ab914627ce5b25c4acfc98f2eacb78473"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a426ca017b895fc522671a561d460be7a" id="r_a426ca017b895fc522671a561d460be7a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="constants_8h.html#a426ca017b895fc522671a561d460be7a">CONSTANT_Long</a>&#160;&#160;&#160;5</td></tr>
+<tr class="memdesc:a426ca017b895fc522671a561d460be7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Entrada CONSTANT_Long: literal long de 64 bits (ocupa duas entradas).  <br /></td></tr>
 <tr class="separator:a426ca017b895fc522671a561d460be7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab49341c3b4ade4bfa1a64be8d2f73ae1" id="r_ab49341c3b4ade4bfa1a64be8d2f73ae1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="constants_8h.html#ab49341c3b4ade4bfa1a64be8d2f73ae1">CONSTANT_Double</a>&#160;&#160;&#160;6</td></tr>
+<tr class="memdesc:ab49341c3b4ade4bfa1a64be8d2f73ae1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Entrada CONSTANT_Double: literal double de 64 bits (ocupa duas entradas).  <br /></td></tr>
 <tr class="separator:ab49341c3b4ade4bfa1a64be8d2f73ae1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5b6ba749976ae61415983ca0b890c91a" id="r_a5b6ba749976ae61415983ca0b890c91a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="constants_8h.html#a5b6ba749976ae61415983ca0b890c91a">CONSTANT_NameAndType</a>&#160;&#160;&#160;12</td></tr>
+<tr class="memdesc:a5b6ba749976ae61415983ca0b890c91a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Entrada CONSTANT_NameAndType: par (nome, descritor).  <br /></td></tr>
 <tr class="separator:a5b6ba749976ae61415983ca0b890c91a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae59099cfa3071f06e28a0956420c4fdd" id="r_ae59099cfa3071f06e28a0956420c4fdd"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="constants_8h.html#ae59099cfa3071f06e28a0956420c4fdd">CONSTANT_UTF8</a>&#160;&#160;&#160;1</td></tr>
+<tr class="memdesc:ae59099cfa3071f06e28a0956420c4fdd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Entrada CONSTANT_UTF8: string UTF-8 (Modified UTF8).  <br /></td></tr>
 <tr class="separator:ae59099cfa3071f06e28a0956420c4fdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adb3c84f82163f217ab7f8fa0258d80ce" id="r_adb3c84f82163f217ab7f8fa0258d80ce"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="constants_8h.html#adb3c84f82163f217ab7f8fa0258d80ce">CONSTANT_MethodHandle</a>&#160;&#160;&#160;15</td></tr>
+<tr class="memdesc:adb3c84f82163f217ab7f8fa0258d80ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Entrada CONSTANT_MethodHandle: metadado para invokedynamic.  <br /></td></tr>
 <tr class="separator:adb3c84f82163f217ab7f8fa0258d80ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a991ba557d63f94e2cdf05c9f80630a6f" id="r_a991ba557d63f94e2cdf05c9f80630a6f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="constants_8h.html#a991ba557d63f94e2cdf05c9f80630a6f">CONSTANT_MethodType</a>&#160;&#160;&#160;16</td></tr>
+<tr class="memdesc:a991ba557d63f94e2cdf05c9f80630a6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Entrada CONSTANT_MethodType: descritor de método usado em invokedynamic.  <br /></td></tr>
 <tr class="separator:a991ba557d63f94e2cdf05c9f80630a6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a127046386d755d4a91c71aa9b453a8bb" id="r_a127046386d755d4a91c71aa9b453a8bb"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="constants_8h.html#a127046386d755d4a91c71aa9b453a8bb">CONSTANT_InvokeDynamic</a>&#160;&#160;&#160;18</td></tr>
+<tr class="memdesc:a127046386d755d4a91c71aa9b453a8bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Entrada CONSTANT_InvokeDynamic: referência dinâmica (lambda, bootstrap method).  <br /></td></tr>
 <tr class="separator:a127046386d755d4a91c71aa9b453a8bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
@@ -155,7 +174,21 @@ Typedefs</h2></td></tr>
 <tr class="memitem:ac152ca02fa3b57b8d90f0ae0b30f099a" id="r_ac152ca02fa3b57b8d90f0ae0b30f099a"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structcp__info.html">cp_info</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="constants_8h.html#ac152ca02fa3b57b8d90f0ae0b30f099a">cp_info</a></td></tr>
 <tr class="separator:ac152ca02fa3b57b8d90f0ae0b30f099a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Macro Definition Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Definições das constantes do <a class="el" href="unionConstant.html" title="Armazena o conteúdo real da entrada do constant pool dependendo da tag.">Constant</a> Pool e estruturas que representam cada tipo de entrada. </p>
+<p>O constant pool é uma das partes mais importantes do formato <code>.class</code>. Ele contém:</p><ul>
+<li>nomes de classes</li>
+<li>tipos</li>
+<li>literais numéricos</li>
+<li>strings</li>
+<li>descritores</li>
+<li>referências a fields, methods e interfaces</li>
+<li>metadados adicionais</li>
+</ul>
+<p>Este arquivo define os valores das tags (<code>CONSTANT_*</code>) usados no constant pool e as estruturas que armazenam cada variante de entrada, conforme a JVM Specification. </p>
+
+<p class="definition">Definition in file <a class="el" href="constants_8h_source.html">constants.h</a>.</p>
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a72b5b534aa409975da610a36f648fa0a" name="a72b5b534aa409975da610a36f648fa0a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a72b5b534aa409975da610a36f648fa0a">&#9670;&#160;</a></span>CONSTANT_Class</h2>
 
@@ -168,7 +201,9 @@ Typedefs</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="constants_8h_source.html#l00005">5</a> of file <a class="el" href="constants_8h_source.html">constants.h</a>.</p>
+<p>Entrada CONSTANT_Class: referencia um name_index para uma string UTF8. </p>
+
+<p class="definition">Definition at line <a class="el" href="constants_8h_source.html#l00027">27</a> of file <a class="el" href="constants_8h_source.html">constants.h</a>.</p>
 
 </div>
 </div>
@@ -184,7 +219,9 @@ Typedefs</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="constants_8h_source.html#l00013">13</a> of file <a class="el" href="constants_8h_source.html">constants.h</a>.</p>
+<p>Entrada CONSTANT_Double: literal double de 64 bits (ocupa duas entradas). </p>
+
+<p class="definition">Definition at line <a class="el" href="constants_8h_source.html#l00051">51</a> of file <a class="el" href="constants_8h_source.html">constants.h</a>.</p>
 
 </div>
 </div>
@@ -200,7 +237,9 @@ Typedefs</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="constants_8h_source.html#l00006">6</a> of file <a class="el" href="constants_8h_source.html">constants.h</a>.</p>
+<p>Entrada CONSTANT_Fieldref: referência a um field via class_index + name_and_type_index. </p>
+
+<p class="definition">Definition at line <a class="el" href="constants_8h_source.html#l00030">30</a> of file <a class="el" href="constants_8h_source.html">constants.h</a>.</p>
 
 </div>
 </div>
@@ -216,7 +255,9 @@ Typedefs</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="constants_8h_source.html#l00011">11</a> of file <a class="el" href="constants_8h_source.html">constants.h</a>.</p>
+<p>Entrada CONSTANT_Float: literal float de 32 bits (IEEE754). </p>
+
+<p class="definition">Definition at line <a class="el" href="constants_8h_source.html#l00045">45</a> of file <a class="el" href="constants_8h_source.html">constants.h</a>.</p>
 
 </div>
 </div>
@@ -232,7 +273,9 @@ Typedefs</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="constants_8h_source.html#l00010">10</a> of file <a class="el" href="constants_8h_source.html">constants.h</a>.</p>
+<p>Entrada CONSTANT_Integer: literal inteiro de 32 bits. </p>
+
+<p class="definition">Definition at line <a class="el" href="constants_8h_source.html#l00042">42</a> of file <a class="el" href="constants_8h_source.html">constants.h</a>.</p>
 
 </div>
 </div>
@@ -248,7 +291,9 @@ Typedefs</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="constants_8h_source.html#l00008">8</a> of file <a class="el" href="constants_8h_source.html">constants.h</a>.</p>
+<p>Entrada CONSTANT_InterfaceMethodref: referência a método de interface. </p>
+
+<p class="definition">Definition at line <a class="el" href="constants_8h_source.html#l00036">36</a> of file <a class="el" href="constants_8h_source.html">constants.h</a>.</p>
 
 </div>
 </div>
@@ -264,7 +309,9 @@ Typedefs</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="constants_8h_source.html#l00018">18</a> of file <a class="el" href="constants_8h_source.html">constants.h</a>.</p>
+<p>Entrada CONSTANT_InvokeDynamic: referência dinâmica (lambda, bootstrap method). </p>
+
+<p class="definition">Definition at line <a class="el" href="constants_8h_source.html#l00066">66</a> of file <a class="el" href="constants_8h_source.html">constants.h</a>.</p>
 
 </div>
 </div>
@@ -280,7 +327,9 @@ Typedefs</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="constants_8h_source.html#l00012">12</a> of file <a class="el" href="constants_8h_source.html">constants.h</a>.</p>
+<p>Entrada CONSTANT_Long: literal long de 64 bits (ocupa duas entradas). </p>
+
+<p class="definition">Definition at line <a class="el" href="constants_8h_source.html#l00048">48</a> of file <a class="el" href="constants_8h_source.html">constants.h</a>.</p>
 
 </div>
 </div>
@@ -296,7 +345,9 @@ Typedefs</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="constants_8h_source.html#l00016">16</a> of file <a class="el" href="constants_8h_source.html">constants.h</a>.</p>
+<p>Entrada CONSTANT_MethodHandle: metadado para invokedynamic. </p>
+
+<p class="definition">Definition at line <a class="el" href="constants_8h_source.html#l00060">60</a> of file <a class="el" href="constants_8h_source.html">constants.h</a>.</p>
 
 </div>
 </div>
@@ -312,7 +363,9 @@ Typedefs</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="constants_8h_source.html#l00007">7</a> of file <a class="el" href="constants_8h_source.html">constants.h</a>.</p>
+<p>Entrada CONSTANT_Methodref: referência a método de classe. </p>
+
+<p class="definition">Definition at line <a class="el" href="constants_8h_source.html#l00033">33</a> of file <a class="el" href="constants_8h_source.html">constants.h</a>.</p>
 
 </div>
 </div>
@@ -328,7 +381,9 @@ Typedefs</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="constants_8h_source.html#l00017">17</a> of file <a class="el" href="constants_8h_source.html">constants.h</a>.</p>
+<p>Entrada CONSTANT_MethodType: descritor de método usado em invokedynamic. </p>
+
+<p class="definition">Definition at line <a class="el" href="constants_8h_source.html#l00063">63</a> of file <a class="el" href="constants_8h_source.html">constants.h</a>.</p>
 
 </div>
 </div>
@@ -344,7 +399,9 @@ Typedefs</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="constants_8h_source.html#l00014">14</a> of file <a class="el" href="constants_8h_source.html">constants.h</a>.</p>
+<p>Entrada CONSTANT_NameAndType: par (nome, descritor). </p>
+
+<p class="definition">Definition at line <a class="el" href="constants_8h_source.html#l00054">54</a> of file <a class="el" href="constants_8h_source.html">constants.h</a>.</p>
 
 </div>
 </div>
@@ -360,7 +417,9 @@ Typedefs</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="constants_8h_source.html#l00009">9</a> of file <a class="el" href="constants_8h_source.html">constants.h</a>.</p>
+<p>Entrada CONSTANT_String: referência a um literal de string (índice para UTF8). </p>
+
+<p class="definition">Definition at line <a class="el" href="constants_8h_source.html#l00039">39</a> of file <a class="el" href="constants_8h_source.html">constants.h</a>.</p>
 
 </div>
 </div>
@@ -376,7 +435,9 @@ Typedefs</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="constants_8h_source.html#l00015">15</a> of file <a class="el" href="constants_8h_source.html">constants.h</a>.</p>
+<p>Entrada CONSTANT_UTF8: string UTF-8 (Modified UTF8). </p>
+
+<p class="definition">Definition at line <a class="el" href="constants_8h_source.html#l00057">57</a> of file <a class="el" href="constants_8h_source.html">constants.h</a>.</p>
 
 </div>
 </div>

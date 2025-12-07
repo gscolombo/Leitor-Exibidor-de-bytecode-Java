@@ -74,7 +74,7 @@
 <!-- Node5 -->
 <g id="Node000005" class="node">
 <title>Node5</title>
-<g id="a_Node000005"><a xlink:href="uinteger_8h.html" target="_top" xlink:title=" ">
+<g id="a_Node000005"><a xlink:href="uinteger_8h.html" target="_top" xlink:title="Definições de tipos inteiros sem sinal utilizados pela JVM e pelo leitor/exibidor de bytecode.">
 <polygon fill="white" stroke="#666666" points="266,-74 201,-74 201,-55 266,-55 266,-74"/>
 <text text-anchor="middle" x="233.5" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">uinteger.h</text>
 </a>
@@ -92,7 +92,7 @@
 <!-- Node7 -->
 <g id="Node000007" class="node">
 <title>Node7</title>
-<g id="a_Node000007"><a xlink:href="attributes_8h.html" target="_top" xlink:title=" ">
+<g id="a_Node000007"><a xlink:href="attributes_8h.html" target="_top" xlink:title="Estruturas e enumerações que representam atributos da JVM presentes em fields, methods e classes.">
 <polygon fill="white" stroke="#666666" points="375,-129 302,-129 302,-110 375,-110 375,-129"/>
 <text text-anchor="middle" x="338.5" y="-117" font-family="Helvetica,sans-Serif" font-size="10.00">attributes.h</text>
 </a>
@@ -110,7 +110,7 @@
 <!-- Node11 -->
 <g id="Node000011" class="node">
 <title>Node11</title>
-<g id="a_Node000011"><a xlink:href="member_8h.html" target="_top" xlink:title=" ">
+<g id="a_Node000011"><a xlink:href="member_8h.html" target="_top" xlink:title="Estruturas relacionadas a membros (fields e methods) do ClassFile.">
 <polygon fill="white" stroke="#666666" points="315.5,-184 249.5,-184 249.5,-165 315.5,-165 315.5,-184"/>
 <text text-anchor="middle" x="282.5" y="-172" font-family="Helvetica,sans-Serif" font-size="10.00">member.h</text>
 </a>
@@ -173,7 +173,7 @@
 <!-- Node9 -->
 <g id="Node000009" class="node">
 <title>Node9</title>
-<g id="a_Node000009"><a xlink:href="stackmap_8h.html" target="_top" xlink:title=" ">
+<g id="a_Node000009"><a xlink:href="stackmap_8h.html" target="_top" xlink:title="Estrutura placeholder para frames do atributo StackMapTable.">
 <polygon fill="white" stroke="#666666" points="430.5,-74 356.5,-74 356.5,-55 430.5,-55 430.5,-74"/>
 <text text-anchor="middle" x="393.5" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">stackmap.h</text>
 </a>
@@ -191,7 +191,7 @@
 <!-- Node10 -->
 <g id="Node000010" class="node">
 <title>Node10</title>
-<g id="a_Node000010"><a xlink:href="annotation_8h.html" target="_top" xlink:title=" ">
+<g id="a_Node000010"><a xlink:href="annotation_8h.html" target="_top" xlink:title="Estruturas relacionadas a anotações presentes em atributos da JVM.">
 <polygon fill="white" stroke="#666666" points="526.5,-74 448.5,-74 448.5,-55 526.5,-55 526.5,-74"/>
 <text text-anchor="middle" x="487.5" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">annotation.h</text>
 </a>

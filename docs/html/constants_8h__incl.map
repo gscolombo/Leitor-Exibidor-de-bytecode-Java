@@ -1,6 +1,6 @@
 <map id="include/types/cp/constants.h" name="include/types/cp/constants.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,212,31"/>
-<area shape="rect" id="Node000002" href="$uinteger_8h.html" title=" " alt="" coords="65,79,152,104"/>
+<area shape="rect" id="Node000001" title="Definições das constantes do Constant Pool e estruturas que representam cada tipo de entrada." alt="" coords="5,5,212,31"/>
+<area shape="rect" id="Node000002" href="$uinteger_8h.html" title="Definições de tipos inteiros sem sinal utilizados pela JVM e pelo leitor/exibidor de bytecode." alt="" coords="65,79,152,104"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="111,31,111,65,106,65,106,31"/>
 <area shape="rect" id="Node000003" title=" " alt="" coords="73,152,144,177"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="111,104,111,138,106,138,106,104"/>

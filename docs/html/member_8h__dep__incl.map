@@ -1,12 +1,12 @@
 <map id="include/types/member.h" name="include/types/member.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="406,5,585,31"/>
+<area shape="rect" id="Node000001" title="Estruturas relacionadas a membros (fields e methods) do ClassFile." alt="" coords="406,5,585,31"/>
 <area shape="rect" id="Node000002" href="$Classfile_8h.html" title="Estruturas e funções para representar e liberar um arquivo .class Java (ClassFile)." alt="" coords="346,152,486,177"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="485,44,425,153,420,150,480,42"/>
-<area shape="rect" id="Node000003" href="$fields_8h.html" title=" " alt="" coords="22,225,209,251"/>
+<area shape="rect" id="Node000003" href="$fields_8h.html" title="Declarações para exibição (printing) dos campos (fields) de um ClassFile." alt="" coords="22,225,209,251"/>
 <area shape="poly" id="edge14_Node000001_Node000003" title=" " alt="" coords="463,40,256,154,135,227,133,223,253,150,461,35"/>
 <area shape="rect" id="Node000004" href="$writer_8h.html" title="Declarações para funções de exibição (printing) de estruturas de ClassFile." alt="" coords="253,299,376,324"/>
 <area shape="poly" id="edge28_Node000001_Node000004" title=" " alt="" coords="394,32,297,52,244,68,191,88,139,114,91,145,48,182,13,227,8,238,12,249,23,255,44,262,106,277,253,300,253,305,105,282,42,268,21,260,8,252,3,238,8,224,44,179,88,141,136,109,189,83,242,63,295,47,392,27"/>
-<area shape="rect" id="Node000006" href="$methods_8h.html" title=" " alt="" coords="420,225,628,251"/>
+<area shape="rect" id="Node000006" href="$methods_8h.html" title="Declarações para exibição (printing) dos métodos (methods) de um ClassFile." alt="" coords="420,225,628,251"/>
 <area shape="poly" id="edge15_Node000001_Node000006" title=" " alt="" coords="502,45,525,225,520,225,496,45"/>
 <area shape="rect" id="Node000008" href="$reader_8h.html" title="Funções de leitura de arquivos .class e utilitários de leitura de inteiros." alt="" coords="890,225,1016,251"/>
 <area shape="poly" id="edge16_Node000001_Node000008" title=" " alt="" coords="599,30,670,46,747,70,824,104,860,125,894,150,928,188,949,223,945,226,923,191,890,154,857,130,821,109,745,75,669,51,598,36"/>
@@ -19,10 +19,10 @@
 <area shape="rect" id="Node000012" href="$Classfile_8c.html" title="Implementação das funções de liberação de memória associadas a ClassFile." alt="" coords="284,225,395,251"/>
 <area shape="poly" id="edge13_Node000002_Node000012" title=" " alt="" coords="395,189,354,227,350,223,392,185"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="161,253,283,296,281,301,160,258"/>
-<area shape="rect" id="Node000005" href="$fields_8c.html" title=" " alt="" coords="37,299,194,324"/>
+<area shape="rect" id="Node000005" href="$fields_8c.html" title="Implementação das rotinas de exibição (printing) dos campos (fields) de um ClassFile." alt="" coords="37,299,194,324"/>
 <area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="118,264,118,299,113,299,113,264"/>
 <area shape="poly" id="edge6_Node000006_Node000004" title=" " alt="" coords="478,258,349,301,347,296,476,253"/>
-<area shape="rect" id="Node000007" href="$methods_8c.html" title=" " alt="" coords="434,299,613,324"/>
+<area shape="rect" id="Node000007" href="$methods_8c.html" title="Implementação das rotinas de exibição dos métodos definidos em um ClassFile." alt="" coords="434,299,613,324"/>
 <area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="526,264,526,299,521,299,521,264"/>
 <area shape="rect" id="Node000009" href="$parser_8c.html" title="Implementação do parser do constant pool e utilitários de decodificação." alt="" coords="757,299,872,324"/>
 <area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="920,259,838,301,836,296,918,254"/>

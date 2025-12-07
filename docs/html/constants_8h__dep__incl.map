@@ -1,26 +1,26 @@
 <map id="include/types/cp/constants.h" name="include/types/cp/constants.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="470,5,677,31"/>
+<area shape="rect" id="Node000001" title="Definições das constantes do Constant Pool e estruturas que representam cada tipo de entrada." alt="" coords="470,5,677,31"/>
 <area shape="rect" id="Node000002" href="$Classfile_8h.html" title="Estruturas e funções para representar e liberar um arquivo .class Java (ClassFile)." alt="" coords="503,79,643,104"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="576,44,576,79,571,79,571,44"/>
 <area shape="rect" id="Node000013" href="$parser_8h.html" title="Prototótipos para o parser do constant pool e utilitários de decodificação." alt="" coords="813,79,957,104"/>
 <area shape="poly" id="edge14_Node000001_Node000013" title=" " alt="" coords="637,31,835,76,834,81,636,36"/>
 <area shape="rect" id="Node000014" href="$cp_2writer_8h.html" title="Funções para exibição do Constant Pool de um ClassFile." alt="" coords="316,79,457,104"/>
 <area shape="poly" id="edge17_Node000001_Node000014" title=" " alt="" coords="532,38,418,81,416,76,530,33"/>
-<area shape="rect" id="Node000003" href="$fields_8h.html" title=" " alt="" coords="611,152,797,177"/>
+<area shape="rect" id="Node000003" href="$fields_8h.html" title="Declarações para exibição (printing) dos campos (fields) de um ClassFile." alt="" coords="611,152,797,177"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="608,108,684,149,681,154,605,113"/>
 <area shape="rect" id="Node000004" href="$writer_8h.html" title="Declarações para funções de exibição (printing) de estruturas de ClassFile." alt="" coords="375,225,497,251"/>
 <area shape="poly" id="edge12_Node000002_Node000004" title=" " alt="" coords="573,119,565,149,549,179,532,195,513,209,474,228,471,223,510,204,529,191,545,176,560,147,568,117"/>
-<area shape="rect" id="Node000006" href="$methods_8h.html" title=" " alt="" coords="141,152,349,177"/>
+<area shape="rect" id="Node000006" href="$methods_8h.html" title="Declarações para exibição (printing) dos métodos (methods) de um ClassFile." alt="" coords="141,152,349,177"/>
 <area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="508,109,299,154,298,149,507,104"/>
 <area shape="rect" id="Node000008" href="$reader_8h.html" title="Funções de leitura de arquivos .class e utilitários de leitura de inteiros." alt="" coords="822,152,949,177"/>
 <area shape="poly" id="edge8_Node000002_Node000008" title=" " alt="" coords="637,104,835,149,834,154,636,110"/>
 <area shape="rect" id="Node000012" href="$Classfile_8c.html" title="Implementação das funções de liberação de memória associadas a ClassFile." alt="" coords="425,152,535,177"/>
 <area shape="poly" id="edge13_Node000002_Node000012" title=" " alt="" coords="549,114,497,154,494,150,546,110"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="648,183,480,228,479,223,647,178"/>
-<area shape="rect" id="Node000005" href="$fields_8c.html" title=" " alt="" coords="537,225,695,251"/>
+<area shape="rect" id="Node000005" href="$fields_8c.html" title="Implementação das rotinas de exibição (printing) dos campos (fields) de um ClassFile." alt="" coords="537,225,695,251"/>
 <area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="681,188,632,227,629,223,678,184"/>
 <area shape="poly" id="edge6_Node000006_Node000004" title=" " alt="" coords="290,180,406,223,404,228,288,185"/>
-<area shape="rect" id="Node000007" href="$methods_8c.html" title=" " alt="" coords="156,225,335,251"/>
+<area shape="rect" id="Node000007" href="$methods_8c.html" title="Implementação das rotinas de exibição dos métodos definidos em um ClassFile." alt="" coords="156,225,335,251"/>
 <area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="248,191,248,225,243,225,243,191"/>
 <area shape="rect" id="Node000009" href="$parser_8c.html" title="Implementação do parser do constant pool e utilitários de decodificação." alt="" coords="955,225,1069,251"/>
 <area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="919,182,993,223,990,227,916,186"/>

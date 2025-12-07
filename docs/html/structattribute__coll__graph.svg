@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title=" ">
+<g id="a_Node000001"><a xlink:title="Representa um atributo genérico da JVM.">
 <polygon fill="#999999" stroke="#666666" points="312,-186.06 253,-186.06 253,-167.06 312,-167.06 312,-186.06"/>
 <text text-anchor="middle" x="282.5" y="-174.06" font-family="Helvetica,sans-Serif" font-size="10.00">attribute</text>
 </a>
@@ -30,7 +30,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="structexception__table.html" target="_top" xlink:title=" ">
+<g id="a_Node000002"><a xlink:href="structexception__table.html" target="_top" xlink:title="Entrada da tabela de exceções do atributo Code.">
 <polygon fill="white" stroke="#666666" points="105,-332.06 10,-332.06 10,-313.06 105,-313.06 105,-332.06"/>
 <text text-anchor="middle" x="57.5" y="-320.06" font-family="Helvetica,sans-Serif" font-size="10.00">exception_table</text>
 </a>
@@ -49,7 +49,7 @@
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="unionstack__map__frame.html" target="_top" xlink:title=" ">
+<g id="a_Node000003"><a xlink:href="unionstack__map__frame.html" target="_top" xlink:title="Estrutura placeholder para frames da StackMapTable.">
 <polygon fill="white" stroke="#666666" points="109.5,-295.06 5.5,-295.06 5.5,-276.06 109.5,-276.06 109.5,-295.06"/>
 <text text-anchor="middle" x="57.5" y="-283.06" font-family="Helvetica,sans-Serif" font-size="10.00">stack_map_frame</text>
 </a>
@@ -68,7 +68,7 @@
 <!-- Node4 -->
 <g id="Node000004" class="node">
 <title>Node4</title>
-<g id="a_Node000004"><a xlink:href="structclasses.html" target="_top" xlink:title=" ">
+<g id="a_Node000004"><a xlink:href="structclasses.html" target="_top" xlink:title="Representa uma entrada do atributo InnerClasses.">
 <polygon fill="white" stroke="#666666" points="84,-258.06 31,-258.06 31,-239.06 84,-239.06 84,-258.06"/>
 <text text-anchor="middle" x="57.5" y="-246.06" font-family="Helvetica,sans-Serif" font-size="10.00">classes</text>
 </a>
@@ -87,7 +87,7 @@
 <!-- Node5 -->
 <g id="Node000005" class="node">
 <title>Node5</title>
-<g id="a_Node000005"><a xlink:href="structline__number__table.html" target="_top" xlink:title=" ">
+<g id="a_Node000005"><a xlink:href="structline__number__table.html" target="_top" xlink:title="Mapeamento entre bytecode index (start_pc) e número da linha no código fonte.">
 <polygon fill="white" stroke="#666666" points="111,-221.06 4,-221.06 4,-202.06 111,-202.06 111,-221.06"/>
 <text text-anchor="middle" x="57.5" y="-209.06" font-family="Helvetica,sans-Serif" font-size="10.00">line_number_table</text>
 </a>
@@ -106,7 +106,7 @@
 <!-- Node6 -->
 <g id="Node000006" class="node">
 <title>Node6</title>
-<g id="a_Node000006"><a xlink:href="structlocal__variable__table.html" target="_top" xlink:title=" ">
+<g id="a_Node000006"><a xlink:href="structlocal__variable__table.html" target="_top" xlink:title="Entrada do atributo LocalVariableTable dentro de Code.">
 <polygon fill="white" stroke="#666666" points="115,-184.06 0,-184.06 0,-165.06 115,-165.06 115,-184.06"/>
 <text text-anchor="middle" x="57.5" y="-172.06" font-family="Helvetica,sans-Serif" font-size="10.00">local_variable_table</text>
 </a>
@@ -125,7 +125,7 @@
 <!-- Node7 -->
 <g id="Node000007" class="node">
 <title>Node7</title>
-<g id="a_Node000007"><a xlink:href="structlocal__variable__type__table.html" target="_top" xlink:title=" ">
+<g id="a_Node000007"><a xlink:href="structlocal__variable__type__table.html" target="_top" xlink:title="Entrada do atributo LocalVariableTypeTable.">
 <polygon fill="white" stroke="#666666" points="113.5,-146.56 1.5,-146.56 1.5,-116.56 113.5,-116.56 113.5,-146.56"/>
 <text text-anchor="start" x="9.5" y="-134.56" font-family="Helvetica,sans-Serif" font-size="10.00">local_variable_type</text>
 <text text-anchor="middle" x="57.5" y="-123.56" font-family="Helvetica,sans-Serif" font-size="10.00">_table</text>
@@ -146,7 +146,7 @@
 <!-- Node8 -->
 <g id="Node000008" class="node">
 <title>Node8</title>
-<g id="a_Node000008"><a xlink:href="structannotation.html" target="_top" xlink:title=" ">
+<g id="a_Node000008"><a xlink:href="structannotation.html" target="_top" xlink:title="Estrutura placeholder para representar uma anotação da JVM.">
 <polygon fill="white" stroke="#666666" points="92,-97.06 23,-97.06 23,-78.06 92,-78.06 92,-97.06"/>
 <text text-anchor="middle" x="57.5" y="-85.06" font-family="Helvetica,sans-Serif" font-size="10.00">annotation</text>
 </a>
@@ -166,7 +166,7 @@
 <!-- Node9 -->
 <g id="Node000009" class="node">
 <title>Node9</title>
-<g id="a_Node000009"><a xlink:href="structelement__value.html" target="_top" xlink:title=" ">
+<g id="a_Node000009"><a xlink:href="structelement__value.html" target="_top" xlink:title="Estrutura placeholder para representar valores de elementos dentro de anotações.">
 <polygon fill="white" stroke="#666666" points="102,-60.06 13,-60.06 13,-41.06 102,-41.06 102,-60.06"/>
 <text text-anchor="middle" x="57.5" y="-48.06" font-family="Helvetica,sans-Serif" font-size="10.00">element_value</text>
 </a>
@@ -185,7 +185,7 @@
 <!-- Node10 -->
 <g id="Node000010" class="node">
 <title>Node10</title>
-<g id="a_Node000010"><a xlink:href="structparameter.html" target="_top" xlink:title=" ">
+<g id="a_Node000010"><a xlink:href="structparameter.html" target="_top" xlink:title="Representa um parâmetro do atributo MethodParameters.">
 <polygon fill="white" stroke="#666666" points="91.5,-23.06 23.5,-23.06 23.5,-4.06 91.5,-4.06 91.5,-23.06"/>
 <text text-anchor="middle" x="57.5" y="-11.06" font-family="Helvetica,sans-Serif" font-size="10.00">parameter</text>
 </a>

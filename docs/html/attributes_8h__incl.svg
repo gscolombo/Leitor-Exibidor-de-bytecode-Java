@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title=" ">
+<g id="a_Node000001"><a xlink:title="Estruturas e enumerações que representam atributos da JVM presentes em fields, methods e classes.">
 <polygon fill="#999999" stroke="#666666" points="215,-140 83,-140 83,-110 215,-110 215,-140"/>
 <text text-anchor="start" x="91" y="-128" font-family="Helvetica,sans-Serif" font-size="10.00">include/types/attributes</text>
 <text text-anchor="middle" x="149" y="-117" font-family="Helvetica,sans-Serif" font-size="10.00">/attributes.h</text>
@@ -39,7 +39,7 @@
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="uinteger_8h.html" target="_top" xlink:title=" ">
+<g id="a_Node000003"><a xlink:href="uinteger_8h.html" target="_top" xlink:title="Definições de tipos inteiros sem sinal utilizados pela JVM e pelo leitor/exibidor de bytecode.">
 <polygon fill="white" stroke="#666666" points="137.5,-74 72.5,-74 72.5,-55 137.5,-55 137.5,-74"/>
 <text text-anchor="middle" x="105" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">uinteger.h</text>
 </a>
@@ -57,7 +57,7 @@
 <!-- Node5 -->
 <g id="Node000005" class="node">
 <title>Node5</title>
-<g id="a_Node000005"><a xlink:href="stackmap_8h.html" target="_top" xlink:title=" ">
+<g id="a_Node000005"><a xlink:href="stackmap_8h.html" target="_top" xlink:title="Estrutura placeholder para frames do atributo StackMapTable.">
 <polygon fill="white" stroke="#666666" points="230,-74 156,-74 156,-55 230,-55 230,-74"/>
 <text text-anchor="middle" x="193" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">stackmap.h</text>
 </a>
@@ -75,7 +75,7 @@
 <!-- Node6 -->
 <g id="Node000006" class="node">
 <title>Node6</title>
-<g id="a_Node000006"><a xlink:href="annotation_8h.html" target="_top" xlink:title=" ">
+<g id="a_Node000006"><a xlink:href="annotation_8h.html" target="_top" xlink:title="Estruturas relacionadas a anotações presentes em atributos da JVM.">
 <polygon fill="white" stroke="#666666" points="326,-74 248,-74 248,-55 326,-55 326,-74"/>
 <text text-anchor="middle" x="287" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">annotation.h</text>
 </a>

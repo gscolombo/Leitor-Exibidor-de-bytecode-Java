@@ -13,6 +13,7 @@ var annotated_dup =
     [ "element_value", "structelement__value.html", null ],
     [ "exception_table", "structexception__table.html", "structexception__table" ],
     [ "FlagMap", "structFlagMap.html", "structFlagMap" ],
+    [ "info", "unioninfo.html", null ],
     [ "line_number_table", "structline__number__table.html", "structline__number__table" ],
     [ "local_variable_table", "structlocal__variable__table.html", "structlocal__variable__table" ],
     [ "local_variable_type_table", "structlocal__variable__type__table.html", "structlocal__variable__type__table" ],

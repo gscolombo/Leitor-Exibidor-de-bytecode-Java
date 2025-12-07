@@ -94,6 +94,9 @@ $(document).ready(function(){initNavTree('fields_8h.html',''); initResizable(); 
   <div class="headertitle"><div class="title">fields.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Declarações para exibição (printing) dos campos (fields) de um <a class="el" href="structClassFile.html" title="Representa um arquivo .class Java carregado em memória.">ClassFile</a>.  
+<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;stdlib.h&gt;</code><br />
 <code>#include &lt;string.h&gt;</code><br />
 <code>#include &lt;stdio.h&gt;</code><br />
@@ -117,13 +120,22 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a70606f3cda0d2b540a0076b24f9dbfc3" id="r_a70606f3cda0d2b540a0076b24f9dbfc3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fields_8h.html#a70606f3cda0d2b540a0076b24f9dbfc3">show_fields</a> (const <a class="el" href="structClassFile.html">ClassFile</a> *)</td></tr>
-<tr class="memdesc:a70606f3cda0d2b540a0076b24f9dbfc3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exibe os campos de uma estrutura <a class="el" href="structClassFile.html" title="Representa um arquivo .class Java carregado em memória.">ClassFile</a>.  <br /></td></tr>
-<tr class="separator:a70606f3cda0d2b540a0076b24f9dbfc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6290db4646e6000690c489c000103886" id="r_a6290db4646e6000690c489c000103886"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="fields_8h.html#a6290db4646e6000690c489c000103886">show_fields</a> (const <a class="el" href="structClassFile.html">ClassFile</a> *cf)</td></tr>
+<tr class="memdesc:a6290db4646e6000690c489c000103886"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exibe os campos (fields) definidos em um <a class="el" href="structClassFile.html" title="Representa um arquivo .class Java carregado em memória.">ClassFile</a>.  <br /></td></tr>
+<tr class="separator:a6290db4646e6000690c489c000103886"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Function Documentation</h2>
-<a id="a70606f3cda0d2b540a0076b24f9dbfc3" name="a70606f3cda0d2b540a0076b24f9dbfc3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a70606f3cda0d2b540a0076b24f9dbfc3">&#9670;&#160;</a></span>show_fields()</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Declarações para exibição (printing) dos campos (fields) de um <a class="el" href="structClassFile.html" title="Representa um arquivo .class Java carregado em memória.">ClassFile</a>. </p>
+<p>Este header declara a função responsável por percorrer e imprimir os campos (<a class="el" href="structmember__info.html" title="Representa um campo (field) ou método (method) definido em um ClassFile.">member_info</a>) presentes em uma estrutura <code><a class="el" href="structClassFile.html" title="Representa um arquivo .class Java carregado em memória.">ClassFile</a></code>. A implementação usa o constant pool para resolver nomes e descritores e utiliza utilitários como <code><a class="el" href="utils_8c.html#a2da22ca95cc96ff610400450f1723cb2" title="Converte descritores da JVM para representações legíveis.">parse_descriptor()</a></code> e <code><a class="el" href="utils_8c.html#a54e5e04c761648da1cbda196724ffd37" title="Converte flags da JVM (u2) em uma string legível.">parse_flags()</a></code> para formatar a saída.</p>
+<p>Observações:</p><ul>
+<li>A função apenas exibe informações; não altera nem libera a estrutura <code><a class="el" href="structClassFile.html" title="Representa um arquivo .class Java carregado em memória.">ClassFile</a></code>. A responsabilidade pela alocação/desalocação permanece com o chamador.</li>
+<li>Os nomes e descritores devem já estar disponíveis no constant pool (UTF-8 decodificado em <code>wchar_t *</code>) antes da chamada. </li>
+</ul>
+
+<p class="definition">Definition in file <a class="el" href="fields_8h_source.html">fields.h</a>.</p>
+</div><h2 class="groupheader">Function Documentation</h2>
+<a id="a6290db4646e6000690c489c000103886" name="a6290db4646e6000690c489c000103886"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6290db4646e6000690c489c000103886">&#9670;&#160;</a></span>show_fields()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -138,67 +150,110 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Exibe os campos de uma estrutura <a class="el" href="structClassFile.html" title="Representa um arquivo .class Java carregado em memória.">ClassFile</a>. </p>
+<p>Exibe os campos (fields) definidos em um <a class="el" href="structClassFile.html" title="Representa um arquivo .class Java carregado em memória.">ClassFile</a>. </p>
+<p>Para cada campo, a função imprime detalhes como:</p><ul>
+<li>flags de acesso (formatadas com parse_flags)</li>
+<li>nome do campo (resolvido via constant pool)</li>
+<li>descritor/ tipo do campo (resolvido e possivelmente convertido por parse_descriptor)</li>
+<li>lista de atributos associada (se houver)</li>
+</ul>
+<p>A saída é formatada de forma legível ao usuário, semelhante ao <code>javap</code>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">ClassFile*</td><td>Ponteiro para a estrutura <a class="el" href="structClassFile.html" title="Representa um arquivo .class Java carregado em memória.">ClassFile</a> que contém os métodos. </td></tr>
+    <tr><td class="paramname">cf</td><td>Ponteiro constante para a estrutura <a class="el" href="structClassFile.html" title="Representa um arquivo .class Java carregado em memória.">ClassFile</a> cujo conjunto de fields será exibido. Se NULL, a função deve retornar sem produzir saída.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Exibe os campos (fields) definidos em um <a class="el" href="structClassFile.html" title="Representa um arquivo .class Java carregado em memória.">ClassFile</a>.</p>
+<p>Para cada field, imprime algo como:</p>
+<div class="fragment"><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">int</span> contador;</div>
+<div class="line">    descriptor: I</div>
+<div class="line">    flags: (0x0009) ACC_PUBLIC, ACC_STATIC</div>
+</div><!-- fragment --><p>Passos realizados:</p><ol type="1">
+<li>Verifica se o constant pool existe.</li>
+<li>Percorre <code>cf-&gt;fields_count</code>.</li>
+<li>Resolve o nome do campo via constant pool.</li>
+<li>Resolve o descritor JVM e converte para forma legível com <a class="el" href="utils_8c.html#a2da22ca95cc96ff610400450f1723cb2" title="Converte descritores da JVM para representações legíveis.">parse_descriptor()</a>.</li>
+<li>Converte flags de acesso em:<ul>
+<li>nomes completos (ACC_PUBLIC)</li>
+<li>palavras-chave (public, static, ...)</li>
+</ul>
+</li>
+<li>Imprime a saída formatada.</li>
+</ol>
+<p>Observações:</p><ul>
+<li><code><a class="el" href="utils_8c.html#a2da22ca95cc96ff610400450f1723cb2" title="Converte descritores da JVM para representações legíveis.">parse_descriptor()</a></code> e <code><a class="el" href="utils_8c.html#a54e5e04c761648da1cbda196724ffd37" title="Converte flags da JVM (u2) em uma string legível.">parse_flags()</a></code> alocam memória, que é liberada aqui.</li>
+<li>Esta função apenas exibe; não altera <code>cf</code> nem libera recursos internos dele.</li>
+</ul>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cf</td><td>Ponteiro constante para a estrutura <a class="el" href="structClassFile.html" title="Representa um arquivo .class Java carregado em memória.">ClassFile</a> contendo os fields. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="fields_8c_source.html#l00023">23</a> of file <a class="el" href="fields_8c_source.html">fields.c</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   24</span>{</div>
-<div class="line"><span class="lineno">   25</span>    <span class="keywordflow">if</span> (cf-&gt;<a class="code hl_variable" href="structClassFile.html#a2309d843091aad79aed04ce92470a434">constant_pool</a> == NULL)</div>
-<div class="line"><span class="lineno">   26</span>        <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">   27</span> </div>
-<div class="line"><span class="lineno">   28</span>    <a class="code hl_struct" href="structcp__info.html">cp_info</a> *cp = cf-&gt;<a class="code hl_variable" href="structClassFile.html#a2309d843091aad79aed04ce92470a434">constant_pool</a>;</div>
-<div class="line"><span class="lineno">   29</span> </div>
-<div class="line"><span class="lineno">   30</span>    <a class="code hl_typedef" href="uinteger_8h.html#a732cde1300aafb73b0ea6c2558a7a54f">u2</a> count = cf-&gt;<a class="code hl_variable" href="structClassFile.html#acea207ee523fbc16611d3cf436c390e0">fields_count</a>;</div>
-<div class="line"><span class="lineno">   31</span>    <span class="keywordtype">char</span> nl;</div>
-<div class="line"><span class="lineno">   32</span>    <span class="keywordflow">if</span> (count &gt; 0 &amp;&amp; cf-&gt;<a class="code hl_variable" href="structClassFile.html#a0df7fc06ef4dbbc34df027256b0e3e3a">fields</a> != NULL)</div>
-<div class="line"><span class="lineno">   33</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; count; i++)</div>
-<div class="line"><span class="lineno">   34</span>        {</div>
-<div class="line"><span class="lineno">   35</span>            nl = i == (size_t)(count - 1) ? <span class="charliteral">&#39; &#39;</span> : <span class="charliteral">&#39;\n&#39;</span>;</div>
-<div class="line"><span class="lineno">   36</span>            <a class="code hl_struct" href="structmember__info.html">member_info</a> field = cf-&gt;<a class="code hl_variable" href="structClassFile.html#a0df7fc06ef4dbbc34df027256b0e3e3a">fields</a>[i];</div>
-<div class="line"><span class="lineno">   37</span> </div>
-<div class="line"><span class="lineno">   38</span>            <a class="code hl_typedef" href="uinteger_8h.html#a732cde1300aafb73b0ea6c2558a7a54f">u2</a> access_flags = field.<a class="code hl_variable" href="structmember__info.html#a3cf07d7c00b99056e31af689a7caa880">access_flags</a>;</div>
-<div class="line"><span class="lineno">   39</span>            <span class="keywordtype">wchar_t</span> *field_name = cp[field.<a class="code hl_variable" href="structmember__info.html#a1b6fd3937f4b9f934acf4a8c5671d6ba">name_index</a> - 1].<a class="code hl_variable" href="structcp__info.html#a20a126ca5acfc92f2fcfee569fb602e2">info</a>.<a class="code hl_variable" href="unionConstant.html#a125aad68432d28d091d601953ff27de1">UTF8</a>.<a class="code hl_variable" href="unionConstant.html#ad0b76003d8bacbee1058791aabe4a98e">str</a>;</div>
-<div class="line"><span class="lineno">   40</span>            <span class="keywordtype">wchar_t</span> *field_desc = cp[field.<a class="code hl_variable" href="structmember__info.html#a7f59e9d84b0c7da9ef9f0c2205047319">descriptor_index</a> - 1].<a class="code hl_variable" href="structcp__info.html#a20a126ca5acfc92f2fcfee569fb602e2">info</a>.<a class="code hl_variable" href="unionConstant.html#a125aad68432d28d091d601953ff27de1">UTF8</a>.<a class="code hl_variable" href="unionConstant.html#ad0b76003d8bacbee1058791aabe4a98e">str</a>;</div>
-<div class="line"><span class="lineno">   41</span> </div>
-<div class="line"><span class="lineno">   42</span>            <span class="keywordtype">wchar_t</span> *field_desc_str = <a class="code hl_function" href="utils_8c.html#a2da22ca95cc96ff610400450f1723cb2">parse_descriptor</a>(field_desc, NULL);</div>
-<div class="line"><span class="lineno">   43</span> </div>
-<div class="line"><span class="lineno">   44</span>            <span class="keywordtype">char</span> *flags = <a class="code hl_function" href="utils_8c.html#a54e5e04c761648da1cbda196724ffd37">parse_flags</a>(access_flags, 9, <span class="stringliteral">&quot;, &quot;</span>, <a class="code hl_variable" href="fields_8c.html#a009323491893a4786f8d45bb795fd6aa">flag_map</a>);</div>
-<div class="line"><span class="lineno">   45</span>            <span class="keywordtype">char</span> *kws = <a class="code hl_function" href="utils_8c.html#a54e5e04c761648da1cbda196724ffd37">parse_flags</a>(access_flags, 7, <span class="stringliteral">&quot; &quot;</span>, <a class="code hl_variable" href="fields_8c.html#ade4b7fe815cb49c6e98c19644e74720e">flag_kw_map</a>);</div>
-<div class="line"><span class="lineno">   46</span> </div>
-<div class="line"><span class="lineno">   47</span>            printf(<span class="stringliteral">&quot; %s %ls%ls;\n    descriptor: %ls\n    flags: (0x%04x) %s\n%c&quot;</span>,</div>
-<div class="line"><span class="lineno">   48</span>                   kws, field_desc_str, field_name, field_desc,</div>
-<div class="line"><span class="lineno">   49</span>                   access_flags, flags, nl);</div>
-<div class="line"><span class="lineno">   50</span> </div>
-<div class="line"><span class="lineno">   51</span>            free(flags);</div>
-<div class="line"><span class="lineno">   52</span>            free(field_desc_str);</div>
-<div class="line"><span class="lineno">   53</span>            free(kws);</div>
-<div class="line"><span class="lineno">   54</span>        }</div>
-<div class="line"><span class="lineno">   55</span>}</div>
-<div class="ttc" id="afields_8c_html_a009323491893a4786f8d45bb795fd6aa"><div class="ttname"><a href="fields_8c.html#a009323491893a4786f8d45bb795fd6aa">flag_map</a></div><div class="ttdeci">static const FlagMap flag_map[9]</div><div class="ttdef"><b>Definition</b> <a href="fields_8c_source.html#l00003">fields.c:3</a></div></div>
-<div class="ttc" id="afields_8c_html_ade4b7fe815cb49c6e98c19644e74720e"><div class="ttname"><a href="fields_8c.html#ade4b7fe815cb49c6e98c19644e74720e">flag_kw_map</a></div><div class="ttdeci">static const FlagMap flag_kw_map[7]</div><div class="ttdef"><b>Definition</b> <a href="fields_8c_source.html#l00014">fields.c:14</a></div></div>
+<p class="definition">Definition at line <a class="el" href="fields_8c_source.html#l00079">79</a> of file <a class="el" href="fields_8c_source.html">fields.c</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   80</span>{</div>
+<div class="line"><span class="lineno">   81</span>    <span class="keywordflow">if</span> (cf-&gt;<a class="code hl_variable" href="structClassFile.html#a2309d843091aad79aed04ce92470a434">constant_pool</a> == NULL)</div>
+<div class="line"><span class="lineno">   82</span>        <span class="keywordflow">return</span>;</div>
+<div class="line"><span class="lineno">   83</span> </div>
+<div class="line"><span class="lineno">   84</span>    <a class="code hl_struct" href="structcp__info.html">cp_info</a> *cp = cf-&gt;<a class="code hl_variable" href="structClassFile.html#a2309d843091aad79aed04ce92470a434">constant_pool</a>;</div>
+<div class="line"><span class="lineno">   85</span>    <a class="code hl_typedef" href="uinteger_8h.html#aa76d8c8015643c6a837661a10142016e">u2</a> count = cf-&gt;<a class="code hl_variable" href="structClassFile.html#acea207ee523fbc16611d3cf436c390e0">fields_count</a>;</div>
+<div class="line"><span class="lineno">   86</span> </div>
+<div class="line"><span class="lineno">   87</span>    <span class="keywordtype">char</span> nl;</div>
+<div class="line"><span class="lineno">   88</span> </div>
+<div class="line"><span class="lineno">   89</span>    <span class="keywordflow">if</span> (count &gt; 0 &amp;&amp; cf-&gt;<a class="code hl_variable" href="structClassFile.html#a0df7fc06ef4dbbc34df027256b0e3e3a">fields</a> != NULL)</div>
+<div class="line"><span class="lineno">   90</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; count; i++)</div>
+<div class="line"><span class="lineno">   91</span>        {</div>
+<div class="line"><span class="lineno">   92</span>            <span class="comment">/* Determina se há quebra de linha entre fields */</span></div>
+<div class="line"><span class="lineno">   93</span>            nl = i == (size_t)(count - 1) ? <span class="charliteral">&#39; &#39;</span> : <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><span class="lineno">   94</span> </div>
+<div class="line"><span class="lineno">   95</span>            <a class="code hl_struct" href="structmember__info.html">member_info</a> field = cf-&gt;<a class="code hl_variable" href="structClassFile.html#a0df7fc06ef4dbbc34df027256b0e3e3a">fields</a>[i];</div>
+<div class="line"><span class="lineno">   96</span> </div>
+<div class="line"><span class="lineno">   97</span>            <span class="comment">/* Índices para nome e descritor no constant pool */</span></div>
+<div class="line"><span class="lineno">   98</span>            <a class="code hl_typedef" href="uinteger_8h.html#aa76d8c8015643c6a837661a10142016e">u2</a> access_flags = field.<a class="code hl_variable" href="structmember__info.html#a3cf07d7c00b99056e31af689a7caa880">access_flags</a>;</div>
+<div class="line"><span class="lineno">   99</span>            <span class="keywordtype">wchar_t</span> *field_name = cp[field.<a class="code hl_variable" href="structmember__info.html#a1b6fd3937f4b9f934acf4a8c5671d6ba">name_index</a> - 1].<a class="code hl_variable" href="structcp__info.html#a20a126ca5acfc92f2fcfee569fb602e2">info</a>.<a class="code hl_variable" href="unionConstant.html#a125aad68432d28d091d601953ff27de1">UTF8</a>.<a class="code hl_variable" href="unionConstant.html#ad0b76003d8bacbee1058791aabe4a98e">str</a>;</div>
+<div class="line"><span class="lineno">  100</span>            <span class="keywordtype">wchar_t</span> *field_desc = cp[field.<a class="code hl_variable" href="structmember__info.html#a7f59e9d84b0c7da9ef9f0c2205047319">descriptor_index</a> - 1].<a class="code hl_variable" href="structcp__info.html#a20a126ca5acfc92f2fcfee569fb602e2">info</a>.<a class="code hl_variable" href="unionConstant.html#a125aad68432d28d091d601953ff27de1">UTF8</a>.<a class="code hl_variable" href="unionConstant.html#ad0b76003d8bacbee1058791aabe4a98e">str</a>;</div>
+<div class="line"><span class="lineno">  101</span> </div>
+<div class="line"><span class="lineno">  102</span>            <span class="comment">/* Converte descritor JVM (&quot;I&quot;, &quot;Ljava/lang/String;&quot;) para forma legível (&quot;int&quot;, &quot;java.lang.String&quot;) */</span></div>
+<div class="line"><span class="lineno">  103</span>            <span class="keywordtype">wchar_t</span> *field_desc_str = <a class="code hl_function" href="utils_8c.html#a2da22ca95cc96ff610400450f1723cb2">parse_descriptor</a>(field_desc, NULL);</div>
+<div class="line"><span class="lineno">  104</span> </div>
+<div class="line"><span class="lineno">  105</span>            <span class="comment">/* Converte flags para string completa (ACC_PUBLIC, ...) */</span></div>
+<div class="line"><span class="lineno">  106</span>            <span class="keywordtype">char</span> *flags = <a class="code hl_function" href="utils_8c.html#a54e5e04c761648da1cbda196724ffd37">parse_flags</a>(access_flags, 9, <span class="stringliteral">&quot;, &quot;</span>, <a class="code hl_variable" href="fields_8c.html#a009323491893a4786f8d45bb795fd6aa">flag_map</a>);</div>
+<div class="line"><span class="lineno">  107</span> </div>
+<div class="line"><span class="lineno">  108</span>            <span class="comment">/* Converte flags para palavras-chave Java (public, static, ...) */</span></div>
+<div class="line"><span class="lineno">  109</span>            <span class="keywordtype">char</span> *kws = <a class="code hl_function" href="utils_8c.html#a54e5e04c761648da1cbda196724ffd37">parse_flags</a>(access_flags, 7, <span class="stringliteral">&quot; &quot;</span>, <a class="code hl_variable" href="fields_8c.html#ade4b7fe815cb49c6e98c19644e74720e">flag_kw_map</a>);</div>
+<div class="line"><span class="lineno">  110</span> </div>
+<div class="line"><span class="lineno">  111</span>            printf(<span class="stringliteral">&quot; %s %ls%ls;\n    descriptor: %ls\n    flags: (0x%04x) %s\n%c&quot;</span>,</div>
+<div class="line"><span class="lineno">  112</span>                   kws, field_desc_str, field_name, field_desc,</div>
+<div class="line"><span class="lineno">  113</span>                   access_flags, flags, nl);</div>
+<div class="line"><span class="lineno">  114</span> </div>
+<div class="line"><span class="lineno">  115</span>            <span class="comment">/* Libera memória alocada por funções auxiliares */</span></div>
+<div class="line"><span class="lineno">  116</span>            free(flags);</div>
+<div class="line"><span class="lineno">  117</span>            free(field_desc_str);</div>
+<div class="line"><span class="lineno">  118</span>            free(kws);</div>
+<div class="line"><span class="lineno">  119</span>        }</div>
+<div class="line"><span class="lineno">  120</span>}</div>
+<div class="ttc" id="afields_8c_html_a009323491893a4786f8d45bb795fd6aa"><div class="ttname"><a href="fields_8c.html#a009323491893a4786f8d45bb795fd6aa">flag_map</a></div><div class="ttdeci">static const FlagMap flag_map[9]</div><div class="ttdoc">Mapa de flags da JVM para campos, com nomes oficiais ACC_*.</div><div class="ttdef"><b>Definition</b> <a href="fields_8c_source.html#l00024">fields.c:24</a></div></div>
+<div class="ttc" id="afields_8c_html_ade4b7fe815cb49c6e98c19644e74720e"><div class="ttname"><a href="fields_8c.html#ade4b7fe815cb49c6e98c19644e74720e">flag_kw_map</a></div><div class="ttdeci">static const FlagMap flag_kw_map[7]</div><div class="ttdoc">Mapa de flags convertidas para palavras-chave Java.</div><div class="ttdef"><b>Definition</b> <a href="fields_8c_source.html#l00042">fields.c:42</a></div></div>
 <div class="ttc" id="astructClassFile_html_a0df7fc06ef4dbbc34df027256b0e3e3a"><div class="ttname"><a href="structClassFile.html#a0df7fc06ef4dbbc34df027256b0e3e3a">ClassFile::fields</a></div><div class="ttdeci">member_info * fields</div><div class="ttdef"><b>Definition</b> <a href="Classfile_8h_source.html#l00051">Classfile.h:51</a></div></div>
 <div class="ttc" id="astructClassFile_html_a2309d843091aad79aed04ce92470a434"><div class="ttname"><a href="structClassFile.html#a2309d843091aad79aed04ce92470a434">ClassFile::constant_pool</a></div><div class="ttdeci">cp_info * constant_pool</div><div class="ttdef"><b>Definition</b> <a href="Classfile_8h_source.html#l00044">Classfile.h:44</a></div></div>
 <div class="ttc" id="astructClassFile_html_acea207ee523fbc16611d3cf436c390e0"><div class="ttname"><a href="structClassFile.html#acea207ee523fbc16611d3cf436c390e0">ClassFile::fields_count</a></div><div class="ttdeci">u2 fields_count</div><div class="ttdef"><b>Definition</b> <a href="Classfile_8h_source.html#l00050">Classfile.h:50</a></div></div>
-<div class="ttc" id="astructcp__info_html"><div class="ttname"><a href="structcp__info.html">cp_info</a></div><div class="ttdef"><b>Definition</b> <a href="constants_8h_source.html#l00083">constants.h:84</a></div></div>
-<div class="ttc" id="astructcp__info_html_a20a126ca5acfc92f2fcfee569fb602e2"><div class="ttname"><a href="structcp__info.html#a20a126ca5acfc92f2fcfee569fb602e2">cp_info::info</a></div><div class="ttdeci">Constant info</div><div class="ttdef"><b>Definition</b> <a href="constants_8h_source.html#l00086">constants.h:86</a></div></div>
-<div class="ttc" id="astructmember__info_html"><div class="ttname"><a href="structmember__info.html">member_info</a></div><div class="ttdef"><b>Definition</b> <a href="member_8h_source.html#l00013">member.h:14</a></div></div>
-<div class="ttc" id="astructmember__info_html_a1b6fd3937f4b9f934acf4a8c5671d6ba"><div class="ttname"><a href="structmember__info.html#a1b6fd3937f4b9f934acf4a8c5671d6ba">member_info::name_index</a></div><div class="ttdeci">u2 name_index</div><div class="ttdef"><b>Definition</b> <a href="member_8h_source.html#l00016">member.h:16</a></div></div>
-<div class="ttc" id="astructmember__info_html_a3cf07d7c00b99056e31af689a7caa880"><div class="ttname"><a href="structmember__info.html#a3cf07d7c00b99056e31af689a7caa880">member_info::access_flags</a></div><div class="ttdeci">u2 access_flags</div><div class="ttdef"><b>Definition</b> <a href="member_8h_source.html#l00015">member.h:15</a></div></div>
-<div class="ttc" id="astructmember__info_html_a7f59e9d84b0c7da9ef9f0c2205047319"><div class="ttname"><a href="structmember__info.html#a7f59e9d84b0c7da9ef9f0c2205047319">member_info::descriptor_index</a></div><div class="ttdeci">u2 descriptor_index</div><div class="ttdef"><b>Definition</b> <a href="member_8h_source.html#l00017">member.h:17</a></div></div>
-<div class="ttc" id="auinteger_8h_html_a732cde1300aafb73b0ea6c2558a7a54f"><div class="ttname"><a href="uinteger_8h.html#a732cde1300aafb73b0ea6c2558a7a54f">u2</a></div><div class="ttdeci">uint16_t u2</div><div class="ttdef"><b>Definition</b> <a href="uinteger_8h_source.html#l00007">uinteger.h:7</a></div></div>
-<div class="ttc" id="aunionConstant_html_a125aad68432d28d091d601953ff27de1"><div class="ttname"><a href="unionConstant.html#a125aad68432d28d091d601953ff27de1">Constant::UTF8</a></div><div class="ttdeci">struct Constant::@28 UTF8</div></div>
-<div class="ttc" id="aunionConstant_html_ad0b76003d8bacbee1058791aabe4a98e"><div class="ttname"><a href="unionConstant.html#ad0b76003d8bacbee1058791aabe4a98e">Constant::str</a></div><div class="ttdeci">wchar_t * str</div><div class="ttdef"><b>Definition</b> <a href="constants_8h_source.html#l00065">constants.h:65</a></div></div>
+<div class="ttc" id="astructcp__info_html"><div class="ttname"><a href="structcp__info.html">cp_info</a></div><div class="ttdoc">Estrutura que representa uma entrada do constant pool.</div><div class="ttdef"><b>Definition</b> <a href="constants_8h_source.html#l00178">constants.h:179</a></div></div>
+<div class="ttc" id="astructcp__info_html_a20a126ca5acfc92f2fcfee569fb602e2"><div class="ttname"><a href="structcp__info.html#a20a126ca5acfc92f2fcfee569fb602e2">cp_info::info</a></div><div class="ttdeci">Constant info</div><div class="ttdoc">Conteúdo da entrada específico para cada tag.</div><div class="ttdef"><b>Definition</b> <a href="constants_8h_source.html#l00181">constants.h:181</a></div></div>
+<div class="ttc" id="astructmember__info_html"><div class="ttname"><a href="structmember__info.html">member_info</a></div><div class="ttdoc">Representa um campo (field) ou método (method) definido em um ClassFile.</div><div class="ttdef"><b>Definition</b> <a href="member_8h_source.html#l00055">member.h:56</a></div></div>
+<div class="ttc" id="astructmember__info_html_a1b6fd3937f4b9f934acf4a8c5671d6ba"><div class="ttname"><a href="structmember__info.html#a1b6fd3937f4b9f934acf4a8c5671d6ba">member_info::name_index</a></div><div class="ttdeci">u2 name_index</div><div class="ttdoc">Índice no constant pool para o nome UTF8 do membro.</div><div class="ttdef"><b>Definition</b> <a href="member_8h_source.html#l00058">member.h:58</a></div></div>
+<div class="ttc" id="astructmember__info_html_a3cf07d7c00b99056e31af689a7caa880"><div class="ttname"><a href="structmember__info.html#a3cf07d7c00b99056e31af689a7caa880">member_info::access_flags</a></div><div class="ttdeci">u2 access_flags</div><div class="ttdoc">Flags de acesso (ACC_*).</div><div class="ttdef"><b>Definition</b> <a href="member_8h_source.html#l00057">member.h:57</a></div></div>
+<div class="ttc" id="astructmember__info_html_a7f59e9d84b0c7da9ef9f0c2205047319"><div class="ttname"><a href="structmember__info.html#a7f59e9d84b0c7da9ef9f0c2205047319">member_info::descriptor_index</a></div><div class="ttdeci">u2 descriptor_index</div><div class="ttdoc">Índice para o descritor do membro (parâmetros e retorno).</div><div class="ttdef"><b>Definition</b> <a href="member_8h_source.html#l00059">member.h:59</a></div></div>
+<div class="ttc" id="auinteger_8h_html_aa76d8c8015643c6a837661a10142016e"><div class="ttname"><a href="uinteger_8h.html#aa76d8c8015643c6a837661a10142016e">u2</a></div><div class="ttdeci">uint16_t u2</div><div class="ttdoc">Inteiro sem sinal de 16 bits.</div><div class="ttdef"><b>Definition</b> <a href="uinteger_8h_source.html#l00037">uinteger.h:37</a></div></div>
+<div class="ttc" id="aunionConstant_html_a125aad68432d28d091d601953ff27de1"><div class="ttname"><a href="unionConstant.html#a125aad68432d28d091d601953ff27de1">Constant::UTF8</a></div><div class="ttdeci">struct Constant::@28 UTF8</div><div class="ttdoc">CONSTANT_UTF8: string UTF-8 modificada (JVM).</div></div>
+<div class="ttc" id="aunionConstant_html_ad0b76003d8bacbee1058791aabe4a98e"><div class="ttname"><a href="unionConstant.html#ad0b76003d8bacbee1058791aabe4a98e">Constant::str</a></div><div class="ttdeci">wchar_t * str</div><div class="ttdoc">String decodificada (wide)</div><div class="ttdef"><b>Definition</b> <a href="constants_8h_source.html#l00145">constants.h:145</a></div></div>
 <div class="ttc" id="autils_8c_html_a2da22ca95cc96ff610400450f1723cb2"><div class="ttname"><a href="utils_8c.html#a2da22ca95cc96ff610400450f1723cb2">parse_descriptor</a></div><div class="ttdeci">wchar_t * parse_descriptor(const wchar_t *descriptor, wchar_t *sep)</div><div class="ttdoc">Converte descritores da JVM para representações legíveis.</div><div class="ttdef"><b>Definition</b> <a href="utils_8c_source.html#l00225">utils.c:225</a></div></div>
 <div class="ttc" id="autils_8c_html_a54e5e04c761648da1cbda196724ffd37"><div class="ttname"><a href="utils_8c.html#a54e5e04c761648da1cbda196724ffd37">parse_flags</a></div><div class="ttdeci">char * parse_flags(u2 flags, size_t n, const char *sep, const FlagMap flag_map[])</div><div class="ttdoc">Converte flags da JVM (u2) em uma string legível.</div><div class="ttdef"><b>Definition</b> <a href="utils_8c_source.html#l00090">utils.c:90</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="fields_8h_a70606f3cda0d2b540a0076b24f9dbfc3_cgraph.svg" width="288" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="fields_8h_a6290db4646e6000690c489c000103886_cgraph.svg" width="288" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

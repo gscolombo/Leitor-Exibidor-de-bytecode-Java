@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title=" ">
+<g id="a_Node000001"><a xlink:title="Estrutura que representa uma entrada do constant pool.">
 <polygon fill="#999999" stroke="#666666" points="56,-19 4,-19 4,0 56,0 56,-19"/>
 <text text-anchor="middle" x="30" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">cp_info</text>
 </a>
@@ -20,7 +20,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="unionConstant.html" target="_top" xlink:title=" ">
+<g id="a_Node000002"><a xlink:href="unionConstant.html" target="_top" xlink:title="Armazena o conteúdo real da entrada do constant pool dependendo da tag.">
 <polygon fill="white" stroke="#666666" points="60,-85 0,-85 0,-66 60,-66 60,-85"/>
 <text text-anchor="middle" x="30" y="-73" font-family="Helvetica,sans-Serif" font-size="10.00">Constant</text>
 </a>

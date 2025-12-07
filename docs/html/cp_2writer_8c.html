@@ -95,7 +95,7 @@ $(document).ready(function(){initNavTree('cp_2writer_8c.html',''); initResizable
 </div><!--header-->
 <div class="contents">
 
-<p>Funções para exibição do <a class="el" href="unionConstant.html">Constant</a> Pool (implementação).  
+<p>Funções para exibição do <a class="el" href="unionConstant.html" title="Armazena o conteúdo real da entrada do constant pool dependendo da tag.">Constant</a> Pool (implementação).  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="cp_2writer_8h_source.html">cp/writer.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
@@ -108,13 +108,13 @@ Include dependency graph for writer.c:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a7e37d5fb2c6ad99c587bac7e9f17b536" id="r_a7e37d5fb2c6ad99c587bac7e9f17b536"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cp_2writer_8c.html#a7e37d5fb2c6ad99c587bac7e9f17b536">show_constants</a> (<a class="el" href="uinteger_8h.html#a732cde1300aafb73b0ea6c2558a7a54f">u2</a> count, <a class="el" href="structcp__info.html">cp_info</a> *_cp)</td></tr>
+<tr class="memitem:a7e37d5fb2c6ad99c587bac7e9f17b536" id="r_a7e37d5fb2c6ad99c587bac7e9f17b536"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cp_2writer_8c.html#a7e37d5fb2c6ad99c587bac7e9f17b536">show_constants</a> (<a class="el" href="uinteger_8h.html#aa76d8c8015643c6a837661a10142016e">u2</a> count, <a class="el" href="structcp__info.html">cp_info</a> *_cp)</td></tr>
 <tr class="memdesc:a7e37d5fb2c6ad99c587bac7e9f17b536"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exibe todas as entradas do constant pool.  <br /></td></tr>
 <tr class="separator:a7e37d5fb2c6ad99c587bac7e9f17b536"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Funções para exibição do <a class="el" href="unionConstant.html">Constant</a> Pool (implementação). </p>
-<p>A função principal aqui é <code>show_constants</code> que percorre o array de <code><a class="el" href="structcp__info.html">cp_info</a></code> e imprime cada entrada em formato legível, semelhante à saída do <code>javap</code>.</p>
+<div class="textblock"><p>Funções para exibição do <a class="el" href="unionConstant.html" title="Armazena o conteúdo real da entrada do constant pool dependendo da tag.">Constant</a> Pool (implementação). </p>
+<p>A função principal aqui é <code>show_constants</code> que percorre o array de <code><a class="el" href="structcp__info.html" title="Estrutura que representa uma entrada do constant pool.">cp_info</a></code> e imprime cada entrada em formato legível, semelhante à saída do <code>javap</code>.</p>
 <p>Observações:</p><ul>
 <li>A função assume que as strings UTF-8 já foram decodificadas para <code>wchar_t*</code> (campo <code>UTF8.str</code>) durante o parsing do constant pool.</li>
 <li>Alguns índices no constant pool referenciam outras entradas; o código faz ajustes com base no índice atual <code>i</code> para acessar corretamente as posições. </li>
@@ -131,7 +131,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">void show_constants </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="uinteger_8h.html#a732cde1300aafb73b0ea6c2558a7a54f">u2</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="uinteger_8h.html#aa76d8c8015643c6a837661a10142016e">u2</a>&#160;</td>
           <td class="paramname"><em>count</em>, </td>
         </tr>
         <tr>
@@ -154,7 +154,7 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">count</td><td>Número total de entradas no constant pool (u2). </td></tr>
-    <tr><td class="paramname">_cp</td><td>Ponteiro para o array de <a class="el" href="structcp__info.html">cp_info</a> (constant pool). </td></tr>
+    <tr><td class="paramname">_cp</td><td>Ponteiro para o array de <a class="el" href="structcp__info.html" title="Estrutura que representa uma entrada do constant pool.">cp_info</a> (constant pool). </td></tr>
   </table>
   </dd>
 </dl>
@@ -162,7 +162,7 @@ Functions</h2></td></tr>
 <p class="definition">Definition at line <a class="el" href="cp_2writer_8c_source.html#l00029">29</a> of file <a class="el" href="cp_2writer_8c_source.html">writer.c</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">   30</span>{</div>
 <div class="line"><span class="lineno">   31</span>    <span class="comment">/* i é o índice humano (começa em 1 conforme a especificação JVM) */</span></div>
-<div class="line"><span class="lineno">   32</span>    <a class="code hl_typedef" href="uinteger_8h.html#a732cde1300aafb73b0ea6c2558a7a54f">u2</a> i = 1;</div>
+<div class="line"><span class="lineno">   32</span>    <a class="code hl_typedef" href="uinteger_8h.html#aa76d8c8015643c6a837661a10142016e">u2</a> i = 1;</div>
 <div class="line"><span class="lineno">   33</span> </div>
 <div class="line"><span class="lineno">   34</span>    <span class="comment">/* Percorre o array de cp_info: cada cp aponta para a entrada atual */</span></div>
 <div class="line"><span class="lineno">   35</span>    <span class="keywordflow">for</span> (<a class="code hl_struct" href="structcp__info.html">cp_info</a> *cp = _cp; cp &lt; _cp + count; cp++, i++)</div>
@@ -171,7 +171,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   38</span><span class="comment">         * Alinhamento visual: calcula quantos espaços são necessários para alinhar</span></div>
 <div class="line"><span class="lineno">   39</span><span class="comment">         * os índices da lista à direita. Ex.: para 100 entradas, &quot;#  1&quot;, &quot;# 10&quot;, &quot;#100&quot;.</span></div>
 <div class="line"><span class="lineno">   40</span><span class="comment">         */</span></div>
-<div class="line"><span class="lineno">   41</span>        <a class="code hl_typedef" href="uinteger_8h.html#ad9f4cdb6757615aae2fad89dab3c5470">u1</a> ws = <a class="code hl_function" href="utils_8c.html#ad84b8b6f6642d15fbdbd161044c8533f">num_digits</a>(count) - <a class="code hl_function" href="utils_8c.html#ad84b8b6f6642d15fbdbd161044c8533f">num_digits</a>(i);</div>
+<div class="line"><span class="lineno">   41</span>        <a class="code hl_typedef" href="uinteger_8h.html#a8026a39c502750413402a90d9d8bae3c">u1</a> ws = <a class="code hl_function" href="utils_8c.html#ad84b8b6f6642d15fbdbd161044c8533f">num_digits</a>(count) - <a class="code hl_function" href="utils_8c.html#ad84b8b6f6642d15fbdbd161044c8533f">num_digits</a>(i);</div>
 <div class="line"><span class="lineno">   42</span>        <span class="keywordtype">char</span> *pad = malloc(ws + 1);</div>
 <div class="line"><span class="lineno">   43</span>        <span class="keywordflow">if</span> (pad == NULL)</div>
 <div class="line"><span class="lineno">   44</span>        {</div>
@@ -189,11 +189,11 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   56</span>        <span class="keywordflow">case</span> <a class="code hl_define" href="constants_8h.html#a72b5b534aa409975da610a36f648fa0a">CONSTANT_Class</a>:</div>
 <div class="line"><span class="lineno">   57</span>        {</div>
 <div class="line"><span class="lineno">   58</span>            <span class="comment">/* A entrada Class armazena um índice para uma UTF8 que contém o nome. */</span></div>
-<div class="line"><span class="lineno">   59</span>            <a class="code hl_typedef" href="uinteger_8h.html#a732cde1300aafb73b0ea6c2558a7a54f">u2</a> cls_name_index = cp-&gt;info.Class.name_index - i;</div>
+<div class="line"><span class="lineno">   59</span>            <a class="code hl_typedef" href="uinteger_8h.html#aa76d8c8015643c6a837661a10142016e">u2</a> cls_name_index = cp-&gt;info.Class.name_index - i;</div>
 <div class="line"><span class="lineno">   60</span>            <span class="comment">/* Observação: impressão usa cp[cls_name_index].info.UTF8.str assumindo que</span></div>
 <div class="line"><span class="lineno">   61</span><span class="comment">               o ajuste por &#39;- i&#39; corresponde à organização do array no projeto. */</span></div>
 <div class="line"><span class="lineno">   62</span>            printf(<span class="stringliteral">&quot;%s#%u = Class\t\t\t#%u\t\t// %ls\n&quot;</span>,</div>
-<div class="line"><span class="lineno">   63</span>                   pad, i, cls_name_index, cp[cls_name_index].info.UTF8.str);</div>
+<div class="line"><span class="lineno">   63</span>                   pad, i, cls_name_index, cp[cls_name_index].<a class="code hl_union" href="unioninfo.html">info</a>.UTF8.str);</div>
 <div class="line"><span class="lineno">   64</span>        }</div>
 <div class="line"><span class="lineno">   65</span>        <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">   66</span> </div>
@@ -211,8 +211,8 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   78</span>                ref = <span class="stringliteral">&quot;InterfaceMethodref&quot;</span>;</div>
 <div class="line"><span class="lineno">   79</span> </div>
 <div class="line"><span class="lineno">   80</span>            <span class="comment">/* Índices das estruturas de referência */</span></div>
-<div class="line"><span class="lineno">   81</span>            <a class="code hl_typedef" href="uinteger_8h.html#a732cde1300aafb73b0ea6c2558a7a54f">u2</a> cls_index = cp-&gt;info.Ref.class_index;</div>
-<div class="line"><span class="lineno">   82</span>            <a class="code hl_typedef" href="uinteger_8h.html#a732cde1300aafb73b0ea6c2558a7a54f">u2</a> name_and_type_index = cp-&gt;info.Ref.name_and_type_index;</div>
+<div class="line"><span class="lineno">   81</span>            <a class="code hl_typedef" href="uinteger_8h.html#aa76d8c8015643c6a837661a10142016e">u2</a> cls_index = cp-&gt;info.Ref.class_index;</div>
+<div class="line"><span class="lineno">   82</span>            <a class="code hl_typedef" href="uinteger_8h.html#aa76d8c8015643c6a837661a10142016e">u2</a> name_and_type_index = cp-&gt;info.Ref.name_and_type_index;</div>
 <div class="line"><span class="lineno">   83</span> </div>
 <div class="line"><span class="lineno">   84</span>            <span class="comment">/* Recupera as strings correspondentes (classe, nome e tipo) */</span></div>
 <div class="line"><span class="lineno">   85</span>            <span class="keywordtype">wchar_t</span> *cls = cp[cp[cls_index - i].info.Class.name_index - i].info.UTF8.str;</div>
@@ -233,8 +233,8 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  100</span>        <span class="keywordflow">case</span> <a class="code hl_define" href="constants_8h.html#a0a7acbe175de56072a2f0a1a051418e1">CONSTANT_String</a>:</div>
 <div class="line"><span class="lineno">  101</span>        {</div>
 <div class="line"><span class="lineno">  102</span>            <span class="comment">/* String referencia uma entrada UTF8 pelo índice string_index */</span></div>
-<div class="line"><span class="lineno">  103</span>            <a class="code hl_typedef" href="uinteger_8h.html#a732cde1300aafb73b0ea6c2558a7a54f">u2</a> str_index = cp-&gt;info.String.string_index;</div>
-<div class="line"><span class="lineno">  104</span>            printf(<span class="stringliteral">&quot;%s#%u = String\t\t\t#%u\t\t// %ls\n&quot;</span>, pad, i, str_index, cp[str_index - i].info.UTF8.str);</div>
+<div class="line"><span class="lineno">  103</span>            <a class="code hl_typedef" href="uinteger_8h.html#aa76d8c8015643c6a837661a10142016e">u2</a> str_index = cp-&gt;info.String.string_index;</div>
+<div class="line"><span class="lineno">  104</span>            printf(<span class="stringliteral">&quot;%s#%u = String\t\t\t#%u\t\t// %ls\n&quot;</span>, pad, i, str_index, cp[str_index - i].<a class="code hl_union" href="unioninfo.html">info</a>.UTF8.str);</div>
 <div class="line"><span class="lineno">  105</span>        }</div>
 <div class="line"><span class="lineno">  106</span>        <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">  107</span> </div>
@@ -257,8 +257,8 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  124</span>        <span class="keywordflow">case</span> <a class="code hl_define" href="constants_8h.html#a5b6ba749976ae61415983ca0b890c91a">CONSTANT_NameAndType</a>:</div>
 <div class="line"><span class="lineno">  125</span>        {</div>
 <div class="line"><span class="lineno">  126</span>            <span class="comment">/* Recupera índices e strings para NameAndType */</span></div>
-<div class="line"><span class="lineno">  127</span>            <a class="code hl_typedef" href="uinteger_8h.html#a732cde1300aafb73b0ea6c2558a7a54f">u2</a> name_index = cp-&gt;info.NameAndType.name_index;</div>
-<div class="line"><span class="lineno">  128</span>            <a class="code hl_typedef" href="uinteger_8h.html#a732cde1300aafb73b0ea6c2558a7a54f">u2</a> desc_index = cp-&gt;info.NameAndType.descriptor_index;</div>
+<div class="line"><span class="lineno">  127</span>            <a class="code hl_typedef" href="uinteger_8h.html#aa76d8c8015643c6a837661a10142016e">u2</a> name_index = cp-&gt;info.NameAndType.name_index;</div>
+<div class="line"><span class="lineno">  128</span>            <a class="code hl_typedef" href="uinteger_8h.html#aa76d8c8015643c6a837661a10142016e">u2</a> desc_index = cp-&gt;info.NameAndType.descriptor_index;</div>
 <div class="line"><span class="lineno">  129</span> </div>
 <div class="line"><span class="lineno">  130</span>            <span class="keywordtype">wchar_t</span> *name = cp[name_index - i].info.UTF8.str;</div>
 <div class="line"><span class="lineno">  131</span>            <span class="keywordtype">wchar_t</span> *desc = cp[desc_index - i].info.UTF8.str;</div>
@@ -296,23 +296,24 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  163</span>        free(pad);</div>
 <div class="line"><span class="lineno">  164</span>    }</div>
 <div class="line"><span class="lineno">  165</span>}</div>
-<div class="ttc" id="aconstants_8h_html_a008d43478c2e2973e7413f5d1c48095d"><div class="ttname"><a href="constants_8h.html#a008d43478c2e2973e7413f5d1c48095d">CONSTANT_Fieldref</a></div><div class="ttdeci">#define CONSTANT_Fieldref</div><div class="ttdef"><b>Definition</b> <a href="constants_8h_source.html#l00006">constants.h:6</a></div></div>
-<div class="ttc" id="aconstants_8h_html_a0a7acbe175de56072a2f0a1a051418e1"><div class="ttname"><a href="constants_8h.html#a0a7acbe175de56072a2f0a1a051418e1">CONSTANT_String</a></div><div class="ttdeci">#define CONSTANT_String</div><div class="ttdef"><b>Definition</b> <a href="constants_8h_source.html#l00009">constants.h:9</a></div></div>
-<div class="ttc" id="aconstants_8h_html_a127046386d755d4a91c71aa9b453a8bb"><div class="ttname"><a href="constants_8h.html#a127046386d755d4a91c71aa9b453a8bb">CONSTANT_InvokeDynamic</a></div><div class="ttdeci">#define CONSTANT_InvokeDynamic</div><div class="ttdef"><b>Definition</b> <a href="constants_8h_source.html#l00018">constants.h:18</a></div></div>
-<div class="ttc" id="aconstants_8h_html_a2a179cf178ea867c6ab1700508c269dd"><div class="ttname"><a href="constants_8h.html#a2a179cf178ea867c6ab1700508c269dd">CONSTANT_Methodref</a></div><div class="ttdeci">#define CONSTANT_Methodref</div><div class="ttdef"><b>Definition</b> <a href="constants_8h_source.html#l00007">constants.h:7</a></div></div>
-<div class="ttc" id="aconstants_8h_html_a426ca017b895fc522671a561d460be7a"><div class="ttname"><a href="constants_8h.html#a426ca017b895fc522671a561d460be7a">CONSTANT_Long</a></div><div class="ttdeci">#define CONSTANT_Long</div><div class="ttdef"><b>Definition</b> <a href="constants_8h_source.html#l00012">constants.h:12</a></div></div>
-<div class="ttc" id="aconstants_8h_html_a5b6ba749976ae61415983ca0b890c91a"><div class="ttname"><a href="constants_8h.html#a5b6ba749976ae61415983ca0b890c91a">CONSTANT_NameAndType</a></div><div class="ttdeci">#define CONSTANT_NameAndType</div><div class="ttdef"><b>Definition</b> <a href="constants_8h_source.html#l00014">constants.h:14</a></div></div>
-<div class="ttc" id="aconstants_8h_html_a72b5b534aa409975da610a36f648fa0a"><div class="ttname"><a href="constants_8h.html#a72b5b534aa409975da610a36f648fa0a">CONSTANT_Class</a></div><div class="ttdeci">#define CONSTANT_Class</div><div class="ttdef"><b>Definition</b> <a href="constants_8h_source.html#l00005">constants.h:5</a></div></div>
-<div class="ttc" id="aconstants_8h_html_a856a6553a55d721970ca5450eb1ccd2c"><div class="ttname"><a href="constants_8h.html#a856a6553a55d721970ca5450eb1ccd2c">CONSTANT_Integer</a></div><div class="ttdeci">#define CONSTANT_Integer</div><div class="ttdef"><b>Definition</b> <a href="constants_8h_source.html#l00010">constants.h:10</a></div></div>
-<div class="ttc" id="aconstants_8h_html_a991ba557d63f94e2cdf05c9f80630a6f"><div class="ttname"><a href="constants_8h.html#a991ba557d63f94e2cdf05c9f80630a6f">CONSTANT_MethodType</a></div><div class="ttdeci">#define CONSTANT_MethodType</div><div class="ttdef"><b>Definition</b> <a href="constants_8h_source.html#l00017">constants.h:17</a></div></div>
-<div class="ttc" id="aconstants_8h_html_ab49341c3b4ade4bfa1a64be8d2f73ae1"><div class="ttname"><a href="constants_8h.html#ab49341c3b4ade4bfa1a64be8d2f73ae1">CONSTANT_Double</a></div><div class="ttdeci">#define CONSTANT_Double</div><div class="ttdef"><b>Definition</b> <a href="constants_8h_source.html#l00013">constants.h:13</a></div></div>
-<div class="ttc" id="aconstants_8h_html_ab914627ce5b25c4acfc98f2eacb78473"><div class="ttname"><a href="constants_8h.html#ab914627ce5b25c4acfc98f2eacb78473">CONSTANT_Float</a></div><div class="ttdeci">#define CONSTANT_Float</div><div class="ttdef"><b>Definition</b> <a href="constants_8h_source.html#l00011">constants.h:11</a></div></div>
-<div class="ttc" id="aconstants_8h_html_ac0e92044d246c6e4d691116f89a70ebb"><div class="ttname"><a href="constants_8h.html#ac0e92044d246c6e4d691116f89a70ebb">CONSTANT_InterfaceMethodref</a></div><div class="ttdeci">#define CONSTANT_InterfaceMethodref</div><div class="ttdef"><b>Definition</b> <a href="constants_8h_source.html#l00008">constants.h:8</a></div></div>
-<div class="ttc" id="aconstants_8h_html_adb3c84f82163f217ab7f8fa0258d80ce"><div class="ttname"><a href="constants_8h.html#adb3c84f82163f217ab7f8fa0258d80ce">CONSTANT_MethodHandle</a></div><div class="ttdeci">#define CONSTANT_MethodHandle</div><div class="ttdef"><b>Definition</b> <a href="constants_8h_source.html#l00016">constants.h:16</a></div></div>
-<div class="ttc" id="aconstants_8h_html_ae59099cfa3071f06e28a0956420c4fdd"><div class="ttname"><a href="constants_8h.html#ae59099cfa3071f06e28a0956420c4fdd">CONSTANT_UTF8</a></div><div class="ttdeci">#define CONSTANT_UTF8</div><div class="ttdef"><b>Definition</b> <a href="constants_8h_source.html#l00015">constants.h:15</a></div></div>
-<div class="ttc" id="astructcp__info_html"><div class="ttname"><a href="structcp__info.html">cp_info</a></div><div class="ttdef"><b>Definition</b> <a href="constants_8h_source.html#l00083">constants.h:84</a></div></div>
-<div class="ttc" id="auinteger_8h_html_a732cde1300aafb73b0ea6c2558a7a54f"><div class="ttname"><a href="uinteger_8h.html#a732cde1300aafb73b0ea6c2558a7a54f">u2</a></div><div class="ttdeci">uint16_t u2</div><div class="ttdef"><b>Definition</b> <a href="uinteger_8h_source.html#l00007">uinteger.h:7</a></div></div>
-<div class="ttc" id="auinteger_8h_html_ad9f4cdb6757615aae2fad89dab3c5470"><div class="ttname"><a href="uinteger_8h.html#ad9f4cdb6757615aae2fad89dab3c5470">u1</a></div><div class="ttdeci">uint8_t u1</div><div class="ttdef"><b>Definition</b> <a href="uinteger_8h_source.html#l00006">uinteger.h:6</a></div></div>
+<div class="ttc" id="aconstants_8h_html_a008d43478c2e2973e7413f5d1c48095d"><div class="ttname"><a href="constants_8h.html#a008d43478c2e2973e7413f5d1c48095d">CONSTANT_Fieldref</a></div><div class="ttdeci">#define CONSTANT_Fieldref</div><div class="ttdoc">Entrada CONSTANT_Fieldref: referência a um field via class_index + name_and_type_index.</div><div class="ttdef"><b>Definition</b> <a href="constants_8h_source.html#l00030">constants.h:30</a></div></div>
+<div class="ttc" id="aconstants_8h_html_a0a7acbe175de56072a2f0a1a051418e1"><div class="ttname"><a href="constants_8h.html#a0a7acbe175de56072a2f0a1a051418e1">CONSTANT_String</a></div><div class="ttdeci">#define CONSTANT_String</div><div class="ttdoc">Entrada CONSTANT_String: referência a um literal de string (índice para UTF8).</div><div class="ttdef"><b>Definition</b> <a href="constants_8h_source.html#l00039">constants.h:39</a></div></div>
+<div class="ttc" id="aconstants_8h_html_a127046386d755d4a91c71aa9b453a8bb"><div class="ttname"><a href="constants_8h.html#a127046386d755d4a91c71aa9b453a8bb">CONSTANT_InvokeDynamic</a></div><div class="ttdeci">#define CONSTANT_InvokeDynamic</div><div class="ttdoc">Entrada CONSTANT_InvokeDynamic: referência dinâmica (lambda, bootstrap method).</div><div class="ttdef"><b>Definition</b> <a href="constants_8h_source.html#l00066">constants.h:66</a></div></div>
+<div class="ttc" id="aconstants_8h_html_a2a179cf178ea867c6ab1700508c269dd"><div class="ttname"><a href="constants_8h.html#a2a179cf178ea867c6ab1700508c269dd">CONSTANT_Methodref</a></div><div class="ttdeci">#define CONSTANT_Methodref</div><div class="ttdoc">Entrada CONSTANT_Methodref: referência a método de classe.</div><div class="ttdef"><b>Definition</b> <a href="constants_8h_source.html#l00033">constants.h:33</a></div></div>
+<div class="ttc" id="aconstants_8h_html_a426ca017b895fc522671a561d460be7a"><div class="ttname"><a href="constants_8h.html#a426ca017b895fc522671a561d460be7a">CONSTANT_Long</a></div><div class="ttdeci">#define CONSTANT_Long</div><div class="ttdoc">Entrada CONSTANT_Long: literal long de 64 bits (ocupa duas entradas).</div><div class="ttdef"><b>Definition</b> <a href="constants_8h_source.html#l00048">constants.h:48</a></div></div>
+<div class="ttc" id="aconstants_8h_html_a5b6ba749976ae61415983ca0b890c91a"><div class="ttname"><a href="constants_8h.html#a5b6ba749976ae61415983ca0b890c91a">CONSTANT_NameAndType</a></div><div class="ttdeci">#define CONSTANT_NameAndType</div><div class="ttdoc">Entrada CONSTANT_NameAndType: par (nome, descritor).</div><div class="ttdef"><b>Definition</b> <a href="constants_8h_source.html#l00054">constants.h:54</a></div></div>
+<div class="ttc" id="aconstants_8h_html_a72b5b534aa409975da610a36f648fa0a"><div class="ttname"><a href="constants_8h.html#a72b5b534aa409975da610a36f648fa0a">CONSTANT_Class</a></div><div class="ttdeci">#define CONSTANT_Class</div><div class="ttdoc">Entrada CONSTANT_Class: referencia um name_index para uma string UTF8.</div><div class="ttdef"><b>Definition</b> <a href="constants_8h_source.html#l00027">constants.h:27</a></div></div>
+<div class="ttc" id="aconstants_8h_html_a856a6553a55d721970ca5450eb1ccd2c"><div class="ttname"><a href="constants_8h.html#a856a6553a55d721970ca5450eb1ccd2c">CONSTANT_Integer</a></div><div class="ttdeci">#define CONSTANT_Integer</div><div class="ttdoc">Entrada CONSTANT_Integer: literal inteiro de 32 bits.</div><div class="ttdef"><b>Definition</b> <a href="constants_8h_source.html#l00042">constants.h:42</a></div></div>
+<div class="ttc" id="aconstants_8h_html_a991ba557d63f94e2cdf05c9f80630a6f"><div class="ttname"><a href="constants_8h.html#a991ba557d63f94e2cdf05c9f80630a6f">CONSTANT_MethodType</a></div><div class="ttdeci">#define CONSTANT_MethodType</div><div class="ttdoc">Entrada CONSTANT_MethodType: descritor de método usado em invokedynamic.</div><div class="ttdef"><b>Definition</b> <a href="constants_8h_source.html#l00063">constants.h:63</a></div></div>
+<div class="ttc" id="aconstants_8h_html_ab49341c3b4ade4bfa1a64be8d2f73ae1"><div class="ttname"><a href="constants_8h.html#ab49341c3b4ade4bfa1a64be8d2f73ae1">CONSTANT_Double</a></div><div class="ttdeci">#define CONSTANT_Double</div><div class="ttdoc">Entrada CONSTANT_Double: literal double de 64 bits (ocupa duas entradas).</div><div class="ttdef"><b>Definition</b> <a href="constants_8h_source.html#l00051">constants.h:51</a></div></div>
+<div class="ttc" id="aconstants_8h_html_ab914627ce5b25c4acfc98f2eacb78473"><div class="ttname"><a href="constants_8h.html#ab914627ce5b25c4acfc98f2eacb78473">CONSTANT_Float</a></div><div class="ttdeci">#define CONSTANT_Float</div><div class="ttdoc">Entrada CONSTANT_Float: literal float de 32 bits (IEEE754).</div><div class="ttdef"><b>Definition</b> <a href="constants_8h_source.html#l00045">constants.h:45</a></div></div>
+<div class="ttc" id="aconstants_8h_html_ac0e92044d246c6e4d691116f89a70ebb"><div class="ttname"><a href="constants_8h.html#ac0e92044d246c6e4d691116f89a70ebb">CONSTANT_InterfaceMethodref</a></div><div class="ttdeci">#define CONSTANT_InterfaceMethodref</div><div class="ttdoc">Entrada CONSTANT_InterfaceMethodref: referência a método de interface.</div><div class="ttdef"><b>Definition</b> <a href="constants_8h_source.html#l00036">constants.h:36</a></div></div>
+<div class="ttc" id="aconstants_8h_html_adb3c84f82163f217ab7f8fa0258d80ce"><div class="ttname"><a href="constants_8h.html#adb3c84f82163f217ab7f8fa0258d80ce">CONSTANT_MethodHandle</a></div><div class="ttdeci">#define CONSTANT_MethodHandle</div><div class="ttdoc">Entrada CONSTANT_MethodHandle: metadado para invokedynamic.</div><div class="ttdef"><b>Definition</b> <a href="constants_8h_source.html#l00060">constants.h:60</a></div></div>
+<div class="ttc" id="aconstants_8h_html_ae59099cfa3071f06e28a0956420c4fdd"><div class="ttname"><a href="constants_8h.html#ae59099cfa3071f06e28a0956420c4fdd">CONSTANT_UTF8</a></div><div class="ttdeci">#define CONSTANT_UTF8</div><div class="ttdoc">Entrada CONSTANT_UTF8: string UTF-8 (Modified UTF8).</div><div class="ttdef"><b>Definition</b> <a href="constants_8h_source.html#l00057">constants.h:57</a></div></div>
+<div class="ttc" id="astructcp__info_html"><div class="ttname"><a href="structcp__info.html">cp_info</a></div><div class="ttdoc">Estrutura que representa uma entrada do constant pool.</div><div class="ttdef"><b>Definition</b> <a href="constants_8h_source.html#l00178">constants.h:179</a></div></div>
+<div class="ttc" id="auinteger_8h_html_a8026a39c502750413402a90d9d8bae3c"><div class="ttname"><a href="uinteger_8h.html#a8026a39c502750413402a90d9d8bae3c">u1</a></div><div class="ttdeci">uint8_t u1</div><div class="ttdoc">Inteiro sem sinal de 8 bits.</div><div class="ttdef"><b>Definition</b> <a href="uinteger_8h_source.html#l00027">uinteger.h:27</a></div></div>
+<div class="ttc" id="auinteger_8h_html_aa76d8c8015643c6a837661a10142016e"><div class="ttname"><a href="uinteger_8h.html#aa76d8c8015643c6a837661a10142016e">u2</a></div><div class="ttdeci">uint16_t u2</div><div class="ttdoc">Inteiro sem sinal de 16 bits.</div><div class="ttdef"><b>Definition</b> <a href="uinteger_8h_source.html#l00037">uinteger.h:37</a></div></div>
+<div class="ttc" id="aunioninfo_html"><div class="ttname"><a href="unioninfo.html">info</a></div><div class="ttdoc">Conteúdo do atributo, variando conforme seu tipo.</div></div>
 <div class="ttc" id="autils_8c_html_ad84b8b6f6642d15fbdbd161044c8533f"><div class="ttname"><a href="utils_8c.html#ad84b8b6f6642d15fbdbd161044c8533f">num_digits</a></div><div class="ttdeci">unsigned int num_digits(unsigned int n)</div><div class="ttdoc">Retorna o número de dígitos de um inteiro positivo.</div><div class="ttdef"><b>Definition</b> <a href="utils_8c_source.html#l00061">utils.c:61</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>

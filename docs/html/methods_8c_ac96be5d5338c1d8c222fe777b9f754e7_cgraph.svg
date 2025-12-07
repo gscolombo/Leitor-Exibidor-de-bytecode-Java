@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="Exibe os métodos de uma estrutura ClassFile.">
+<g id="a_Node000001"><a xlink:title="Exibe todos os métodos definidos em um ClassFile.">
 <polygon fill="#999999" stroke="#666666" points="90,-37 0,-37 0,-18 90,-18 90,-37"/>
 <text text-anchor="middle" x="45" y="-25" font-family="Helvetica,sans-Serif" font-size="10.00">show_methods</text>
 </a>

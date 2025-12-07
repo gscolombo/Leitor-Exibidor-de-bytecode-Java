@@ -127,7 +127,7 @@ Functions</h2></td></tr>
 <tr class="memitem:a6c0218bad4434b7cd3b006ab029dcac7" id="r_a6c0218bad4434b7cd3b006ab029dcac7"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="utils_8h.html#a6c0218bad4434b7cd3b006ab029dcac7">num_digits</a> (unsigned int)</td></tr>
 <tr class="memdesc:a6c0218bad4434b7cd3b006ab029dcac7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calcula o número de dígitos necessários para representar um inteiro positivo.  <br /></td></tr>
 <tr class="separator:a6c0218bad4434b7cd3b006ab029dcac7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8d0595766dc79db9e6d2b1debc1b7d2c" id="r_a8d0595766dc79db9e6d2b1debc1b7d2c"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="utils_8h.html#a8d0595766dc79db9e6d2b1debc1b7d2c">parse_flags</a> (<a class="el" href="uinteger_8h.html#a732cde1300aafb73b0ea6c2558a7a54f">u2</a> flags, size_t count, const char *separator, const <a class="el" href="structFlagMap.html">FlagMap</a> map[])</td></tr>
+<tr class="memitem:a8d0595766dc79db9e6d2b1debc1b7d2c" id="r_a8d0595766dc79db9e6d2b1debc1b7d2c"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="utils_8h.html#a8d0595766dc79db9e6d2b1debc1b7d2c">parse_flags</a> (<a class="el" href="uinteger_8h.html#aa76d8c8015643c6a837661a10142016e">u2</a> flags, size_t count, const char *separator, const <a class="el" href="structFlagMap.html">FlagMap</a> map[])</td></tr>
 <tr class="memdesc:a8d0595766dc79db9e6d2b1debc1b7d2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converte um conjunto de flags (u2) em uma string formatada.  <br /></td></tr>
 <tr class="separator:a8d0595766dc79db9e6d2b1debc1b7d2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a53816f26df4f6332a074bb2dda5fa7e4" id="r_a53816f26df4f6332a074bb2dda5fa7e4"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="attributes_8h.html#aa3897dbbd20279b0fe296f51dfb75251">attribute_name</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="utils_8h.html#a53816f26df4f6332a074bb2dda5fa7e4">convert_attr_name</a> (const wchar_t *name)</td></tr>
@@ -435,7 +435,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">char * parse_flags </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="uinteger_8h.html#a732cde1300aafb73b0ea6c2558a7a54f">u2</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="uinteger_8h.html#aa76d8c8015643c6a837661a10142016e">u2</a>&#160;</td>
           <td class="paramname"><em>flags</em>, </td>
         </tr>
         <tr>
@@ -472,7 +472,7 @@ Functions</h2></td></tr>
     <tr><td class="paramname">flags</td><td>Valor u2 contendo bits correspondentes a flags da JVM. </td></tr>
     <tr><td class="paramname">count</td><td>Quantidade de entradas no array <code>map</code>. </td></tr>
     <tr><td class="paramname">separator</td><td>String usada para separar flags no texto final. </td></tr>
-    <tr><td class="paramname">map</td><td>Array de mapeamento entre bits e nomes (<a class="el" href="structFlagMap.html">FlagMap</a>[], definido em <a class="el" href="member_8h.html">member.h</a>). </td></tr>
+    <tr><td class="paramname">map</td><td>Array de mapeamento entre bits e nomes (<a class="el" href="structFlagMap.html" title="Mapeamento entre um bit de flag (u2) e seu nome textual.">FlagMap</a>[], definido em <a class="el" href="member_8h.html" title="Estruturas relacionadas a membros (fields e methods) do ClassFile.">member.h</a>). </td></tr>
   </table>
   </dd>
 </dl>
@@ -486,7 +486,7 @@ Functions</h2></td></tr>
     <tr><td class="paramname">flags</td><td>Valor de flags (u2). </td></tr>
     <tr><td class="paramname">n</td><td>Quantidade de itens no mapa de flags. </td></tr>
     <tr><td class="paramname">sep</td><td>Separador entre nomes das flags (ex.: " " ou ", "). </td></tr>
-    <tr><td class="paramname">flag_map</td><td>Array de <a class="el" href="structFlagMap.html">FlagMap</a> com {bit,name}. </td></tr>
+    <tr><td class="paramname">flag_map</td><td>Array de <a class="el" href="structFlagMap.html" title="Mapeamento entre um bit de flag (u2) e seu nome textual.">FlagMap</a> com {bit,name}. </td></tr>
   </table>
   </dd>
 </dl>
@@ -535,7 +535,7 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  130</span> </div>
 <div class="line"><span class="lineno">  131</span>    <span class="keywordflow">return</span> flag_str;</div>
 <div class="line"><span class="lineno">  132</span>}</div>
-<div class="ttc" id="afields_8c_html_a009323491893a4786f8d45bb795fd6aa"><div class="ttname"><a href="fields_8c.html#a009323491893a4786f8d45bb795fd6aa">flag_map</a></div><div class="ttdeci">static const FlagMap flag_map[9]</div><div class="ttdef"><b>Definition</b> <a href="fields_8c_source.html#l00003">fields.c:3</a></div></div>
+<div class="ttc" id="afields_8c_html_a009323491893a4786f8d45bb795fd6aa"><div class="ttname"><a href="fields_8c.html#a009323491893a4786f8d45bb795fd6aa">flag_map</a></div><div class="ttdeci">static const FlagMap flag_map[9]</div><div class="ttdoc">Mapa de flags da JVM para campos, com nomes oficiais ACC_*.</div><div class="ttdef"><b>Definition</b> <a href="fields_8c_source.html#l00024">fields.c:24</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

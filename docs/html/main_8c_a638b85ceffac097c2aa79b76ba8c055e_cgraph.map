@@ -49,9 +49,9 @@
 <area shape="poly" id="edge28_Node000019_Node000020" title=" " alt="" coords="224,564,399,585,463,597,462,602,398,590,224,569"/>
 <area shape="rect" id="Node000021" href="$cp_2writer_8c.html#a7e37d5fb2c6ad99c587bac7e9f17b536" title="Exibe todas as entradas do constant pool." alt="" coords="272,499,399,524"/>
 <area shape="poly" id="edge29_Node000019_Node000021" title=" " alt="" coords="209,547,278,525,280,531,210,552"/>
-<area shape="rect" id="Node000023" href="$fields_8c.html#a6290db4646e6000690c489c000103886" title="Exibe os campos de uma estrutura ClassFile." alt="" coords="286,600,385,625"/>
+<area shape="rect" id="Node000023" href="$fields_8c.html#a6290db4646e6000690c489c000103886" title="Exibe todos os campos (fields) de um ClassFile." alt="" coords="286,600,385,625"/>
 <area shape="poly" id="edge31_Node000019_Node000023" title=" " alt="" coords="210,572,280,593,278,599,209,577"/>
-<area shape="rect" id="Node000025" href="$methods_8c.html#ac96be5d5338c1d8c222fe777b9f754e7" title="Exibe os métodos de uma estrutura ClassFile." alt="" coords="275,649,395,675"/>
+<area shape="rect" id="Node000025" href="$methods_8c.html#ac96be5d5338c1d8c222fe777b9f754e7" title="Exibe todos os métodos definidos em um ClassFile." alt="" coords="275,649,395,675"/>
 <area shape="poly" id="edge34_Node000019_Node000025" title=" " alt="" coords="184,573,223,603,273,636,285,642,283,646,271,640,220,608,181,577"/>
 <area shape="rect" id="Node000022" href="$utils_8c.html#ad84b8b6f6642d15fbdbd161044c8533f" title="Retorna o número de dígitos de um inteiro positivo." alt="" coords="477,499,572,524"/>
 <area shape="poly" id="edge30_Node000021_Node000022" title=" " alt="" coords="399,509,463,509,463,514,399,514"/>

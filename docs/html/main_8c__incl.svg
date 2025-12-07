@@ -128,7 +128,7 @@
 <!-- Node6 -->
 <g id="Node000006" class="node">
 <title>Node6</title>
-<g id="a_Node000006"><a xlink:href="uinteger_8h.html" target="_top" xlink:title=" ">
+<g id="a_Node000006"><a xlink:href="uinteger_8h.html" target="_top" xlink:title="Definições de tipos inteiros sem sinal utilizados pela JVM e pelo leitor/exibidor de bytecode.">
 <polygon fill="white" stroke="#666666" points="345.5,-74 280.5,-74 280.5,-55 345.5,-55 345.5,-74"/>
 <text text-anchor="middle" x="313" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">uinteger.h</text>
 </a>
@@ -146,7 +146,7 @@
 <!-- Node8 -->
 <g id="Node000008" class="node">
 <title>Node8</title>
-<g id="a_Node000008"><a xlink:href="attributes_8h.html" target="_top" xlink:title=" ">
+<g id="a_Node000008"><a xlink:href="attributes_8h.html" target="_top" xlink:title="Estruturas e enumerações que representam atributos da JVM presentes em fields, methods e classes.">
 <polygon fill="white" stroke="#666666" points="159.5,-129 86.5,-129 86.5,-110 159.5,-110 159.5,-129"/>
 <text text-anchor="middle" x="123" y="-117" font-family="Helvetica,sans-Serif" font-size="10.00">attributes.h</text>
 </a>
@@ -164,7 +164,7 @@
 <!-- Node12 -->
 <g id="Node000012" class="node">
 <title>Node12</title>
-<g id="a_Node000012"><a xlink:href="member_8h.html" target="_top" xlink:title=" ">
+<g id="a_Node000012"><a xlink:href="member_8h.html" target="_top" xlink:title="Estruturas relacionadas a membros (fields e methods) do ClassFile.">
 <polygon fill="white" stroke="#666666" points="198,-184 132,-184 132,-165 198,-165 198,-184"/>
 <text text-anchor="middle" x="165" y="-172" font-family="Helvetica,sans-Serif" font-size="10.00">member.h</text>
 </a>
@@ -227,7 +227,7 @@
 <!-- Node10 -->
 <g id="Node000010" class="node">
 <title>Node10</title>
-<g id="a_Node000010"><a xlink:href="stackmap_8h.html" target="_top" xlink:title=" ">
+<g id="a_Node000010"><a xlink:href="stackmap_8h.html" target="_top" xlink:title="Estrutura placeholder para frames do atributo StackMapTable.">
 <polygon fill="white" stroke="#666666" points="242,-74 168,-74 168,-55 242,-55 242,-74"/>
 <text text-anchor="middle" x="205" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">stackmap.h</text>
 </a>
@@ -245,7 +245,7 @@
 <!-- Node11 -->
 <g id="Node000011" class="node">
 <title>Node11</title>
-<g id="a_Node000011"><a xlink:href="annotation_8h.html" target="_top" xlink:title=" ">
+<g id="a_Node000011"><a xlink:href="annotation_8h.html" target="_top" xlink:title="Estruturas relacionadas a anotações presentes em atributos da JVM.">
 <polygon fill="white" stroke="#666666" points="78,-74 0,-74 0,-55 78,-55 78,-74"/>
 <text text-anchor="middle" x="39" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">annotation.h</text>
 </a>
@@ -425,7 +425,7 @@
 <!-- Node16 -->
 <g id="Node000016" class="node">
 <title>Node16</title>
-<g id="a_Node000016"><a xlink:href="constants_8h.html" target="_top" xlink:title=" ">
+<g id="a_Node000016"><a xlink:href="constants_8h.html" target="_top" xlink:title="Definições das constantes do Constant Pool e estruturas que representam cada tipo de entrada.">
 <polygon fill="white" stroke="#666666" points="471.5,-184 398.5,-184 398.5,-165 471.5,-165 471.5,-184"/>
 <text text-anchor="middle" x="435" y="-172" font-family="Helvetica,sans-Serif" font-size="10.00">constants.h</text>
 </a>

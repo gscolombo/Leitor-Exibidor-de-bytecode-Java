@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title=" ">
+<g id="a_Node000001"><a xlink:title="Definições das constantes do Constant Pool e estruturas que representam cada tipo de entrada.">
 <polygon fill="#999999" stroke="#666666" points="503.5,-184 348.5,-184 348.5,-165 503.5,-165 503.5,-184"/>
 <text text-anchor="middle" x="426" y="-172" font-family="Helvetica,sans-Serif" font-size="10.00">include/types/cp/constants.h</text>
 </a>
@@ -74,7 +74,7 @@
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="fields_8h.html" target="_top" xlink:title=" ">
+<g id="a_Node000003"><a xlink:href="fields_8h.html" target="_top" xlink:title="Declarações para exibição (printing) dos campos (fields) de um ClassFile.">
 <polygon fill="white" stroke="#666666" points="594,-74 454,-74 454,-55 594,-55 594,-74"/>
 <text text-anchor="middle" x="524" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">include/members/fields.h</text>
 </a>
@@ -110,7 +110,7 @@
 <!-- Node6 -->
 <g id="Node000006" class="node">
 <title>Node6</title>
-<g id="a_Node000006"><a xlink:href="methods_8h.html" target="_top" xlink:title=" ">
+<g id="a_Node000006"><a xlink:href="methods_8h.html" target="_top" xlink:title="Declarações para exibição (printing) dos métodos (methods) de um ClassFile.">
 <polygon fill="white" stroke="#666666" points="258,-74 102,-74 102,-55 258,-55 258,-74"/>
 <text text-anchor="middle" x="180" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">include/members/methods.h</text>
 </a>
@@ -173,7 +173,7 @@
 <!-- Node5 -->
 <g id="Node000005" class="node">
 <title>Node5</title>
-<g id="a_Node000005"><a xlink:href="fields_8c.html" target="_top" xlink:title=" ">
+<g id="a_Node000005"><a xlink:href="fields_8c.html" target="_top" xlink:title="Implementação das rotinas de exibição (printing) dos campos (fields) de um ClassFile.">
 <polygon fill="white" stroke="#666666" points="517,-19 399,-19 399,0 517,0 517,-19"/>
 <text text-anchor="middle" x="458" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">src/members/fields.c</text>
 </a>
@@ -200,7 +200,7 @@
 <!-- Node7 -->
 <g id="Node000007" class="node">
 <title>Node7</title>
-<g id="a_Node000007"><a xlink:href="methods_8c.html" target="_top" xlink:title=" ">
+<g id="a_Node000007"><a xlink:href="methods_8c.html" target="_top" xlink:title="Implementação das rotinas de exibição dos métodos definidos em um ClassFile.">
 <polygon fill="white" stroke="#666666" points="247,-19 113,-19 113,0 247,0 247,-19"/>
 <text text-anchor="middle" x="180" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">src/members/methods.c</text>
 </a>

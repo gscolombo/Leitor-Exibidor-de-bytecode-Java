@@ -10,9 +10,9 @@
 <area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="561,28,798,76,803,77,802,82,797,81,560,33"/>
 <area shape="rect" id="Node000006" href="$Classfile_8h.html" title="Estruturas e funções para representar e liberar um arquivo .class Java (ClassFile)." alt="" coords="374,79,463,104"/>
 <area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="490,33,444,72,441,67,486,29"/>
-<area shape="rect" id="Node000007" href="$uinteger_8h.html" title=" " alt="" coords="439,372,526,397"/>
+<area shape="rect" id="Node000007" href="$uinteger_8h.html" title="Definições de tipos inteiros sem sinal utilizados pela JVM e pelo leitor/exibidor de bytecode." alt="" coords="439,372,526,397"/>
 <area shape="poly" id="edge31_Node000001_Node000007" title=" " alt="" coords="535,28,613,61,658,84,700,111,736,142,760,176,767,194,768,213,765,232,755,252,723,276,661,308,524,369,521,364,659,303,720,271,751,249,760,231,763,213,762,195,756,178,732,145,697,115,655,89,611,66,533,33"/>
-<area shape="rect" id="Node000009" href="$member_8h.html" title=" " alt="" coords="557,225,645,251"/>
+<area shape="rect" id="Node000009" href="$member_8h.html" title="Estruturas relacionadas a membros (fields e methods) do ClassFile." alt="" coords="557,225,645,251"/>
 <area shape="poly" id="edge32_Node000001_Node000009" title=" " alt="" coords="509,30,565,151,593,211,588,214,560,153,504,32"/>
 <area shape="rect" id="Node000015" href="$utils_8h.html" title="Funções auxiliares para manipulação de inteiros, flags, nomes de atributos e descritores utilizados n..." alt="" coords="457,152,519,177"/>
 <area shape="poly" id="edge25_Node000001_Node000015" title=" " alt="" coords="503,31,493,139,488,138,498,31"/>
@@ -21,20 +21,20 @@
 <area shape="poly" id="edge6_Node000006_Node000003" title=" " alt="" coords="415,106,360,214,355,212,410,103"/>
 <area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="424,103,480,358,475,359,419,105"/>
 <area shape="poly" id="edge9_Node000006_Node000009" title=" " alt="" coords="448,102,490,122,532,150,564,181,588,212,584,215,560,184,529,154,487,126,446,106"/>
-<area shape="rect" id="Node000014" href="$constants_8h.html" title=" " alt="" coords="189,225,286,251"/>
+<area shape="rect" id="Node000014" href="$constants_8h.html" title="Definições das constantes do Constant Pool e estruturas que representam cada tipo de entrada." alt="" coords="189,225,286,251"/>
 <area shape="poly" id="edge16_Node000006_Node000014" title=" " alt="" coords="405,107,264,219,261,214,402,102"/>
 <area shape="poly" id="edge18_Node000006_Node000015" title=" " alt="" coords="432,102,469,140,465,144,428,106"/>
 <area shape="rect" id="Node000008" title=" " alt="" coords="447,445,518,471"/>
 <area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="485,398,485,432,480,432,480,398"/>
 <area shape="poly" id="edge10_Node000009_Node000007" title=" " alt="" coords="594,253,503,363,499,360,590,249"/>
-<area shape="rect" id="Node000010" href="$attributes_8h.html" title=" " alt="" coords="699,299,797,324"/>
+<area shape="rect" id="Node000010" href="$attributes_8h.html" title="Estruturas e enumerações que representam atributos da JVM presentes em fields, methods e classes." alt="" coords="699,299,797,324"/>
 <area shape="poly" id="edge11_Node000009_Node000010" title=" " alt="" coords="626,248,713,290,711,295,624,253"/>
 <area shape="poly" id="edge13_Node000010_Node000007" title=" " alt="" coords="706,327,540,371,538,366,705,321"/>
 <area shape="rect" id="Node000011" title=" " alt="" coords="824,372,896,397"/>
 <area shape="poly" id="edge12_Node000010_Node000011" title=" " alt="" coords="767,322,831,362,828,367,765,326"/>
-<area shape="rect" id="Node000012" href="$stackmap_8h.html" title=" " alt="" coords="573,372,672,397"/>
+<area shape="rect" id="Node000012" href="$stackmap_8h.html" title="Estrutura placeholder para frames do atributo StackMapTable." alt="" coords="573,372,672,397"/>
 <area shape="poly" id="edge14_Node000010_Node000012" title=" " alt="" coords="729,326,656,367,654,363,727,322"/>
-<area shape="rect" id="Node000013" href="$annotation_8h.html" title=" " alt="" coords="696,372,800,397"/>
+<area shape="rect" id="Node000013" href="$annotation_8h.html" title="Estruturas relacionadas a anotações presentes em atributos da JVM." alt="" coords="696,372,800,397"/>
 <area shape="poly" id="edge15_Node000010_Node000013" title=" " alt="" coords="751,324,751,358,745,358,745,324"/>
 <area shape="poly" id="edge17_Node000014_Node000007" title=" " alt="" coords="258,249,453,363,450,367,256,253"/>
 <area shape="poly" id="edge20_Node000015_Node000002" title=" " alt="" coords="457,172,301,192,86,228,85,223,300,187,456,167"/>

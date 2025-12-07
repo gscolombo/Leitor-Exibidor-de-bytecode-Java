@@ -1,31 +1,31 @@
 <map id="ClassFile" name="ClassFile">
 <area shape="rect" id="Node000001" title="Representa um arquivo .class Java carregado em memória." alt="" coords="792,170,872,195"/>
-<area shape="rect" id="Node000002" href="$structcp__info.html" title=" " alt="" coords="559,118,628,143"/>
+<area shape="rect" id="Node000002" href="$structcp__info.html" title="Estrutura que representa uma entrada do constant pool." alt="" coords="559,118,628,143"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="642,136,769,161,792,168,791,173,767,167,641,141"/>
-<area shape="rect" id="Node000003" href="$unionConstant.html" title=" " alt="" coords="343,118,423,143"/>
+<area shape="rect" id="Node000003" href="$unionConstant.html" title="Armazena o conteúdo real da entrada do constant pool dependendo da tag." alt="" coords="343,118,423,143"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="437,128,559,128,559,133,437,133"/>
-<area shape="rect" id="Node000004" href="$structmember__info.html" title=" " alt="" coords="539,231,648,257"/>
+<area shape="rect" id="Node000004" href="$structmember__info.html" title="Representa um campo (field) ou método (method) definido em um ClassFile." alt="" coords="539,231,648,257"/>
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="662,245,714,241,767,228,795,212,817,193,820,197,798,217,769,233,715,246,662,250"/>
-<area shape="rect" id="Node000005" href="$structattribute.html" title=" " alt="" coords="343,213,422,238"/>
+<area shape="rect" id="Node000005" href="$structattribute.html" title="Representa um atributo genérico da JVM." alt="" coords="343,213,422,238"/>
 <area shape="poly" id="edge15_Node000001_Node000005" title=" " alt="" coords="435,211,446,209,640,190,792,181,792,187,640,195,447,215,436,216"/>
 <area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="436,227,539,237,538,242,435,233"/>
 <area shape="poly" id="edge6_Node000005_Node000005" title=" " alt="" coords="363,198,369,190,383,186,394,188,401,195,403,204,400,213,395,212,398,204,397,198,392,193,383,191,372,194,367,201"/>
-<area shape="rect" id="Node000006" href="$structexception__table.html" title=" " alt="" coords="19,18,145,43"/>
+<area shape="rect" id="Node000006" href="$structexception__table.html" title="Entrada da tabela de exceções do atributo Code." alt="" coords="19,18,145,43"/>
 <area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="159,17,200,17,242,22,284,35,320,58,336,80,340,103,339,127,345,154,375,211,371,214,340,156,334,127,334,103,331,82,317,62,282,40,241,27,199,22,159,22"/>
-<area shape="rect" id="Node000007" href="$unionstack__map__frame.html" title=" " alt="" coords="13,67,151,93"/>
+<area shape="rect" id="Node000007" href="$unionstack__map__frame.html" title="Estrutura placeholder para frames da StackMapTable." alt="" coords="13,67,151,93"/>
 <area shape="poly" id="edge7_Node000005_Node000007" title=" " alt="" coords="165,72,203,74,244,81,284,93,321,113,377,211,372,214,317,117,282,98,243,86,203,80,165,78"/>
-<area shape="rect" id="Node000008" href="$structclasses.html" title=" " alt="" coords="47,117,117,142"/>
+<area shape="rect" id="Node000008" href="$structclasses.html" title="Representa uma entrada do atributo InnerClasses." alt="" coords="47,117,117,142"/>
 <area shape="poly" id="edge8_Node000005_Node000008" title=" " alt="" coords="131,127,221,137,272,149,320,167,350,188,373,210,369,214,347,192,317,172,270,154,220,142,131,132"/>
-<area shape="rect" id="Node000009" href="$structline__number__table.html" title=" " alt="" coords="11,166,153,191"/>
+<area shape="rect" id="Node000009" href="$structline__number__table.html" title="Mapeamento entre bytecode index (start_pc) e número da linha no código fonte." alt="" coords="11,166,153,191"/>
 <area shape="poly" id="edge9_Node000005_Node000009" title=" " alt="" coords="168,183,242,192,319,205,344,211,342,216,318,211,241,198,167,189"/>
-<area shape="rect" id="Node000010" href="$structlocal__variable__table.html" title=" " alt="" coords="5,215,159,241"/>
+<area shape="rect" id="Node000010" href="$structlocal__variable__table.html" title="Entrada do atributo LocalVariableTable dentro de Code." alt="" coords="5,215,159,241"/>
 <area shape="poly" id="edge10_Node000005_Node000010" title=" " alt="" coords="172,225,343,223,343,228,172,230"/>
-<area shape="rect" id="Node000011" href="$structlocal__variable__type__table.html" title=" " alt="" coords="7,265,157,305"/>
+<area shape="rect" id="Node000011" href="$structlocal__variable__type__table.html" title="Entrada do atributo LocalVariableTypeTable." alt="" coords="7,265,157,305"/>
 <area shape="poly" id="edge11_Node000005_Node000011" title=" " alt="" coords="171,283,243,277,318,260,342,249,363,236,366,241,344,254,320,265,244,282,171,289"/>
-<area shape="rect" id="Node000012" href="$structannotation.html" title=" " alt="" coords="36,331,128,357"/>
+<area shape="rect" id="Node000012" href="$structannotation.html" title="Estrutura placeholder para representar uma anotação da JVM." alt="" coords="36,331,128,357"/>
 <area shape="poly" id="edge12_Node000005_Node000012" title=" " alt="" coords="142,349,183,350,229,346,275,336,317,318,338,300,354,278,375,237,379,239,359,281,342,304,320,322,276,342,229,352,183,355,142,354"/>
-<area shape="rect" id="Node000013" href="$structelement__value.html" title=" " alt="" coords="23,381,141,406"/>
+<area shape="rect" id="Node000013" href="$structelement__value.html" title="Estrutura placeholder para representar valores de elementos dentro de anotações." alt="" coords="23,381,141,406"/>
 <area shape="poly" id="edge13_Node000005_Node000013" title=" " alt="" coords="156,403,196,404,238,401,280,391,317,371,332,357,345,341,363,304,373,267,378,238,383,239,378,268,368,306,349,344,336,361,320,376,282,396,239,406,196,410,155,408"/>
-<area shape="rect" id="Node000014" href="$structparameter.html" title=" " alt="" coords="37,430,127,455"/>
+<area shape="rect" id="Node000014" href="$structparameter.html" title="Representa um parâmetro do atributo MethodParameters." alt="" coords="37,430,127,455"/>
 <area shape="poly" id="edge14_Node000005_Node000014" title=" " alt="" coords="141,453,184,457,230,456,276,446,298,437,317,425,337,405,352,381,370,328,378,276,379,238,385,238,383,277,376,329,356,384,341,408,320,429,300,442,278,451,231,462,184,463,141,458"/>
 </map>

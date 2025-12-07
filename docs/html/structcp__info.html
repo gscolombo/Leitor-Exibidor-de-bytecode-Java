@@ -96,6 +96,9 @@ $(document).ready(function(){initNavTree('structcp__info.html',''); initResizabl
 </div><!--header-->
 <div class="contents">
 
+<p>Estrutura que representa uma entrada do constant pool.  
+ <a href="structcp__info.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="constants_8h_source.html">constants.h</a>&gt;</code></p>
 <div class="dynheader">
 Collaboration diagram for cp_info:</div>
@@ -105,14 +108,21 @@ Collaboration diagram for cp_info:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a045b8801a6e96a2a31d3b62ea684f141" id="r_a045b8801a6e96a2a31d3b62ea684f141"><td class="memItemLeft" align="right" valign="top"><a class="el" href="uinteger_8h.html#ad9f4cdb6757615aae2fad89dab3c5470">u1</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcp__info.html#a045b8801a6e96a2a31d3b62ea684f141">tag</a></td></tr>
+<tr class="memitem:a045b8801a6e96a2a31d3b62ea684f141" id="r_a045b8801a6e96a2a31d3b62ea684f141"><td class="memItemLeft" align="right" valign="top"><a class="el" href="uinteger_8h.html#a8026a39c502750413402a90d9d8bae3c">u1</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcp__info.html#a045b8801a6e96a2a31d3b62ea684f141">tag</a></td></tr>
+<tr class="memdesc:a045b8801a6e96a2a31d3b62ea684f141"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tag indicando o tipo da constante (CONSTANT_*).  <br /></td></tr>
 <tr class="separator:a045b8801a6e96a2a31d3b62ea684f141"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a20a126ca5acfc92f2fcfee569fb602e2" id="r_a20a126ca5acfc92f2fcfee569fb602e2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="unionConstant.html">Constant</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcp__info.html#a20a126ca5acfc92f2fcfee569fb602e2">info</a></td></tr>
+<tr class="memdesc:a20a126ca5acfc92f2fcfee569fb602e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Conteúdo da entrada específico para cada tag.  <br /></td></tr>
 <tr class="separator:a20a126ca5acfc92f2fcfee569fb602e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p class="definition">Definition at line <a class="el" href="constants_8h_source.html#l00083">83</a> of file <a class="el" href="constants_8h_source.html">constants.h</a>.</p>
+<div class="textblock"><p>Estrutura que representa uma entrada do constant pool. </p>
+<p>Cada entrada contém:</p><ul>
+<li>um campo <code>tag</code> indicando o tipo da constante (<code>CONSTANT_*</code>)</li>
+<li>um <code>union <a class="el" href="unionConstant.html" title="Armazena o conteúdo real da entrada do constant pool dependendo da tag.">Constant</a></code> contendo os dados apropriados para a tag </li>
+</ul>
+
+<p class="definition">Definition at line <a class="el" href="constants_8h_source.html#l00178">178</a> of file <a class="el" href="constants_8h_source.html">constants.h</a>.</p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
 <a id="a20a126ca5acfc92f2fcfee569fb602e2" name="a20a126ca5acfc92f2fcfee569fb602e2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a20a126ca5acfc92f2fcfee569fb602e2">&#9670;&#160;</a></span>info</h2>
@@ -126,7 +136,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="constants_8h_source.html#l00086">86</a> of file <a class="el" href="constants_8h_source.html">constants.h</a>.</p>
+<p>Conteúdo da entrada específico para cada tag. </p>
+
+<p class="definition">Definition at line <a class="el" href="constants_8h_source.html#l00181">181</a> of file <a class="el" href="constants_8h_source.html">constants.h</a>.</p>
 
 </div>
 </div>
@@ -137,12 +149,14 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="uinteger_8h.html#ad9f4cdb6757615aae2fad89dab3c5470">u1</a> cp_info::tag</td>
+          <td class="memname"><a class="el" href="uinteger_8h.html#a8026a39c502750413402a90d9d8bae3c">u1</a> cp_info::tag</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="constants_8h_source.html#l00085">85</a> of file <a class="el" href="constants_8h_source.html">constants.h</a>.</p>
+<p>Tag indicando o tipo da constante (CONSTANT_*). </p>
+
+<p class="definition">Definition at line <a class="el" href="constants_8h_source.html#l00180">180</a> of file <a class="el" href="constants_8h_source.html">constants.h</a>.</p>
 
 </div>
 </div>

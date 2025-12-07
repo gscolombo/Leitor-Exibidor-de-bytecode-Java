@@ -12,20 +12,20 @@
 <area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="295,249,351,288,348,293,292,253"/>
 <area shape="rect" id="Node000005" title=" " alt="" coords="35,299,106,324"/>
 <area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="247,253,118,297,116,292,245,248"/>
-<area shape="rect" id="Node000006" href="$uinteger_8h.html" title=" " alt="" coords="379,445,466,471"/>
+<area shape="rect" id="Node000006" href="$uinteger_8h.html" title="Definições de tipos inteiros sem sinal utilizados pela JVM e pelo leitor/exibidor de bytecode." alt="" coords="379,445,466,471"/>
 <area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="287,249,334,323,409,433,405,436,330,325,282,252"/>
-<area shape="rect" id="Node000008" href="$attributes_8h.html" title=" " alt="" coords="121,372,218,397"/>
+<area shape="rect" id="Node000008" href="$attributes_8h.html" title="Estruturas e enumerações que representam atributos da JVM presentes em fields, methods e classes." alt="" coords="121,372,218,397"/>
 <area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="247,250,205,268,186,282,172,300,166,314,164,329,166,358,160,359,158,329,161,312,167,297,183,278,203,263,244,245"/>
-<area shape="rect" id="Node000012" href="$member_8h.html" title=" " alt="" coords="181,299,269,324"/>
+<area shape="rect" id="Node000012" href="$member_8h.html" title="Estruturas relacionadas a membros (fields e methods) do ClassFile." alt="" coords="181,299,269,324"/>
 <area shape="poly" id="edge12_Node000002_Node000012" title=" " alt="" coords="271,253,244,289,240,286,267,249"/>
 <area shape="rect" id="Node000007" title=" " alt="" coords="387,519,458,544"/>
 <area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="425,471,425,505,420,505,420,471"/>
 <area shape="poly" id="edge9_Node000008_Node000006" title=" " alt="" coords="211,395,369,439,368,444,209,400"/>
 <area shape="rect" id="Node000009" title=" " alt="" coords="133,445,205,471"/>
 <area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="172,398,172,432,167,432,167,398"/>
-<area shape="rect" id="Node000010" href="$stackmap_8h.html" title=" " alt="" coords="229,445,328,471"/>
+<area shape="rect" id="Node000010" href="$stackmap_8h.html" title="Estrutura placeholder para frames do atributo StackMapTable." alt="" coords="229,445,328,471"/>
 <area shape="poly" id="edge10_Node000008_Node000010" title=" " alt="" coords="188,395,251,435,248,440,185,400"/>
-<area shape="rect" id="Node000011" href="$annotation_8h.html" title=" " alt="" coords="5,445,109,471"/>
+<area shape="rect" id="Node000011" href="$annotation_8h.html" title="Estruturas relacionadas a anotações presentes em atributos da JVM." alt="" coords="5,445,109,471"/>
 <area shape="poly" id="edge11_Node000008_Node000011" title=" " alt="" coords="153,400,89,440,86,435,150,395"/>
 <area shape="poly" id="edge13_Node000012_Node000006" title=" " alt="" coords="233,323,255,358,290,395,330,420,371,438,369,443,327,425,286,399,251,361,229,325"/>
 <area shape="poly" id="edge14_Node000012_Node000008" title=" " alt="" coords="218,326,189,363,185,360,214,323"/>
@@ -45,7 +45,7 @@
 <area shape="poly" id="edge21_Node000015_Node000003" title=" " alt="" coords="566,175,618,195,675,223,723,255,764,288,760,292,720,260,672,228,616,200,564,180"/>
 <area shape="poly" id="edge22_Node000015_Node000006" title=" " alt="" coords="532,178,513,272,494,335,469,399,444,436,440,433,464,396,489,334,508,270,526,177"/>
 <area shape="poly" id="edge23_Node000015_Node000012" title=" " alt="" coords="507,180,263,295,261,290,505,175"/>
-<area shape="rect" id="Node000016" href="$constants_8h.html" title=" " alt="" coords="537,299,634,324"/>
+<area shape="rect" id="Node000016" href="$constants_8h.html" title="Definições das constantes do Constant Pool e estruturas que representam cada tipo de entrada." alt="" coords="537,299,634,324"/>
 <area shape="poly" id="edge24_Node000015_Node000016" title=" " alt="" coords="538,177,579,285,574,287,533,179"/>
 <area shape="poly" id="edge25_Node000016_Node000006" title=" " alt="" coords="580,326,555,360,519,399,489,422,459,441,456,436,486,418,516,395,551,357,576,323"/>
 <area shape="poly" id="edge30_Node000017_Node000003" title=" " alt="" coords="651,248,748,291,745,295,649,253"/>

@@ -461,7 +461,7 @@
 <!-- Node23 -->
 <g id="Node000023" class="node">
 <title>Node23</title>
-<g id="a_Node000023"><a xlink:href="fields_8c.html#a6290db4646e6000690c489c000103886" target="_top" xlink:title="Exibe os campos de uma estrutura ClassFile.">
+<g id="a_Node000023"><a xlink:href="fields_8c.html#a6290db4646e6000690c489c000103886" target="_top" xlink:title="Exibe todos os campos (fields) de um ClassFile.">
 <polygon fill="white" stroke="#666666" points="284.5,-56 210.5,-56 210.5,-37 284.5,-37 284.5,-56"/>
 <text text-anchor="middle" x="247.5" y="-44" font-family="Helvetica,sans-Serif" font-size="10.00">show_fields</text>
 </a>
@@ -479,7 +479,7 @@
 <!-- Node25 -->
 <g id="Node000025" class="node">
 <title>Node25</title>
-<g id="a_Node000025"><a xlink:href="methods_8c.html#ac96be5d5338c1d8c222fe777b9f754e7" target="_top" xlink:title="Exibe os métodos de uma estrutura ClassFile.">
+<g id="a_Node000025"><a xlink:href="methods_8c.html#ac96be5d5338c1d8c222fe777b9f754e7" target="_top" xlink:title="Exibe todos os métodos definidos em um ClassFile.">
 <polygon fill="white" stroke="#666666" points="292.5,-19 202.5,-19 202.5,0 292.5,0 292.5,-19"/>
 <text text-anchor="middle" x="247.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">show_methods</text>
 </a>

@@ -38,7 +38,7 @@
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="fields_8h.html" target="_top" xlink:title=" ">
+<g id="a_Node000003"><a xlink:href="fields_8h.html" target="_top" xlink:title="Declarações para exibição (printing) dos campos (fields) de um ClassFile.">
 <polygon fill="white" stroke="#666666" points="280,-74 140,-74 140,-55 280,-55 280,-74"/>
 <text text-anchor="middle" x="210" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">include/members/fields.h</text>
 </a>
@@ -74,7 +74,7 @@
 <!-- Node6 -->
 <g id="Node000006" class="node">
 <title>Node6</title>
-<g id="a_Node000006"><a xlink:href="methods_8h.html" target="_top" xlink:title=" ">
+<g id="a_Node000006"><a xlink:href="methods_8h.html" target="_top" xlink:title="Declarações para exibição (printing) dos métodos (methods) de um ClassFile.">
 <polygon fill="white" stroke="#666666" points="632,-74 476,-74 476,-55 632,-55 632,-74"/>
 <text text-anchor="middle" x="554" y="-62" font-family="Helvetica,sans-Serif" font-size="10.00">include/members/methods.h</text>
 </a>
@@ -227,7 +227,7 @@
 <!-- Node5 -->
 <g id="Node000005" class="node">
 <title>Node5</title>
-<g id="a_Node000005"><a xlink:href="fields_8c.html" target="_top" xlink:title=" ">
+<g id="a_Node000005"><a xlink:href="fields_8c.html" target="_top" xlink:title="Implementação das rotinas de exibição (printing) dos campos (fields) de um ClassFile.">
 <polygon fill="white" stroke="#666666" points="257,-19 139,-19 139,0 257,0 257,-19"/>
 <text text-anchor="middle" x="198" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">src/members/fields.c</text>
 </a>
@@ -254,7 +254,7 @@
 <!-- Node7 -->
 <g id="Node000007" class="node">
 <title>Node7</title>
-<g id="a_Node000007"><a xlink:href="methods_8c.html" target="_top" xlink:title=" ">
+<g id="a_Node000007"><a xlink:href="methods_8c.html" target="_top" xlink:title="Implementação das rotinas de exibição dos métodos definidos em um ClassFile.">
 <polygon fill="white" stroke="#666666" points="539,-19 405,-19 405,0 539,0 539,-19"/>
 <text text-anchor="middle" x="472" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">src/members/methods.c</text>
 </a>

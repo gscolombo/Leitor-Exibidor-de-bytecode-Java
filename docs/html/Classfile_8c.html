@@ -111,7 +111,7 @@ Functions</h2></td></tr>
 <tr class="memitem:ae4a7da079d90be01c1701b60743fb2bc" id="r_ae4a7da079d90be01c1701b60743fb2bc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Classfile_8c.html#ae4a7da079d90be01c1701b60743fb2bc">free_classfile</a> (<a class="el" href="structClassFile.html">ClassFile</a> *cf)</td></tr>
 <tr class="memdesc:ae4a7da079d90be01c1701b60743fb2bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Libera toda a memória alocada em um <code><a class="el" href="structClassFile.html" title="Representa um arquivo .class Java carregado em memória.">ClassFile</a></code>.  <br /></td></tr>
 <tr class="separator:ae4a7da079d90be01c1701b60743fb2bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adc1c4615212878b4fdfa2c04428e3af4" id="r_adc1c4615212878b4fdfa2c04428e3af4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Classfile_8c.html#adc1c4615212878b4fdfa2c04428e3af4">free_attributes</a> (<a class="el" href="structcp__info.html">cp_info</a> *cp, <a class="el" href="uinteger_8h.html#a732cde1300aafb73b0ea6c2558a7a54f">u2</a> count, <a class="el" href="structattribute.html">attribute</a> *<a class="el" href="utils_8c.html#a5428e61f871cd6ce485314b0c5e22ad0">attr</a>)</td></tr>
+<tr class="memitem:adc1c4615212878b4fdfa2c04428e3af4" id="r_adc1c4615212878b4fdfa2c04428e3af4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Classfile_8c.html#adc1c4615212878b4fdfa2c04428e3af4">free_attributes</a> (<a class="el" href="structcp__info.html">cp_info</a> *cp, <a class="el" href="uinteger_8h.html#aa76d8c8015643c6a837661a10142016e">u2</a> count, <a class="el" href="structattribute.html">attribute</a> *<a class="el" href="utils_8c.html#a5428e61f871cd6ce485314b0c5e22ad0">attr</a>)</td></tr>
 <tr class="memdesc:adc1c4615212878b4fdfa2c04428e3af4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Libera um array de atributos associado a fields, methods ou ao attribute Code.  <br /></td></tr>
 <tr class="separator:adc1c4615212878b4fdfa2c04428e3af4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -141,7 +141,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="uinteger_8h.html#a732cde1300aafb73b0ea6c2558a7a54f">u2</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="uinteger_8h.html#aa76d8c8015643c6a837661a10142016e">u2</a>&#160;</td>
           <td class="paramname"><em>count</em>, </td>
         </tr>
         <tr>
@@ -164,12 +164,12 @@ Functions</h2></td></tr>
 <ul>
 <li><b>Code</b>:<ul>
 <li>code (byte array)</li>
-<li><a class="el" href="structexception__table.html">exception_table</a></li>
+<li><a class="el" href="structexception__table.html" title="Entrada da tabela de exceções do atributo Code.">exception_table</a></li>
 <li>atributos internos (chamada recursiva de free_attributes)</li>
 </ul>
 </li>
 <li><b>LineNumberTable</b>:<ul>
-<li><a class="el" href="structline__number__table.html">line_number_table</a></li>
+<li><a class="el" href="structline__number__table.html" title="Mapeamento entre bytecode index (start_pc) e número da linha no código fonte.">line_number_table</a></li>
 </ul>
 </li>
 </ul>
@@ -177,7 +177,7 @@ Functions</h2></td></tr>
 <p>A função finaliza liberando o próprio array <code>attr</code>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">cp</td><td><a class="el" href="unionConstant.html">Constant</a> pool associado (necessário para obter o nome de cada atributo). </td></tr>
+    <tr><td class="paramname">cp</td><td><a class="el" href="unionConstant.html" title="Armazena o conteúdo real da entrada do constant pool dependendo da tag.">Constant</a> pool associado (necessário para obter o nome de cada atributo). </td></tr>
     <tr><td class="paramname">count</td><td>Número de atributos no array. </td></tr>
     <tr><td class="paramname">attr</td><td>Ponteiro para o array de atributos a ser liberado. </td></tr>
   </table>
@@ -190,28 +190,28 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   94</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; count; i++)</div>
 <div class="line"><span class="lineno">   95</span>        {</div>
 <div class="line"><span class="lineno">   96</span>            <span class="keyword">const</span> <a class="code hl_enumeration" href="attributes_8h.html#aa3897dbbd20279b0fe296f51dfb75251">attribute_name</a> *attr_name =</div>
-<div class="line"><span class="lineno">   97</span>                <a class="code hl_function" href="utils_8c.html#a53816f26df4f6332a074bb2dda5fa7e4">convert_attr_name</a>(cp[<a class="code hl_variable" href="utils_8c.html#a5428e61f871cd6ce485314b0c5e22ad0">attr</a>[i].attribute_name_index - 1].info.UTF8.str);</div>
+<div class="line"><span class="lineno">   97</span>                <a class="code hl_function" href="utils_8c.html#a53816f26df4f6332a074bb2dda5fa7e4">convert_attr_name</a>(cp[<a class="code hl_variable" href="utils_8c.html#a5428e61f871cd6ce485314b0c5e22ad0">attr</a>[i].attribute_name_index - 1].<a class="code hl_union" href="unioninfo.html">info</a>.UTF8.str);</div>
 <div class="line"><span class="lineno">   98</span> </div>
 <div class="line"><span class="lineno">   99</span>            <span class="keywordflow">if</span> (attr_name != NULL)</div>
 <div class="line"><span class="lineno">  100</span>                <span class="keywordflow">switch</span> (*attr_name)</div>
 <div class="line"><span class="lineno">  101</span>                {</div>
 <div class="line"><span class="lineno">  102</span>                <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="attributes_8h.html#aa3897dbbd20279b0fe296f51dfb75251a5c05bb7f6ea5cb7653276c81f45f287b">Code</a>:</div>
 <div class="line"><span class="lineno">  103</span>                    <span class="comment">/* Libera bloco de bytecode */</span></div>
-<div class="line"><span class="lineno">  104</span>                    free(<a class="code hl_variable" href="utils_8c.html#a5428e61f871cd6ce485314b0c5e22ad0">attr</a>[i].info.Code.code);</div>
+<div class="line"><span class="lineno">  104</span>                    free(<a class="code hl_variable" href="utils_8c.html#a5428e61f871cd6ce485314b0c5e22ad0">attr</a>[i].<a class="code hl_union" href="unioninfo.html">info</a>.Code.code);</div>
 <div class="line"><span class="lineno">  105</span> </div>
 <div class="line"><span class="lineno">  106</span>                    <span class="comment">/* Libera tabela de exceções */</span></div>
-<div class="line"><span class="lineno">  107</span>                    free(<a class="code hl_variable" href="utils_8c.html#a5428e61f871cd6ce485314b0c5e22ad0">attr</a>[i].info.Code.exception_table);</div>
+<div class="line"><span class="lineno">  107</span>                    free(<a class="code hl_variable" href="utils_8c.html#a5428e61f871cd6ce485314b0c5e22ad0">attr</a>[i].<a class="code hl_union" href="unioninfo.html">info</a>.Code.exception_table);</div>
 <div class="line"><span class="lineno">  108</span> </div>
 <div class="line"><span class="lineno">  109</span>                    <span class="comment">/* Libera atributos internos do Code */</span></div>
 <div class="line"><span class="lineno">  110</span>                    <a class="code hl_function" href="Classfile_8c.html#adc1c4615212878b4fdfa2c04428e3af4">free_attributes</a>(</div>
 <div class="line"><span class="lineno">  111</span>                        cp,</div>
-<div class="line"><span class="lineno">  112</span>                        <a class="code hl_variable" href="utils_8c.html#a5428e61f871cd6ce485314b0c5e22ad0">attr</a>[i].info.Code.attributes_count,</div>
+<div class="line"><span class="lineno">  112</span>                        <a class="code hl_variable" href="utils_8c.html#a5428e61f871cd6ce485314b0c5e22ad0">attr</a>[i].<a class="code hl_union" href="unioninfo.html">info</a>.Code.attributes_count,</div>
 <div class="line"><span class="lineno">  113</span>                        <a class="code hl_variable" href="utils_8c.html#a5428e61f871cd6ce485314b0c5e22ad0">attr</a>[i].info.Code.attributes</div>
 <div class="line"><span class="lineno">  114</span>                    );</div>
 <div class="line"><span class="lineno">  115</span>                    <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">  116</span> </div>
 <div class="line"><span class="lineno">  117</span>                <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="attributes_8h.html#aa3897dbbd20279b0fe296f51dfb75251a83c5225dc4a45e651128abecff13871d">LineNumberTable</a>:</div>
-<div class="line"><span class="lineno">  118</span>                    free(<a class="code hl_variable" href="utils_8c.html#a5428e61f871cd6ce485314b0c5e22ad0">attr</a>[i].info.LineNumberTable.line_number_table);</div>
+<div class="line"><span class="lineno">  118</span>                    free(<a class="code hl_variable" href="utils_8c.html#a5428e61f871cd6ce485314b0c5e22ad0">attr</a>[i].<a class="code hl_union" href="unioninfo.html">info</a>.LineNumberTable.line_number_table);</div>
 <div class="line"><span class="lineno">  119</span>                    <span class="keywordflow">break</span>;</div>
 <div class="line"><span class="lineno">  120</span> </div>
 <div class="line"><span class="lineno">  121</span>                <span class="keywordflow">default</span>:</div>
@@ -224,9 +224,10 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  128</span>    free(<a class="code hl_variable" href="utils_8c.html#a5428e61f871cd6ce485314b0c5e22ad0">attr</a>);</div>
 <div class="line"><span class="lineno">  129</span>}</div>
 <div class="ttc" id="aClassfile_8c_html_adc1c4615212878b4fdfa2c04428e3af4"><div class="ttname"><a href="Classfile_8c.html#adc1c4615212878b4fdfa2c04428e3af4">free_attributes</a></div><div class="ttdeci">void free_attributes(cp_info *cp, u2 count, attribute *attr)</div><div class="ttdoc">Libera um array de atributos associado a fields, methods ou ao attribute Code.</div><div class="ttdef"><b>Definition</b> <a href="Classfile_8c_source.html#l00091">Classfile.c:91</a></div></div>
-<div class="ttc" id="aattributes_8h_html_aa3897dbbd20279b0fe296f51dfb75251"><div class="ttname"><a href="attributes_8h.html#aa3897dbbd20279b0fe296f51dfb75251">attribute_name</a></div><div class="ttdeci">attribute_name</div><div class="ttdef"><b>Definition</b> <a href="attributes_8h_source.html#l00010">attributes.h:11</a></div></div>
-<div class="ttc" id="aattributes_8h_html_aa3897dbbd20279b0fe296f51dfb75251a5c05bb7f6ea5cb7653276c81f45f287b"><div class="ttname"><a href="attributes_8h.html#aa3897dbbd20279b0fe296f51dfb75251a5c05bb7f6ea5cb7653276c81f45f287b">Code</a></div><div class="ttdeci">@ Code</div><div class="ttdef"><b>Definition</b> <a href="attributes_8h_source.html#l00013">attributes.h:13</a></div></div>
-<div class="ttc" id="aattributes_8h_html_aa3897dbbd20279b0fe296f51dfb75251a83c5225dc4a45e651128abecff13871d"><div class="ttname"><a href="attributes_8h.html#aa3897dbbd20279b0fe296f51dfb75251a83c5225dc4a45e651128abecff13871d">LineNumberTable</a></div><div class="ttdeci">@ LineNumberTable</div><div class="ttdef"><b>Definition</b> <a href="attributes_8h_source.html#l00022">attributes.h:22</a></div></div>
+<div class="ttc" id="aattributes_8h_html_aa3897dbbd20279b0fe296f51dfb75251"><div class="ttname"><a href="attributes_8h.html#aa3897dbbd20279b0fe296f51dfb75251">attribute_name</a></div><div class="ttdeci">attribute_name</div><div class="ttdoc">Enumeração para identificação dos tipos de atributos suportados.</div><div class="ttdef"><b>Definition</b> <a href="attributes_8h_source.html#l00050">attributes.h:51</a></div></div>
+<div class="ttc" id="aattributes_8h_html_aa3897dbbd20279b0fe296f51dfb75251a5c05bb7f6ea5cb7653276c81f45f287b"><div class="ttname"><a href="attributes_8h.html#aa3897dbbd20279b0fe296f51dfb75251a5c05bb7f6ea5cb7653276c81f45f287b">Code</a></div><div class="ttdeci">@ Code</div><div class="ttdef"><b>Definition</b> <a href="attributes_8h_source.html#l00053">attributes.h:53</a></div></div>
+<div class="ttc" id="aattributes_8h_html_aa3897dbbd20279b0fe296f51dfb75251a83c5225dc4a45e651128abecff13871d"><div class="ttname"><a href="attributes_8h.html#aa3897dbbd20279b0fe296f51dfb75251a83c5225dc4a45e651128abecff13871d">LineNumberTable</a></div><div class="ttdeci">@ LineNumberTable</div><div class="ttdef"><b>Definition</b> <a href="attributes_8h_source.html#l00062">attributes.h:62</a></div></div>
+<div class="ttc" id="aunioninfo_html"><div class="ttname"><a href="unioninfo.html">info</a></div><div class="ttdoc">Conteúdo do atributo, variando conforme seu tipo.</div></div>
 <div class="ttc" id="autils_8c_html_a53816f26df4f6332a074bb2dda5fa7e4"><div class="ttname"><a href="utils_8c.html#a53816f26df4f6332a074bb2dda5fa7e4">convert_attr_name</a></div><div class="ttdeci">const attribute_name * convert_attr_name(const wchar_t *name)</div><div class="ttdoc">Converte um nome de atributo (wide-string) para o enum correspondente.</div><div class="ttdef"><b>Definition</b> <a href="utils_8c_source.html#l00177">utils.c:177</a></div></div>
 <div class="ttc" id="autils_8c_html_a5428e61f871cd6ce485314b0c5e22ad0"><div class="ttname"><a href="utils_8c.html#a5428e61f871cd6ce485314b0c5e22ad0">attr</a></div><div class="ttdeci">const attribute_name attr</div><div class="ttdef"><b>Definition</b> <a href="utils_8c_source.html#l00141">utils.c:141</a></div></div>
 </div><!-- fragment --><div class="dynheader">
@@ -302,24 +303,24 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">   57</span>    {</div>
 <div class="line"><span class="lineno">   58</span>        <span class="keywordflow">if</span> (cp[i].tag == <a class="code hl_define" href="constants_8h.html#ae59099cfa3071f06e28a0956420c4fdd">CONSTANT_UTF8</a>)</div>
 <div class="line"><span class="lineno">   59</span>        {</div>
-<div class="line"><span class="lineno">   60</span>            free(cp[i].info.UTF8.bytes);</div>
-<div class="line"><span class="lineno">   61</span>            free(cp[i].info.UTF8.str);</div>
+<div class="line"><span class="lineno">   60</span>            free(cp[i].<a class="code hl_union" href="unioninfo.html">info</a>.UTF8.bytes);</div>
+<div class="line"><span class="lineno">   61</span>            free(cp[i].<a class="code hl_union" href="unioninfo.html">info</a>.UTF8.str);</div>
 <div class="line"><span class="lineno">   62</span>        }</div>
 <div class="line"><span class="lineno">   63</span>    }</div>
 <div class="line"><span class="lineno">   64</span> </div>
 <div class="line"><span class="lineno">   65</span>    <span class="comment">/* Libera o constant pool em si */</span></div>
 <div class="line"><span class="lineno">   66</span>    free(cf-&gt;<a class="code hl_variable" href="structClassFile.html#a2309d843091aad79aed04ce92470a434">constant_pool</a>);</div>
 <div class="line"><span class="lineno">   67</span>}</div>
-<div class="ttc" id="aconstants_8h_html_ae59099cfa3071f06e28a0956420c4fdd"><div class="ttname"><a href="constants_8h.html#ae59099cfa3071f06e28a0956420c4fdd">CONSTANT_UTF8</a></div><div class="ttdeci">#define CONSTANT_UTF8</div><div class="ttdef"><b>Definition</b> <a href="constants_8h_source.html#l00015">constants.h:15</a></div></div>
+<div class="ttc" id="aconstants_8h_html_ae59099cfa3071f06e28a0956420c4fdd"><div class="ttname"><a href="constants_8h.html#ae59099cfa3071f06e28a0956420c4fdd">CONSTANT_UTF8</a></div><div class="ttdeci">#define CONSTANT_UTF8</div><div class="ttdoc">Entrada CONSTANT_UTF8: string UTF-8 (Modified UTF8).</div><div class="ttdef"><b>Definition</b> <a href="constants_8h_source.html#l00057">constants.h:57</a></div></div>
 <div class="ttc" id="astructClassFile_html_a0df7fc06ef4dbbc34df027256b0e3e3a"><div class="ttname"><a href="structClassFile.html#a0df7fc06ef4dbbc34df027256b0e3e3a">ClassFile::fields</a></div><div class="ttdeci">member_info * fields</div><div class="ttdef"><b>Definition</b> <a href="Classfile_8h_source.html#l00051">Classfile.h:51</a></div></div>
 <div class="ttc" id="astructClassFile_html_a2309d843091aad79aed04ce92470a434"><div class="ttname"><a href="structClassFile.html#a2309d843091aad79aed04ce92470a434">ClassFile::constant_pool</a></div><div class="ttdeci">cp_info * constant_pool</div><div class="ttdef"><b>Definition</b> <a href="Classfile_8h_source.html#l00044">Classfile.h:44</a></div></div>
 <div class="ttc" id="astructClassFile_html_aacfb45d4af64216324b1ae5269c870d5"><div class="ttname"><a href="structClassFile.html#aacfb45d4af64216324b1ae5269c870d5">ClassFile::methods_count</a></div><div class="ttdeci">u2 methods_count</div><div class="ttdef"><b>Definition</b> <a href="Classfile_8h_source.html#l00052">Classfile.h:52</a></div></div>
 <div class="ttc" id="astructClassFile_html_ac8fdf5cccfd632da4fdb21ae63fffa7a"><div class="ttname"><a href="structClassFile.html#ac8fdf5cccfd632da4fdb21ae63fffa7a">ClassFile::constant_pool_count</a></div><div class="ttdeci">u2 constant_pool_count</div><div class="ttdef"><b>Definition</b> <a href="Classfile_8h_source.html#l00043">Classfile.h:43</a></div></div>
 <div class="ttc" id="astructClassFile_html_adba7beed3206835516cd158f28ed8813"><div class="ttname"><a href="structClassFile.html#adba7beed3206835516cd158f28ed8813">ClassFile::methods</a></div><div class="ttdeci">member_info * methods</div><div class="ttdef"><b>Definition</b> <a href="Classfile_8h_source.html#l00053">Classfile.h:53</a></div></div>
 <div class="ttc" id="astructClassFile_html_af599de97e062c98966470f1590496425"><div class="ttname"><a href="structClassFile.html#af599de97e062c98966470f1590496425">ClassFile::interfaces</a></div><div class="ttdeci">u2 * interfaces</div><div class="ttdef"><b>Definition</b> <a href="Classfile_8h_source.html#l00049">Classfile.h:49</a></div></div>
-<div class="ttc" id="astructcp__info_html"><div class="ttname"><a href="structcp__info.html">cp_info</a></div><div class="ttdef"><b>Definition</b> <a href="constants_8h_source.html#l00083">constants.h:84</a></div></div>
-<div class="ttc" id="astructmember__info_html_a352cea0bc0b231d822a11a561ed9ca53"><div class="ttname"><a href="structmember__info.html#a352cea0bc0b231d822a11a561ed9ca53">member_info::attributes_count</a></div><div class="ttdeci">u2 attributes_count</div><div class="ttdef"><b>Definition</b> <a href="member_8h_source.html#l00018">member.h:18</a></div></div>
-<div class="ttc" id="astructmember__info_html_adaadbaa600e4fb0172d30c342ac2951f"><div class="ttname"><a href="structmember__info.html#adaadbaa600e4fb0172d30c342ac2951f">member_info::attributes</a></div><div class="ttdeci">attribute * attributes</div><div class="ttdef"><b>Definition</b> <a href="member_8h_source.html#l00019">member.h:19</a></div></div>
+<div class="ttc" id="astructcp__info_html"><div class="ttname"><a href="structcp__info.html">cp_info</a></div><div class="ttdoc">Estrutura que representa uma entrada do constant pool.</div><div class="ttdef"><b>Definition</b> <a href="constants_8h_source.html#l00178">constants.h:179</a></div></div>
+<div class="ttc" id="astructmember__info_html_a352cea0bc0b231d822a11a561ed9ca53"><div class="ttname"><a href="structmember__info.html#a352cea0bc0b231d822a11a561ed9ca53">member_info::attributes_count</a></div><div class="ttdeci">u2 attributes_count</div><div class="ttdoc">Quantidade de atributos associados ao campo ou método.</div><div class="ttdef"><b>Definition</b> <a href="member_8h_source.html#l00060">member.h:60</a></div></div>
+<div class="ttc" id="astructmember__info_html_adaadbaa600e4fb0172d30c342ac2951f"><div class="ttname"><a href="structmember__info.html#adaadbaa600e4fb0172d30c342ac2951f">member_info::attributes</a></div><div class="ttdeci">attribute * attributes</div><div class="ttdoc">Lista de atributos deste membro.</div><div class="ttdef"><b>Definition</b> <a href="member_8h_source.html#l00061">member.h:61</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">

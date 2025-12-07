@@ -95,6 +95,9 @@ $(document).ready(function(){initNavTree('stackmap_8h.html',''); initResizable()
   <div class="headertitle"><div class="title">stackmap.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Estrutura placeholder para frames do atributo StackMapTable.  
+<a href="#details">More...</a></p>
 <div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
@@ -106,6 +109,7 @@ This graph shows which files directly or indirectly include this file:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">union &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="unionstack__map__frame.html">stack_map_frame</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Estrutura placeholder para frames da StackMapTable.  <a href="unionstack__map__frame.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
@@ -113,7 +117,26 @@ Typedefs</h2></td></tr>
 <tr class="memitem:aba3c36225935d592cfe9a93d4e067341" id="r_aba3c36225935d592cfe9a93d4e067341"><td class="memItemLeft" align="right" valign="top">typedef union <a class="el" href="unionstack__map__frame.html">stack_map_frame</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stackmap_8h.html#aba3c36225935d592cfe9a93d4e067341">stack_map_frame</a></td></tr>
 <tr class="separator:aba3c36225935d592cfe9a93d4e067341"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Typedef Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Estrutura placeholder para frames do atributo StackMapTable. </p>
+<p>O atributo StackMapTable é usado pela JVM para verificação de tipos (bytecode verification). Ele descreve o estado da pilha e das variáveis locais em pontos específicos do método.</p>
+<p>A especificação define vários tipos de "stack_map_frame":</p><ul>
+<li>same_frame</li>
+<li>same_locals_1_stack_item_frame</li>
+<li>chop_frame</li>
+<li>append_frame</li>
+<li>full_frame</li>
+</ul>
+<p>Cada um possui formatação e campos distintos.</p>
+<p>No entanto, o leitor-exibidor deste projeto <b>não implementa</b> suporte completo a StackMapTable, portanto este arquivo declara apenas um tipo vazio, servindo como placeholder para permitir:</p>
+<ul>
+<li>compilação do projeto completo,</li>
+<li>representação mínima do atributo StackMapTable,</li>
+<li>futura extensão caso necessário. </li>
+</ul>
+
+<p class="definition">Definition in file <a class="el" href="stackmap_8h_source.html">stackmap.h</a>.</p>
+</div><h2 class="groupheader">Typedef Documentation</h2>
 <a id="aba3c36225935d592cfe9a93d4e067341" name="aba3c36225935d592cfe9a93d4e067341"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aba3c36225935d592cfe9a93d4e067341">&#9670;&#160;</a></span>stack_map_frame</h2>
 
