@@ -1,180 +1,206 @@
+/**
+ * @file constants.h
+ * @brief Definições de constantes e estruturas relacionadas ao Constant Pool da JVM.
+ *
+ * Este arquivo contém:
+ * - as tags identificadoras de cada tipo de constante do Constant Pool;
+ * - a união `Constant`, que modela cada tipo de entrada possível;
+ * - a estrutura `cp_info`, que representa uma entrada real na constant pool de um `.class`.
+ *
+ * Segue fielmente a especificação da JVM 8 (Java SE 8 Edition).
+ */
+
 #ifndef TYPES_CP_CONSTANTS_H
 #define TYPES_CP_CONSTANTS_H
 
-/* Tags de constantes */
-#define CONSTANT_Class 7
-#define CONSTANT_Fieldref 9
-#define CONSTANT_Methodref 10
-#define CONSTANT_InterfaceMethodref 11
-#define CONSTANT_String 8
-#define CONSTANT_Integer 3
-#define CONSTANT_Float 4
-#define CONSTANT_Long 5
-#define CONSTANT_Double 6
-#define CONSTANT_NameAndType 12
-#define CONSTANT_UTF8 1
-#define CONSTANT_MethodHandle 15
-#define CONSTANT_MethodType 16
-#define CONSTANT_InvokeDynamic 18
+/* -------------------------------------------------------------------------- */
+/* Tags de constantes conforme especificação JVM 8                            */
+/* -------------------------------------------------------------------------- */
+
+#define CONSTANT_Class                 7
+#define CONSTANT_Fieldref              9
+#define CONSTANT_Methodref             10
+#define CONSTANT_InterfaceMethodref    11
+#define CONSTANT_String                8
+#define CONSTANT_Integer               3
+#define CONSTANT_Float                 4
+#define CONSTANT_Long                  5
+#define CONSTANT_Double                6
+#define CONSTANT_NameAndType           12
+#define CONSTANT_UTF8                  1
+#define CONSTANT_MethodHandle          15
+#define CONSTANT_MethodType            16
+#define CONSTANT_InvokeDynamic         18
 
 #include "uinteger.h"
 
-/** @file */
-
 /**
- * União dos diferentes
- * tipos de constantes apresentados
- * na especificação da JVM 8.
+ * @union Constant
+ * @brief União contendo representações específicas para cada tipo do Constant Pool.
+ *
+ * Cada entrada de `cp_info` contém:
+ * - uma tag que indica o tipo de constante;
+ * - um valor interpretado por meio desta união.
+ *
+ * A interpretação correta depende da `tag`.
  */
 typedef union Constant
 {
-    /// @brief Representa uma classe ou interface.
+    /* ------------------------------ CONSTANT_Class ------------------------------ */
     struct Class
     {
-        /// @brief Índice do _pool_ de constantes para uma constante UTF8 com o nome da classe/interface.
+        /** Índice para CONSTANT_Utf8 contendo o nome interno da classe. */
         u2 name_index;
     } Class;
-    /// @brief Representa um campo, método ou método de interface de uma classe.
+
+    /* --------------- CONSTANT_Fieldref, Methodref, InterfaceMethodref --------------- */
     struct Ref
     {
-        /// @brief Índice do _pool_ de constantes para uma constante de classe (Class).
+        /** Índice para CONSTANT_Class descrevendo a classe que define o membro. */
         u2 class_index;
-        /// @brief Índice do _pool_ de constantes para uma constante (NameAndType) com informações específicas de um campo ou método de classe.
+        /** Índice para CONSTANT_NameAndType descrevendo nome + descritor do membro. */
         u2 name_and_type_index;
     } Ref;
-    /// @brief Representa um objeto constante do tipo `String`.
+
+    /* ------------------------------ CONSTANT_String ------------------------------ */
     struct String
     {
-        /// @brief Índice do _pool_ de constantes para uma constante UTF8 com o valor da _string_.
+        /** Índice para CONSTANT_Utf8 contendo o valor textual da string. */
         u2 string_index;
     } String;
-    /// @brief Representa um valor numérico constante de 4 bytes (`int` ou `float`).
+
+    /* ------------------ CONSTANT_Integer e CONSTANT_Float (32 bits) ------------------ */
     struct _4Bn
     {
-        /// @brief Valor em bytes da constante.
+        /** Representação em bytes (como lido do arquivo `.class`). */
         u4 bytes;
-        /// @brief União para armazenar o valor inteiro ou de ponto-flutuante constante.
+
+        /**
+         * Interpretação dos bytes como int ou float.
+         * A conversão final é feita após a leitura.
+         */
         union
         {
-            /// @brief Inteiro decodificado a partir dos bytes da constante.
-            int i;
-            /// @brief Número de ponto-flutuante decodificado a partir dos bytes da constante.
-            float f;
+            int   i; /**< inteiro de 32 bits */
+            float f; /**< ponto flutuante de 32 bits */
         } number;
+
     } _4Bn;
 
-    /// @brief Representa um valor numérico constante de 8 bytes (`long` ou `double`).
+    /* ------------------- CONSTANT_Long e CONSTANT_Double (64 bits) ------------------- */
     struct _8Bn
     {
-        /// @brief Primeiros 4 bytes (superiores) do valor da constante.
+        /** Parte alta do valor (primeiros 4 bytes). */
         u4 high_bytes;
-        /// @brief Últimos 4 bytes (inferiores) do valor da constante.
+        /** Parte baixa do valor (últimos 4 bytes). */
         u4 low_bytes;
-        /// @brief União para armazenar o valor inteiro ou de ponto-flutuante de 8 bytes constante.
+
+        /**
+         * Interpretação conjunta como long ou double.
+         * A união evita conversões repetitivas.
+         */
         union
         {
-            /// @brief Inteiro de 8 bytes decodificado a partir dos bytes da constante.
-            long l;
-            /// @brief Número de ponto-flutuante de precisão dupla decodificado a partir dos bytes da constante.
-            double d;
+            long   l; /**< valor inteiro de 64 bits */
+            double d; /**< valor double de 64 bits */
         } number;
+
     } _8Bn;
 
-    /// @brief Representa constantes com informações específicas de um campo ou método.
+    /* --------------------------- CONSTANT_NameAndType --------------------------- */
     struct NameAndType
     {
-        /// @brief Índice do _pool_ de constantes para uma constante UTF8 com o nome do campo/método.
+        /** Índice para CONSTANT_Utf8 contendo o nome. */
         u2 name_index;
-        /// @brief Índice do _pool_ de constantes para uma constante UTF8 com o descritor do campo/método.
+
+        /** Índice para CONSTANT_Utf8 contendo o descritor. */
         u2 descriptor_index;
     } NameAndType;
 
-    /// @brief Representa valores de _string_ constantes.
+    /* ------------------------------ CONSTANT_UTF8 ------------------------------ */
     struct UTF8
     {
-        /// @brief Número de bytes do valor constante.
+        /** Número de bytes do texto UTF-8 modificado. */
         u2 length;
-        /// @brief Bytes da _string_ constante.
+
+        /** Bytes crus conforme armazenados no arquivo `.class`. */
         u1 *bytes;
-        /// @brief _String_ decodificada do formato UTF-8 modificado
+
+        /** String decodificada já em UTF-8 padrão. */
         char *str;
     } UTF8;
 
-    /// @brief Representa um manipulador de método.
+    /* --------------------------- CONSTANT_MethodHandle --------------------------- */
     struct MethodHandle
     {
-        /// @brief Valor constante de 1 a 9 que denota o tipo do manipulador.
+        /** Tipo do manipulador (1 a 9), conforme enum da JVM. */
         u1 reference_kind;
-        /// @brief  Índice do _pool_ de constantes para uma constante Ref.
+
+        /** Índice para uma entrada Ref. */
         u2 reference_index;
     } MethodHandle;
 
-    /// @brief Representa o tipo de um método.
+    /* ----------------------------- CONSTANT_MethodType ---------------------------- */
     struct MethodType
     {
-        /// @brief Índice do _pool_ de constantes para uma constante UTF8 com o descritor do método.
+        /** Índice para CONSTANT_Utf8 contendo o descritor do método. */
         u2 descriptor_index;
     } MethodType;
 
-    /// @brief Especifica o método _bootstrap_ utilizado por uma instrução _invokedynamic_.
+    /* -------------------------- CONSTANT_InvokeDynamic --------------------------- */
     struct InvokeDynamic
     {
-        /// @brief Índice da tabela de métodos _bootstrap_ (BootstrapMethod).
+        /** Índice para a tabela BootstrapMethods. */
         u2 bootstrap_method_attr_index;
-        /// @brief Índice do _pool_ de constantes para uma constante de campo, método ou interface de método (NameAndType).
+
+        /** Índice para CONSTANT_NameAndType associado ao bootstrap. */
         u2 name_and_type_index;
     } InvokeDynamic;
+
 } Constant;
 
 /**
- * @brief Representa uma entrada no pool de constantes de um arquivo .class Java.
+ * @struct cp_info
+ * @brief Entrada do Constant Pool de um arquivo `.class`.
  *
- * @details Cada entrada no pool de constantes é composta por uma tag que identifica o tipo
- * da constante, seguida por uma união com a estrutura específica do tipo.
+ * Cada entrada tem:
+ * - uma `tag` que indica o tipo;
+ * - uma união `info` com os campos corretos para essa `tag`.
  *
- * A tag deve corresponder a uma das constantes definidas por CONSTANT_*:
- * - @ref CONSTANT_Class (7)
- * - @ref CONSTANT_Fieldref (9)
- * - @ref CONSTANT_Methodref (10)
- * - @ref CONSTANT_InterfaceMethodref (11)
- * - @ref CONSTANT_String (8)
- * - @ref CONSTANT_Integer (3)
- * - @ref CONSTANT_Float (4)
- * - @ref CONSTANT_Long (5)
- * - @ref CONSTANT_Double (6)
- * - @ref CONSTANT_NameAndType (12)
- * - @ref CONSTANT_UTF8 (1)
- * - @ref CONSTANT_MethodHandle (15)
- * - @ref CONSTANT_MethodType (16)
- * - @ref CONSTANT_InvokeDynamic (18)
+ * O Constant Pool é um dos componentes mais importantes da JVM, usado para
+ * resolução de símbolos, nomes, tipos, literais, etc.
  */
 typedef struct cp_info
 {
-    /// @brief Tag que identifica o tipo da constante no pool de constantes.
-    ///
-    /// @details Este campo determina qual variante da união `info` deve ser interpretada.
-    /// Os valores válidos são definidos pelas macros CONSTANT_* documentadas acima.
-    ///
-    /// **Valores possíveis:**
-    /// - 7  → @ref CONSTANT_Class (Referência a classe/interface)
-    /// - 9  → @ref CONSTANT_Fieldref (Referência a campo)
-    /// - 10 → @ref CONSTANT_Methodref (Referência a método de classe)
-    /// - 11 → @ref CONSTANT_InterfaceMethodref (Referência a método de interface)
-    /// - 8  → @ref CONSTANT_String (Referência a string)
-    /// - 3  → @ref CONSTANT_Integer (Valor inteiro)
-    /// - 4  → @ref CONSTANT_Float (Valor float)
-    /// - 5  → @ref CONSTANT_Long (Valor long)
-    /// - 6  → @ref CONSTANT_Double (Valor double)
-    /// - 12 → @ref CONSTANT_NameAndType (Descritor nome e tipo)
-    /// - 1  → @ref CONSTANT_UTF8 (String UTF-8)
-    /// - 15 → @ref CONSTANT_MethodHandle (Manipulador de método)
-    /// - 16 → @ref CONSTANT_MethodType (Tipo de método)
-    /// - 18 → @ref CONSTANT_InvokeDynamic
+    /**
+     * @brief Tag que indica qual variante do Constant Pool esta entrada representa.
+     *
+     * Valores possíveis (macros `CONSTANT_*`):
+     * - CONSTANT_Class (7)
+     * - CONSTANT_Fieldref (9)
+     * - CONSTANT_Methodref (10)
+     * - CONSTANT_InterfaceMethodref (11)
+     * - CONSTANT_String (8)
+     * - CONSTANT_Integer (3)
+     * - CONSTANT_Float (4)
+     * - CONSTANT_Long (5)
+     * - CONSTANT_Double (6)
+     * - CONSTANT_NameAndType (12)
+     * - CONSTANT_UTF8 (1)
+     * - CONSTANT_MethodHandle (15)
+     * - CONSTANT_MethodType (16)
+     * - CONSTANT_InvokeDynamic (18)
+     */
     u1 tag;
 
-    /// @brief União contendo os dados específicos do tipo de constante.
-    /// @see Constant para estruturas específicas para cada constante.
+    /**
+     * @brief União que representa o conteúdo específico do tipo identificado por `tag`.
+     *
+     * A interpretação correta depende exclusivamente da `tag`.
+     * @see Constant
+     */
     Constant info;
+
 } cp_info;
 
-#endif
+#endif /* TYPES_CP_CONSTANTS_H */

@@ -1,244 +1,357 @@
+/**
+ * @file attributes.h
+ * @brief Representações das diferentes estruturas de atributos encontradas em arquivos `.class` (JVM 8).
+ *
+ * Esta unidade define a união `attribute_info` que contém todas as possíveis
+ * representações específicas de atributos (Code, ConstantValue, Exceptions, InnerClasses, etc.)
+ * conforme a especificação da JVM 8. Cada membro da união corresponde aos dados
+ * associados a um tipo de atributo particular.
+ *
+ * Observações:
+ * - Nem todos os campos complexos (por exemplo, estruturas de annotation) estão
+ *   totalmente implementados — muitos aparecem como placeholders para sinalizar
+ *   onde a implementação adicional deveria ocorrer.
+ * - Todas as alocações feitas durante o parsing devem ser liberadas por rotinas
+ *   adequadas (ex.: `free_attributes()`).
+ */
+
 #ifndef TYPES_ATTRIBUTES_ATTRIBUTES_H
 #define TYPES_ATTRIBUTES_ATTRIBUTES_H
 
 #include "uinteger.h"
 
-/// @brief União para informações específicas de cada tipo de atributo.
+/// @brief União contendo as informações específicas para cada tipo de atributo do classfile.
 typedef union attribute_info
 {
-    /// @brief Informação de um atributo ConstantValue que representa o valor de uma expressão constante.
+    /* --------------------------------------------------------------------- */
+    /* ConstantValue                                                         */
+    /* --------------------------------------------------------------------- */
+
+    /**
+     * @brief Informação do atributo ConstantValue.
+     *
+     * Representa o valor constante associado a um campo estático final,
+     * apontado por um índice no constant pool.
+     */
     struct ConstantValue
     {
-        /// @brief Índice na constant pool que contém o valor constante (deve ser um índice válido para um campo Long, Double, Float, Integer, String)
+        /** Índice no constant pool apontando para o valor constante. */
         u2 constantvalue_index;
     } ConstantValue;
 
-    /// @brief Informação de um atributo Code contendo as instruções JVM e informações auxiliares de um método.
+    /* --------------------------------------------------------------------- */
+    /* Code                                                                  */
+    /* --------------------------------------------------------------------- */
+
+    /**
+     * @brief Informação do atributo Code associado a métodos contendo bytecode.
+     *
+     * Contém o bytecode do método, tabelas de exceção e atributos aninhados (por ex. LineNumberTable).
+     */
     struct Code
     {
-        /// @brief Número máximo de valores na pilha de operandos durante a execução deste método
+        /** Máximo de níveis na pilha de operandos durante execução (max_stack). */
         u2 max_stack;
-        /// @brief Número de variáveis locais no array de variáveis locais alocado para este método
+
+        /** Número máximo de variáveis locais (max_locals). */
         u2 max_locals;
-        /// @brief Número de bytes no array de código para este método
+
+        /** Comprimento do array de bytecode (em bytes). */
         u4 code_length;
-        /// @brief Array de bytes que contém o bytecode real do método
+
+        /** Ponteiro para os bytes do bytecode (array de u1). */
         u1 *code;
-        /// @brief Número de entradas na tabela de exceções
+
+        /** Número de entradas na tabela de exceções. */
         u2 exception_table_length;
-        /// @brief Tabela de exceções que define os handlers de exceção
+
+        /**
+         * @brief Tabela de exceções (cada entrada define um handler).
+         *
+         * Cada item contém:
+         * - start_pc, end_pc: intervalo coberto pelo handler;
+         * - handler_pc: início do handler;
+         * - catch_type: índice no constant pool do tipo capturado (0 = catch-all).
+         */
         struct exception_table
         {
-            /// @brief Índice do início do range de código coberto pelo handler (inclusive)
             u2 start_pc;
-            /// @brief Índice do fim do range de código coberto pelo handler (exclusive)
             u2 end_pc;
-            /// @brief Índice do início do código do handler
             u2 handler_pc;
-            /// @brief Índice na constant pool do tipo de exceção capturado (0 para qualquer exceção)
             u2 catch_type;
         } *exception_table;
-        /// @brief Número de atributos adicionais associados ao código
+
+        /** Número de atributos aninhados dentro do atributo Code. */
         u2 attributes_count;
-        /// @brief Array de atributos adicionais do código (como LineNumberTable, LocalVariableTable, etc.)
+
+        /**
+         * @brief Array de atributos aninhados (LineNumberTable, LocalVariableTable, etc.).
+         *
+         * Este campo referencia um vetor de `attribute` ou `attribute_info` conforme a implementação do projeto.
+         */
         struct attribute *attributes;
     } Code;
 
-    /// @brief Informação de um atributo StackMapTable para verificação de tipo em arquivos .class de versão maior ou igual a 50.
+    /* --------------------------------------------------------------------- */
+    /* StackMapTable                                                         */
+    /* --------------------------------------------------------------------- */
+
+    /**
+     * @brief Informação do atributo StackMapTable usado pelo verificador de tipos.
+     *
+     * Implementação parcial — as estruturas internas de stack_map_frame permanecem como placeholder.
+     */
     struct StackMapTable
     {
-        /// @brief Número de entradas na tabela de stack map frames
+        /** Número de entradas na tabela de frames. */
         u2 number_of_entries;
-        /// @brief Array de stack map frames que definem o estado da pilha em pontos específicos do código
-        /// @note Deve ser finalizado caso seja implementado o mecanismo de verificação de tipo especificado para a JVM 8.
+
+        /**
+         * @brief Ponteiro para as entradas da StackMapTable.
+         *
+         * Implementação detalhada de stack_map_frame não fornecida aqui.
+         */
         struct stack_map_frame
         {
+            /* Placeholder para representação de stack map frames. */
         } *entries;
     } StackMapTable;
 
-    /// @brief Informação de um atributo Exceptions contendo possíveis exceções que são lançadas por um método.
+    /* --------------------------------------------------------------------- */
+    /* Exceptions                                                             */
+    /* --------------------------------------------------------------------- */
+
+    /**
+     * @brief Informação do atributo Exceptions listando exceções lançadas por um método.
+     */
     struct Exceptions
     {
-        /// @brief Número de exceções na tabela
+        /** Número de exceções listadas. */
         u2 number_of_exceptions;
-        /// @brief Array de índices na constant pool para classes de exceção (devem ser classes Throwable)
+
+        /** Array de índices no constant pool apontando para classes Throwable. */
         u2 *exception_index_table;
     } Exceptions;
 
-    /// @brief Informação de um atributo InnerClasses com classes aninhadas da respectiva classe (_i.e._, que não fazem parte de um pacote).
+    /* --------------------------------------------------------------------- */
+    /* InnerClasses                                                           */
+    /* --------------------------------------------------------------------- */
+
+    /**
+     * @brief Informação do atributo InnerClasses descrevendo classes internas.
+     */
     struct InnerClasses
     {
-        /// @brief Número de classes internas definidas
+        /** Número de classes internas descritas. */
         u2 number_of_classes;
-        /// @brief Array de informações sobre classes internas
+
+        /**
+         * @brief Array com informações sobre cada classe interna.
+         *
+         * Para cada entrada:
+         * - inner_class_info_index: índice para a classe interna;
+         * - outer_class_info_index: índice da classe externa (0 se anônima);
+         * - inner_name_index: índice para nome simples (0 se anônima);
+         * - inner_class_access_flags: flags de acesso da classe interna.
+         */
         struct classes
         {
-            /// @brief Índice na constant pool para a classe interna
             u2 inner_class_info_index;
-            /// @brief Índice na constant pool para a classe externa (0 se a classe for anônima)
             u2 outer_class_info_index;
-            /// @brief Índice na constant pool para o nome simples da classe interna (0 se a classe for anônima)
             u2 inner_name_index;
-            /// @brief Máscara de bits com flags de acesso da classe interna (public, private, protected, static, final, etc.)
             u2 inner_class_access_flags;
         } *classes;
     } InnerClasses;
 
-    /// @brief Informação de um atributo EnclosingMethod representando o método que declara uma classe local ou anônima.
+    /* --------------------------------------------------------------------- */
+    /* EnclosingMethod                                                        */
+    /* --------------------------------------------------------------------- */
+
+    /**
+     * @brief Informação do atributo EnclosingMethod usado para classes locais/anônimas.
+     */
     struct EnclosingMethod
     {
-        /// @brief Índice na constant pool para a classe que contém a declaração da classe atual
+        /** Índice no constant pool para a classe que contém a declaração. */
         u2 class_index;
-        /// @brief Índice na constant pool para o método que contém a declaração (0 se a classe não for local a um método)
+
+        /**
+         * @brief Índice no constant pool para o método que contém a declaração.
+         *
+         * Valor 0 indica que a classe não é local a um método.
+         */
         u2 method_index;
     } EnclosingMethod;
 
-    /// @brief Informação de um atributo Signature contendo declarações com tipos além daqueles definidos na JVM.
+    /* --------------------------------------------------------------------- */
+    /* Signature                                                              */
+    /* --------------------------------------------------------------------- */
+
+    /**
+     * @brief Informação do atributo Signature que contém tipos genéricos/avançados.
+     */
     struct Signature
     {
-        /// @brief Índice na constant pool para uma string UTF-8 contendo a assinatura do tipo
+        /** Índice no constant pool para a string UTF-8 com a assinatura. */
         u2 signature_index;
     } Signature;
 
-    /// @brief Informação de um atributo SourceFile com o nome do arquivo `.java` associado ao _classfile_ atual.
+    /* --------------------------------------------------------------------- */
+    /* SourceFile / SourceDebugExtension                                      */
+    /* --------------------------------------------------------------------- */
+
+    /**
+     * @brief Informação do atributo SourceFile indicando o nome do arquivo fonte.
+     */
     struct SourceFile
     {
-        /// @brief Índice na constant pool para uma string UTF-8 contendo o nome do arquivo fonte
-        u2 sourcefile_index;
+        u2 sourcefile_index; /**< Índice no constant pool para o nome do arquivo .java */
     } SourceFile;
 
-    /// @brief Informção de um atributo SourceDebugExtension com informações para _debugging_ extendidas.
+    /**
+     * @brief Informação do atributo SourceDebugExtension com dados de debug adicionais.
+     */
     struct SourceDebugExtension
     {
-        /// @brief Array de bytes contendo informações extendidas de debug em formato indefinido
-        u1 *debug_extension;
+        u1 *debug_extension; /**< Bytes contendo informações de debug estendidas */
     } SourceDebugExtension;
 
-    /// @brief Informação de um atributo LineNumberTable associando linhas do _bytecode_ com as linhas do código-fonte Java para _debugging_.
+    /* --------------------------------------------------------------------- */
+    /* LineNumberTable                                                        */
+    /* --------------------------------------------------------------------- */
+
+    /**
+     * @brief Informação do atributo LineNumberTable para mapeamento bytecode → número de linha.
+     */
     struct LineNumberTable
     {
-        /// @brief Número de entradas na tabela de linhas
         u2 line_number_table_length;
-        /// @brief Array de mapeamentos entre bytecode e linhas do fonte
+
+        /**
+         * @brief Array de entradas (start_pc, line_number).
+         *
+         * Cada entrada indica que a instrução em start_pc corresponde àquela linha no fonte.
+         */
         struct line_number_table
         {
-            /// @brief Índice no array de código onde uma nova linha no fonte começa
             u2 start_pc;
-            /// @brief Número da linha correspondente no arquivo fonte
             u2 line_number;
         } *line_number_table;
     } LineNumberTable;
 
-    /// @brief Informação de um atributo LocalVariableTable para _debuggers_ determinarem com o valor de uma dada variável local durante execução de um método.
+    /* --------------------------------------------------------------------- */
+    /* LocalVariableTable / LocalVariableTypeTable                            */
+    /* --------------------------------------------------------------------- */
+
+    /**
+     * @brief Informação do atributo LocalVariableTable (debug).
+     */
     struct LocalVariableTable
     {
-        /// @brief Número de entradas na tabela de variáveis locais
         u2 local_variable_table_length;
-        /// @brief Array de informações sobre variáveis locais
+
         struct local_variable_table
         {
-            /// @brief Índice no array de código onde a variável começa a ser válida
             u2 start_pc;
-            /// @brief Comprimento do range onde a variável é válida (em bytes de código)
             u2 length;
-            /// @brief Índice na constant pool para o nome da variável local
             u2 name_index;
-            /// @brief Índice na constant pool para o descritor de campo da variável local
             u2 descriptor_index;
-            /// @brief Índice no array de variáveis locais onde esta variável está armazenada
             u2 index;
         } *local_variable_table;
     } LocalVariableTable;
 
-    /// @brief Informação de um atributo LocalVariableTable para _debuggers_ determinarem com o tipo de uma dada variável local durante execução de um método.
+    /**
+     * @brief Informação do atributo LocalVariableTypeTable (debug para genéricos).
+     */
     struct LocalVariableTypeTable
     {
-        /// @brief Número de entradas na tabela de tipos de variáveis locais
         u2 local_variable_type_table_length;
-        /// @brief Array de informações sobre tipos genéricos de variáveis locais
+
         struct local_variable_type_table
         {
-            /// @brief Índice no array de código onde a variável começa a ser válida
             u2 start_pc;
-            /// @brief Comprimento do range onde a variável é válida (em bytes de código)
             u2 length;
-            /// @brief Índice na constant pool para o nome da variável local
             u2 name_index;
-            /// @brief Índice na constant pool para a assinatura de campo da variável local
             u2 signature_index;
-            /// @brief Índice no array de variáveis locais onde esta variável está armazenada
             u2 index;
         } *local_variable_type_table;
     } LocalVariableTypeTable;
 
-    /// @brief Informação de um atributo RuntimeVisibleAnnotations ou RuntimeInvisibleAnnotations representando anotações de uma classe, campo ou método.
+    /* --------------------------------------------------------------------- */
+    /* Runtime Annotations / Parameter Annotations / AnnotationDefault         */
+    /* --------------------------------------------------------------------- */
+
+    /**
+     * @brief Informação de atributos de anotações (visíveis em tempo de execução ou não).
+     *
+     * Estruturas internas de annotation são placeholders; implementar conforme necessário.
+     */
     struct RuntimeAnnotations
     {
-        /// @brief Número de anotações definidas
         u2 num_annotations;
-        /// @brief Array de estruturas de anotações
-        /// @note Deve ser finalizado caso a JVM necessite executar programas Java com anotações.
         struct annotation
         {
+            /* Placeholder para campos de annotation conforme JVM spec */
         } *annotations;
     } RuntimeVisibleAnnotations, RuntimeInvisibleAnnotations;
 
-    /// @brief Informação de um atributo RuntimeVisibleAnnotations ou RuntimeInvisibleAnnotations representando parâmetros de anotações de uma classe, campo ou método.
+    /**
+     * @brief Informação de anotações por parâmetro (visíveis/invisíveis).
+     */
     struct RuntimeParameterAnnotations
     {
-        /// @brief Número de parâmetros que possuem anotações
         u2 num_parameters;
-        /// @brief Array de anotações por parâmetro
         struct
         {
-            /// @brief Número de anotações para este parâmetro
             u2 num_annotations;
-            /// @brief Array de anotações aplicadas a este parâmetro
-            struct annotation *annotation;
+            struct annotation *annotation; /* Ponteiro para array de annotations */
         } *parameter_annotations;
     } RuntimeVisibleParameterAnnotations, RuntimeInvisibleParameterAnnotations;
 
-    /// @brief Informação de um atributo AnnotationDefault representando o valor padrão de uma anotação de uma classe, campo ou método.
+    /**
+     * @brief Informação do atributo AnnotationDefault (valor padrão de uma annotation element).
+     */
     struct AnnotationDefault
     {
-        /// @brief Valor padrão da anotação quando não explicitamente especificado
-        /// @note Faz parte da estrutura `annotation`, de acordo com a especificação da JVM 8.
         struct element_value
         {
+            /* Placeholder para estrutura element_value conforme a especificação */
         } default_value;
     } AnnotationDefault;
 
-    /// @brief Informação de um atributo BootstrapMethods contendo especificações para um método _bootstrap_ referenciado por uma instrução _invokedynamic_.
+    /* --------------------------------------------------------------------- */
+    /* BootstrapMethods / MethodParameters                                    */
+    /* --------------------------------------------------------------------- */
+
+    /**
+     * @brief Informação do atributo BootstrapMethods (usado por invokedynamic).
+     */
     struct BootstrapMethods
     {
-        /// @brief Número de métodos bootstrap definidos
         u2 num_bootstrap_methods;
-        /// @brief Array de métodos bootstrap
+
         struct bootstrap_method
         {
-            /// @brief Índice na constant pool para um método handle válido
-            u2 bootstrap_method_ref;
-            /// @brief Número de argumentos bootstrap
-            u2 num_bootstrap_arguments;
-            /// @brief Array de índices na constant pool para argumentos bootstrap (devem ser constantes estáticas)
-            u2 *bootstrap_arguments;
+            u2 bootstrap_method_ref;      /**< Índice para um MethodHandle */
+            u2 num_bootstrap_arguments;   /**< Quantidade de argumentos bootstrap */
+            u2 *bootstrap_arguments;      /**< Índices no constant pool para argumentos */
         } *bootstrap_methods;
     } BootstrapMethods;
 
-    /// @brief Informação de um atributo MethodParameters com informações sobre parâmetros formais de um método.
+    /**
+     * @brief Informação do atributo MethodParameters contendo metadados de parâmetros.
+     */
     struct MethodParameters
     {
-        /// @brief Número de parâmetros no método
         u1 parameters_count;
-        /// @brief Array de informações sobre cada parâmetro
+
         struct parameter
         {
-            /// @brief Índice na constant pool para o nome do parâmetro (0 se o parâmetro não tem nome)
-            u2 name_index;
-            /// @brief Flags de acesso do parâmetro (final, synthetic, mandated)
-            u2 access_flags;
+            u2 name_index;   /**< Índice no constant pool para o nome do parâmetro (0 se ausente) */
+            u2 access_flags; /**< Flags do parâmetro (final, synthetic, mandated) */
         } *parameters;
     } MethodParameters;
+
 } attribute_info;
 
-#endif
+#endif /* TYPES_ATTRIBUTES_ATTRIBUTES_H */
