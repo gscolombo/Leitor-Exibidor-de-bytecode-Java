@@ -7,6 +7,14 @@
 #include "bytecode/printer.h"
 #include "types/cp/constants.h"
 
+static char *strdup(const char *s) {
+    size_t size = strlen(s) + 1;
+    char *p = (char *)malloc(size);
+    if (p)
+        memcpy(p, s, size);
+    return p;
+}
+
 /* Resolve uma entrada da constant pool e retorna string alocada (caller free()). */
 static char *resolve_cp_entry(const cp_info *cp, u2 cp_count, u2 index)
 {
@@ -28,7 +36,7 @@ static char *resolve_cp_entry(const cp_info *cp, u2 cp_count, u2 index)
             s = malloc(strlen(name) + 16);
             sprintf(s, "Class %s", name);
         } else {
-            s = strdup("<invalid Class>");
+            s = "<invalid Class>";
         }
         break;
     }

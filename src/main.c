@@ -8,8 +8,13 @@ int main(const int argc, char *argv[])
 {
     if (argc < 3)
     {
-        printf("Invalid number of arguments."
-               "Pass the mode of operation (--show or --execute) along with the path for a .class file.\n");
+        printf("Número de argumentos inválido.\n");
+        printf("Uso: %s <modo> <arquivo.class>\n\n", argv[0]);
+        printf("Argumentos necessários:\n");
+        printf("  <modo>           --show     Exibe informações do arquivo .class\n");
+        printf("                   --execute  Executa o arquivo .class\n");
+        printf("  <arquivo.class>  Caminho para o arquivo .class\n\n");
+        printf("Exemplo: %s --show programa.class\n", argv[0]);
         return 1;
     }
 
@@ -31,7 +36,8 @@ int main(const int argc, char *argv[])
         {
             // Invoke main method
             Method *main_method = lookup_method("main", "([Ljava/lang/String;)V", initial_class);
-            if (!main_method) {
+            if (!main_method)
+            {
                 printf("Método \"main\" não encontrado.\n");
                 exit(1);
             }
