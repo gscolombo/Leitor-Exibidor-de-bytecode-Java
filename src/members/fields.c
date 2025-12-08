@@ -1,9 +1,29 @@
+/**
+ * @file members/fields.c
+ * @brief Rotinas para exibição (dump) de campos (fields) presentes em um ClassFile.
+ *
+ * Este módulo fornece funções que imprimem uma representação legível dos campos
+ * declarados em um arquivo `.class`, incluindo:
+ *  - flags de acesso (tanto em formato simbólico ACC_* quanto em palavras-chave Java);
+ *  - nome e descritor do campo (com parsing do descritor para forma legível);
+ *  - atributos associados ao campo (por exemplo, ConstantValue) com interpretação dos
+ *    valores constantes suportados pela especificação JVM.
+ *
+ * Funções estáticas auxiliares ajudam a imprimir corretamente o valor de ConstantValue
+ * e a mapear flags/descritores para strings legíveis.
+ */
+
 #include "fields.h"
 #include <inttypes.h>
 #include "types/cp/constants.h"
 #include "types/attributes/attribute_info.h"
 #include "types/attributes/attributes.h"
 
+/**
+ * @brief Mapeamento entre flags de field e nomes simbólicos (ACC_*).
+ *
+ * Usado por parse_flags() para gerar uma string com as flags setadas no field.
+ */
 static const FlagMap flag_map[9] = {
     {0x0001, "ACC_PUBLIC"},
     {0x0002, "ACC_PRIVATE"},
@@ -15,6 +35,11 @@ static const FlagMap flag_map[9] = {
     {0x1000, "ACC_SYNTHETIC"},
     {0x4000, "ACC_ENUM"}};
 
+/**
+ * @brief Mapeamento entre flags de field e palavras-chave Java.
+ *
+ * Fornece uma versão legível próxima à sintaxe Java (ex.: "public static final").
+ */
 static const FlagMap flag_kw_map[7] = {
     {0x0001, "public"},
     {0x0002, "private"},
@@ -24,6 +49,16 @@ static const FlagMap flag_kw_map[7] = {
     {0x0040, "volatile"},
     {0x0080, "transient"}};
 
+/**
+ * @brief Imprime o conteúdo de um atributo ConstantValue de um field.
+ *
+ * Resolve o índice para a Constant Pool e, dependendo do tag do entry, imprime
+ * o valor correspondente (Integer, Float, Long, Double, String). Trata índices
+ * inválidos e tipos não suportados de acordo com a especificação.
+ *
+ * @param cf Ponteiro para o ClassFile que contém a constant pool.
+ * @param constant_index Índice na constant pool que aponta para o valor constante.
+ */
 static void print_constant_value(const ClassFile *cf, u2 constant_index)
 {
     if (constant_index == 0 || constant_index > cf->constant_pool_count)
@@ -80,6 +115,21 @@ static void print_constant_value(const ClassFile *cf, u2 constant_index)
     }
 }
 
+/**
+ * @brief Exibe todos os campos (fields) definidos no ClassFile.
+ *
+ * Para cada field, imprime:
+ *  - modifiers em forma de palavras-chave Java (ex.: "public static");
+ *  - tipo e nome do campo (o descritor é parseado para forma legível com parse_descriptor);
+ *  - descriptor bruto;
+ *  - flags em formato hex e textual;
+ *  - atributos associados (por exemplo, ConstantValue é interpretado e impresso).
+ *
+ * A função aloca strings auxiliares (flags, descritor parseado, kws) que são liberadas
+ * ao final de cada iteração.
+ *
+ * @param cf Ponteiro para o ClassFile a ser exibido. Se cf->constant_pool for NULL, a função retorna imediatamente.
+ */
 void show_fields(const ClassFile *cf)
 {
     if (cf->constant_pool == NULL)
