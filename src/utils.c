@@ -1,14 +1,41 @@
-#include "utils.h"
-
-/** @file
- * @brief Definição de funções utilitárias para o restante do projeto.
+/**
+ * @file utils.c
+ * @brief Implementações de funções utilitárias usadas pelo projeto.
+ *
+ * Este módulo fornece utilitários gerais de baixo nível usados por várias
+ * partes do interpretador/loader de classes, incluindo:
+ *  - operações de troca de ordem de bytes (endianness) para tipos u2/u4;
+ *  - contagem de dígitos decimais;
+ *  - conversão de flags para string legível;
+ *  - mapeamentos e conversões de nomes de atributos;
+ *  - análise (parsing) de descritores JVM para uma forma legível.
+ *
+ * As funções aqui são projetadas para serem simples, seguras e reutilizáveis.
  */
 
+#include "utils.h"
+
+/**
+ * @brief Troca a ordem dos dois bytes de um valor de 16 bits armazenado em um unsigned int.
+ *
+ * Usado para corrigir endianness em leituras de campos u2 quando necessário.
+ *
+ * @param n Valor original (assume-se que os 16 bits menos significativos contêm o valor u2).
+ * @return Valor com os dois bytes trocados.
+ */
 unsigned int u2swap(const unsigned int n)
 {
     return ((n << 8)) | ((n >> 8));
 }
 
+/**
+ * @brief Troca a ordem dos quatro bytes de um valor de 32 bits armazenado em um unsigned int.
+ *
+ * Usado para corrigir endianness em leituras de campos u4.
+ *
+ * @param n Valor original de 32 bits.
+ * @return Valor com a ordem dos bytes invertida (big-endian <-> little-endian).
+ */
 unsigned int u4swap(const unsigned int n)
 {
     return ((n >> 24)) |           // Troca o byte 3 com o byte 0
@@ -17,6 +44,14 @@ unsigned int u4swap(const unsigned int n)
            ((n << 24));            // Troca o byte 0 com o byte 3
 }
 
+/**
+ * @brief Calcula quantos dígitos decimais tem o número fornecido.
+ *
+ * Ex.: num_digits(9) -> 1, num_digits(10) -> 2, num_digits(123) -> 3.
+ *
+ * @param n Número não-negativo.
+ * @return Quantidade de dígitos decimais de `n`.
+ */
 unsigned int num_digits(unsigned int n)
 {
     if (n < 10)
@@ -29,6 +64,19 @@ unsigned int num_digits(unsigned int n)
     return r;
 }
 
+/**
+ * @brief Converte um conjunto de flags (bitmask) em uma string contendo os nomes das flags setadas.
+ *
+ * A função varre o array `flag_map` que contém pares (flag, nome) e concatena os nomes das
+ * flags presentes em `flags`, separados por `sep`. A string retornada é alocada dinamicamente
+ * e deve ser liberada pelo chamador (free).
+ *
+ * @param flags Máscara de flags (u2).
+ * @param n Número de entradas em `flag_map`.
+ * @param sep Separador usado entre nomes (ex.: ", ").
+ * @param flag_map Array de `FlagMap` que mapeia cada bit a um nome textual.
+ * @return Ponteiro para string alocada dinamicamente com os nomes das flags ou NULL em caso de falha.
+ */
 char *parse_flags(u2 flags, size_t n, const char *sep, const FlagMap flag_map[])
 {
     size_t sep_len = strlen(sep);
@@ -69,6 +117,12 @@ char *parse_flags(u2 flags, size_t n, const char *sep, const FlagMap flag_map[])
     return flag_str;
 }
 
+/**
+ * @brief Mapeamento interno entre nomes de atributos (string) e o enum attribute_name.
+ *
+ * Esta tabela é usada por convert_attr_name() para traduzir o nome textual de um atributo
+ * (por exemplo, "Code") para o identificador `attribute_name` correspondente.
+ */
 static const struct
 {
     const attribute_name attr;
@@ -96,6 +150,14 @@ static const struct
     {BootstrapMethods, "BootstrapMethods"},
     {MethodParameters, "MethodParameters"}};
 
+/**
+ * @brief Converte o nome textual de um atributo para o enum `attribute_name`.
+ *
+ * Procura na tabela `conversion` e retorna um ponteiro para o valor enum correspondente.
+ *
+ * @param name Nome textual do atributo (ex.: "Code"). Pode ser NULL.
+ * @return Ponteiro para o `attribute_name` correspondente caso encontrado, ou NULL caso contrário.
+ */
 const attribute_name *convert_attr_name(const char *name)
 {
     if (name != NULL)
@@ -108,6 +170,11 @@ const attribute_name *convert_attr_name(const char *name)
     return NULL;
 }
 
+/**
+ * @brief Mapeamento entre código base de tipo (char) e string legível (ex.: 'I' -> "int").
+ *
+ * Usado pela função parse_descriptor para traduzir tipos primitivos do descritor JVM.
+ */
 static const struct
 {
     char base_type;
@@ -123,6 +190,20 @@ static const struct
     {L'Z', "boolean"},
     {L'V', "void"}};
 
+/**
+ * @brief Converte um descritor JVM em uma representação legível.
+ *
+ * Exemplos:
+ *  - "(I)V"   -> "(int) void"
+ *  - "([I)I"  -> "([int]) int" (ou forma similar)
+ *  - "(Ljava/lang/String;)V" -> "(java.lang.String) void"
+ *
+ * A string retornada é alocada com calloc e deve ser liberada pelo chamador.
+ *
+ * @param descriptor String com o descritor no formato JVM (ex.: "(ILjava/lang/String;)[I").
+ * @param sep  Separador a ser usado entre parâmetros (ex.: ","). Se NULL, usa um espaço simples.
+ * @return Ponteiro para string alocada contendo a forma legível do descritor, ou NULL se `descriptor` for NULL.
+ */
 char *parse_descriptor(const char *descriptor, char *sep)
 {
     if (descriptor == NULL)
