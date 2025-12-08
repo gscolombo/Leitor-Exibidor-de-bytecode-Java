@@ -28,4 +28,6 @@
  */
 void show_constants(u2, cp_info *);
 
+char *get_constant_UTF8_value(u2, const cp_info *);
+
 #endif

@@ -4,7 +4,8 @@ DEBUG_MODE = false
 
 # Find all subdirectories in include (including nested ones)
 INCLUDE_DIRS = $(shell find include -type d)
-CFLAGS = $(addprefix -I,$(INCLUDE_DIRS)) -Wall -Wextra
+CFLAGS = $(addprefix -I,$(INCLUDE_DIRS)) -std=c99 -Wall -Wextra -m32
+OFLAGS = -lm -m32
 DEBUG_FLAGS = -fsanitize=address -g
 LDFLAGS = -static-libasan
 
@@ -29,9 +30,9 @@ $(BUILD_DIR):
 # Link object files into the executable
 $(TARGET): $(OBJS)
 ifeq ($(DEBUG_MODE), true)
-	@$(CC) $(OBJS) -o $@ $(DEBUG_FLAGS) $(LDFLAGS)
+	@$(CC) $(OBJS) -o $@ $(DEBUG_FLAGS) $(LDFLAGS) $(OFLAGS)
 else
-	@$(CC) $(OBJS) -o $@
+	@$(CC) $(OBJS) -o $@ $(OFLAGS)
 endif
 
 # Compile each source file to an object file
@@ -51,6 +52,7 @@ clean:
 rebuild: clean all
 
 # Debug target to see what's being included
+FILE= # Path to a .class file
 debug:
 	@echo "Include directories:"
 	@echo "  "$(INCLUDE_DIRS)
@@ -58,9 +60,8 @@ debug:
 	@echo "  "$(SRCS)
 	@echo "Object files:"
 	@echo "  "$(OBJS)"\n"
-	@make rebuild -e "DEBUG_MODE=true" -e "TARGET=cjavap_debug"
+	@make -e "DEBUG_MODE=true" -e "TARGET=cjavap_debug"
 	@echo "\n------------------------------------------------\n"
-	@cd .; ./cjavap_debug classfiles/Example/Main.class 
-	@rm cjavap_debug
+	@cd .; ./cjavap_debug $(MODE) $(FILE) && rm cjavap_debug
 
 .PHONY: all clean rebuild debug

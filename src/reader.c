@@ -17,7 +17,7 @@ u2 read_u2(FILE *fptr)
     u2 u;
     fread(&u, sizeof(u2), 1, fptr);
 
-    if (LE)
+    if (LittleEndian)
     {
         u = u2swap(u);
     }
@@ -30,7 +30,7 @@ u4 read_u4(FILE *fptr)
     u4 u;
     fread(&u, sizeof(u4), 1, fptr);
 
-    if (LE)
+    if (LittleEndian)
     {
         u = u4swap(u);
     }
@@ -49,7 +49,7 @@ FILE *open_classfile(const char *path)
         if (strcmp(ext, ".class") != 0)
         {
             printf("Wrong file format. Give the path of a \".class\" file.\n");
-            return NULL;
+            exit(1);
         }
 
         return fopen(path, "rb");
@@ -59,7 +59,7 @@ FILE *open_classfile(const char *path)
     return NULL;
 }
 
-ClassFile read_classfile(FILE *fptr)
+ClassFile read_classfile(FILE *fptr, bool show_bytes)
 {
     ClassFile cf;
 
@@ -67,10 +67,19 @@ ClassFile read_classfile(FILE *fptr)
     {
         const size_t fsize = ftell(fptr);
 
-        printf("Size: %lu bytes.\n", fsize);
+        if (show_bytes)
+            printf("Size: %u bytes.\n", fsize);
         fseek(fptr, 0, SEEK_SET);
 
         cf.magic = read_u4(fptr);
+
+        if (cf.magic != 0xCAFEBABE)
+        {
+            fprintf(stderr, "Erro: arquivo .class inválido (magic number = 0x%08X, esperado 0xCAFEBABE).\n", cf.magic);
+            fclose(fptr);
+            exit(EXIT_FAILURE);
+        }
+
         cf.minor_version = read_u2(fptr);
         cf.major_version = read_u2(fptr);
         cf.constant_pool_count = read_u2(fptr);
@@ -105,9 +114,13 @@ ClassFile read_classfile(FILE *fptr)
             read_member(cf.constant_pool, cf.methods_count, cf.methods, fptr);
 
         cf.attributes_count = read_u2(fptr);
+        cf.attributes = (attribute *)calloc(cf.attributes_count, sizeof(attribute));
+        if (cf.attributes != NULL)
+            read_attributes(cf.constant_pool, cf.attributes_count, fptr, cf.attributes);
     }
 
-    printf("%lu bytes readed.\n\n", ftell(fptr));
+    if (show_bytes)
+        printf("%lu bytes readed.\n\n", ftell(fptr));
     fclose(fptr);
     return cf;
 }
@@ -189,6 +202,62 @@ void read_attributes(const cp_info *cp, u2 n, FILE *fptr, attribute *attr)
                         attr[i].info.Code.attributes = (attribute *)calloc(c, sizeof(attribute));
                         if (attr[i].info.Code.attributes != NULL)
                             read_attributes(cp, c, fptr, attr[i].info.Code.attributes);
+                    }
+                    break;
+                case SourceFile:
+                    attr[i].info.SourceFile.sourcefile_index = read_u2(fptr);
+                    break;
+                case Exceptions:
+                {
+                    // Estrutura:
+                    // u2 number_of_exceptions;
+                    // u2 exception_index_table[number_of_exceptions];
+
+                    u2 n = read_u2(fptr);
+                    attr[i].info.Exceptions.number_of_exceptions = n;
+
+                    if (n > 0)
+                    {
+                        attr[i].info.Exceptions.exception_index_table = (u2 *)calloc(n, sizeof(u2));
+                        if (attr[i].info.Exceptions.exception_index_table != NULL)
+                        {
+                            for (u2 k = 0; k < n; ++k)
+                            {
+                                attr[i].info.Exceptions.exception_index_table[k] = read_u2(fptr);
+                            }
+                        }
+                        else
+                        {
+                            // Falha de alocação: avance o arquivo para não desalinhar
+                            for (u2 k = 0; k < n; ++k)
+                                (void)read_u2(fptr);
+                        }
+                    }
+                    else
+                    {
+                        attr[i].info.Exceptions.exception_index_table = NULL;
+                    }
+                    break;
+                }
+                case InnerClasses:
+                    u2 n = read_u2(fptr);
+
+                    attr[i].info.InnerClasses.number_of_classes = n;
+                    if (n > 0)
+                    {
+                        attr[i].info.InnerClasses.classes = (struct classes *)calloc(n, sizeof(struct classes));
+                        if (attr[i].info.InnerClasses.classes != NULL)
+                            for (size_t j = 0; j < n; j++)
+                            {
+                                attr[i].info.InnerClasses.classes[j].inner_class_info_index = read_u2(fptr);
+                                attr[i].info.InnerClasses.classes[j].outer_class_info_index = read_u2(fptr);
+                                attr[i].info.InnerClasses.classes[j].inner_name_index = read_u2(fptr);
+                                attr[i].info.InnerClasses.classes[j].inner_class_access_flags = read_u2(fptr);
+                            }
+                        else
+                        {
+                            fseek(fptr, n * sizeof(struct classes), SEEK_CUR);
+                        }
                     }
                     break;
                 default:
