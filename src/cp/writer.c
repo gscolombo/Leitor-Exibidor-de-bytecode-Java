@@ -1,5 +1,32 @@
+/**
+ * @file cp/writer.c
+ * @brief Rotinas para exibição e resolução de entradas da Constant Pool (CP).
+ *
+ * Este módulo implementa utilitários para:
+ *  - imprimir uma representação legível da constant pool (show_constants);
+ *  - resolver recursivamente valores UTF-8 referenciados por entradas da CP
+ *    (get_constant_UTF8_value).
+ *
+ * A saída é pensada para depuração e inspeção do conteúdo dos arquivos `.class`.
+ * Algumas funções realizam alocações dinâmicas e retornam strings que devem ser
+ * liberadas pelo chamador (quando documentado).
+ */
+
 #include "cp/writer.h"
 
+/**
+ * @brief Substitui quebras de linha em uma string por sequências literais "\n".
+ *
+ * Percorre a string `s` e cria uma nova string onde cada `'\n'` é substituído
+ * por dois caracteres: `'\\'` e `'n'`. A nova string é alocada pela função e
+ * deve ser liberada pelo chamador.
+ *
+ * @note Função `static` de utilidade interna ao módulo.
+ *
+ * @param s String de entrada (não é modificada).
+ * @return Ponteiro para nova string alocada contendo as substituições ou NULL
+ *         se a alocação falhar.
+ */
 static char *replace_newlines(char *s)
 {
     int newlines = 0;
@@ -25,6 +52,19 @@ static char *replace_newlines(char *s)
     return str;
 }
 
+/**
+ * @brief Imprime a constant pool completa em formato legível.
+ *
+ * Percorre `count` entradas começando em `_cp` (ponteiro para o primeiro elemento
+ * da CP) e imprime informações formatadas dependendo do `tag` de cada entrada.
+ * Para entradas de string/UTF8 aplica `replace_newlines` para evitar quebras de linha
+ * na saída.
+ *
+ * A função usa `num_digits` para alinhar a saída e `parse_flags` quando aplicável.
+ *
+ * @param count Número de entradas na constant pool (valor retornado no ClassFile).
+ * @param _cp Ponteiro para o array de cp_info (constant pool), com indexação 0-based.
+ */
 void show_constants(u2 count, cp_info *_cp)
 {
     u2 i = 1;
@@ -125,6 +165,20 @@ void show_constants(u2 count, cp_info *_cp)
     }
 }
 
+/**
+ * @brief Resolve recursivamente e retorna uma string com o valor textual de uma entrada da CP.
+ *
+ * Esta função recebe um índice 1-based `i` e o array `cp` (0-based) e resolve o valor
+ * UTF-8 correspondente àquela entrada. Para entradas compostas (Fieldref/Methodref/NameAndType)
+ * a função constrói e retorna uma string alocada dinamicamente que concatena as partes
+ * (por exemplo "java/lang/ClassName.methodName:descriptor"). O chamador é responsável por
+ * liberar a string retornada com free().
+ *
+ * @param i Índice 1-based da entrada na constant pool.
+ * @param cp Ponteiro para o array de cp_info (constant pool).
+ * @return Ponteiro para string alocada contendo a representação textual do valor ou NULL
+ *         se não for possível resolver. A string, se não-NULL, deve ser liberada pelo chamador.
+ */
 char *get_constant_UTF8_value(u2 i, const cp_info *cp)
 {
     char *s = NULL;

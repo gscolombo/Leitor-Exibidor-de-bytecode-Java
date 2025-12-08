@@ -1,3 +1,24 @@
+/**
+ * @file cp/parser.c
+ * @brief Parser da Constant Pool e utilitários para decodificação de tipos primitivos e UTF-8 modificado.
+ *
+ * Este módulo lê e converte as entradas da Constant Pool a partir de um arquivo
+ * `.class` (fluxo FILE*) para um array de `cp_info`. Também fornece funções
+ * auxiliares para decodificar a Modified UTF-8 usada na constant pool e para
+ * decodificar representações em bytes de `float`, `long` e `double` conforme
+ * a especificação IEEE 754 e a especificação de class files da JVM.
+ *
+ * Observações importantes:
+ *  - A função `parse_constant_pool` aloca um array de `cp_info` cujo ponteiro é
+ *    retornado; o chamador é responsável por liberar essa memória (e conteúdos
+ *    internos) posteriormente (ver `free_classfile` / `free_attributes`).
+ *  - Entradas `CONSTANT_Long` e `CONSTANT_Double` ocupam duas posições na constant
+ *    pool (a segunda é considerada invalida/reservada). O parser avança um slot
+ *    extra para refletir essa reserva.
+ *  - `decode_modified_utf8_str` retorna uma nova string C (`malloc`) que deve ser
+ *    liberada pelo chamador. Em caso de sequência UTF truncada ou inválida, retorna NULL.
+ */
+
 #include "parser.h"
 
 cp_info *parse_constant_pool(FILE *fptr, u2 count)
@@ -101,6 +122,19 @@ cp_info *parse_constant_pool(FILE *fptr, u2 count)
     return constant_pool;
 }
 
+/**
+ * @brief Decodifica uma string em Modified UTF-8 (formato usado nas constant pools) para uma string C.
+ *
+ * A Modified UTF-8 usada nos class files difere do UTF-8 padrão principalmente na forma
+ * de codificar o caractere nulo (U+0000) e em sequences válidas. Esta função:
+ *  - verifica o comprimento e a validade das sequências multibyte antes de decodificar;
+ *  - aloca e retorna uma nova string C (terminada em '\0') com o conteúdo decodificado;
+ *  - retorna NULL em caso de `bytes == NULL` ou se encontrar uma sequência truncada/inválida.
+ *
+ * @param length Comprimento em bytes do array `bytes`.
+ * @param bytes Ponteiro para os bytes codificados em Modified UTF-8.
+ * @return Ponteiro para string alocada (malloc) contendo o texto decodificado, ou NULL em caso de erro.
+ */
 char *decode_modified_utf8_str(u2 length, const u1 *bytes)
 {
     if (bytes == NULL)
@@ -177,6 +211,16 @@ char *decode_modified_utf8_str(u2 length, const u1 *bytes)
     return str;
 }
 
+/**
+ * @brief Decodifica um valor `float` a partir de sua representação em 4 bytes (u4).
+ *
+ * Interpreta `b` como a representação IEEE 754 de precisão simples. Trata
+ * padrões especiais (Infinity, -Infinity, NaN) explicitamente; para valores
+ * normais reconstroi o sinal, expoente e mantissa e calcula o valor real.
+ *
+ * @param b Valor u4 contendo os bytes do float conforme class file.
+ * @return Valor `float` correspondente (pode ser +Inf, -Inf, NaN ou número finito).
+ */
 float decode_float_bytes(u4 b)
 {
     if (b == 0x7F800000)
@@ -196,11 +240,31 @@ float decode_float_bytes(u4 b)
     }
 }
 
+/**
+ * @brief Decodifica um valor `long` a partir de dois campos u4 (high_bytes, low_bytes).
+ *
+ * Concatena os bytes altos e baixos em um `int64_t` com sinal, retornando o valor.
+ *
+ * @param hb High bytes (u4).
+ * @param lb Low bytes (u4).
+ * @return Valor `int64_t` reconstruído.
+ */
 int64_t decode_long_bytes(u4 hb, u4 lb)
 {
     return ((int64_t)hb << 32) | lb;
 }
 
+/**
+ * @brief Decodifica um valor `double` a partir de dois campos u4 (high_bytes, low_bytes).
+ *
+ * Reconstrói o word de 64 bits, trata casos especiais (Infinity, -Infinity, NaN)
+ * e, para valores normais, reconstroi sinal, expoente e mantissa para calcular
+ * o `double` conforme IEEE 754.
+ *
+ * @param hb High bytes (u4).
+ * @param lb Low bytes (u4).
+ * @return Valor `double` correspondente (pode ser +Inf, -Inf, NaN ou número finito).
+ */
 double decode_double_bytes(u4 hb, u4 lb)
 {
     int64_t b = decode_long_bytes(hb, lb);
