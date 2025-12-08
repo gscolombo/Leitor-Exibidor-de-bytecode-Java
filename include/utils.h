@@ -1,3 +1,12 @@
+/**
+ * @file utils.h
+ * @brief Declarações de funções utilitárias usadas em diversos módulos do leitor/exibidor de bytecode Java.
+ *
+ * Este módulo concentra utilidades gerais, como operações de endianess,
+ * manipulação de strings de flags, conversão de descritores da JVM para formato legível,
+ * e utilitários auxiliares para atributos e membros.
+ */
+
 #ifndef UTILS_H_
 #define UTILS_H_
 
@@ -9,111 +18,107 @@
 #include "attribute_enum.h"
 #include "member.h"
 
-/** @file
- * @brief Declaração de funções utilitárias para o restante do projeto.
- */
-
 /**
- * @brief Troca os dois bytes de um inteiro de 16 bits.
+ * @brief Realiza o swap de bytes de um inteiro de 16 bits (`u2`).
  *
- * Esta função recebe um inteiro de 16 bits e troca seus _bytes_ inferior e superior.
- * 
- * A implementação se baseia em operações _bitwise_. Especificamente, os operadores `<<` e `>>` são 
- * usados para mover os pares de dígitos hexadecimais para as posições desejadas. O operador `|` é 
- * utilizado para "concatenar" os pares em um único número. \n
- * Por exemplo: \n
- * ```python
- *  n = 0x1234
- *  a = (n << 8) = (0x1234 << 8) = 0x3400
- *  b = (n >> 8) = (0x1234 >> 8) = 0x0012
- *  a | b = 0x3400 | 0x0012 = 0x3412
+ * Converte um valor armazenado em ordem little-endian para big-endian, ou vice-versa.
+ * A operação consiste em mover os bytes superior e inferior para suas posições opostas.
+ *
+ * Exemplo ilustrativo:
+ * ```
+ * n = 0x1234
+ * swap = 0x3412
  * ```
  *
- * @param n O inteiro de 16 bits para trocar os bytes.
- * @return O inteiro de 16 bits com os bytes trocados.
+ * @param n Inteiro de 16 bits cujo endianess deve ser invertido.
+ * @return Valor de 16 bits com bytes invertidos.
  */
-unsigned int u2swap(unsigned int);
+unsigned int u2swap(unsigned int n);
 
 /**
- * @brief Inverte a ordem dos bytes de um inteiro de 32 bits.
+ * @brief Inverte a ordem dos 4 bytes de um inteiro de 32 bits (`u4`).
  *
- * Esta função reverte a ordem dos bytes em um inteiro de 32 bits.
- * A implementação se baseia em operações _bitwise_. Especificamente, os operadores `<<` e `>>` são 
- * usados em conjunto com o operador `&` para mover os pares de dígitos hexadecimais para as posições desejadas. 
- * O operador `|` é utilizado para "concatenar" os pares em um único número. \n
- * Por exemplo: \n
- * ```python
- *  n = 0x12345678
- *  a = n >> 24 = 0x00000012
- *  b = (n >> 8) & 0xff00 = 0x00123456 & 0x0000ff00 = 0x00003400
- *  c = (n << 8) & 0xff0000 = 0x34567800 & 0x00ff0000 = 0x00560000
- *  a = n << 24 = 0x78000000
- *  a | b | c | d = 0x00000012 | 0x00003400 | 0x00560000 | 0x78000000 = 0x78563412
+ * Útil para interpretar valores lidos de arquivos `.class`, que seguem a convenção big-endian.
+ * A função utiliza operações bitwise para reorganizar cada byte.
+ *
+ * Exemplo:
  * ```
- * @param n O inteiro de 32 bits para inverter.
- * @return O inteiro de 32 bits com os bytes invertidos.
- */
-unsigned int u4swap(unsigned int);
-
-/**
- * @brief Retorna o número de dígitos de um inteiro não negativo.
+ * n = 0x12345678
+ * swap = 0x78563412
+ * ```
  *
- * Essa função conta a quantidade de vezes que um inteiro não negativo pode ser dividido
- * por 10 com o valor resultante maior ou igual a 10. \n
- * A contagem final corresponde ao número de dígitos do inteiro.
- * 
- * @param n Um inteiro não negativo.
- * @return O número de dígitos de `n`.
+ * @param n Inteiro de 32 bits a ser convertido.
+ * @return Inteiro de 32 bits com bytes reorganizados.
  */
-unsigned int num_digits(unsigned int);
+unsigned int u4swap(unsigned int n);
 
 /**
- * @brief Aplica um mapeamento de flags para o nome correspondente e concatena
- * cada nome em uma string, com um separador opcional.
- * 
- * A partir de um dado mapeamento entre _flags_ e o nome correspondente, essa função
- * concatena os nomes das _flags_ em uma única _string_, separadas por uma dada _string_. \n
- * Assume-se que o mapeamento corresponda a uma função bijetora. Logo, a função é baseada em
- * uma única travessia do mapa de _flags_, verificando a presença de cada _flag_ nas
- * _flags_ passadas para a função. Caso esteja presente, o nome da _flag_ é inserido
- * na _string_ retornada.
- * 
- * @param flags String de 2 bytes ou 16 bits com "1" representando a presença de uma flag.
- * @param n Número de nomes distintos de flags.
- * @param sep
- * @parblock
- * String representando o separador entre cada nome de flag. 
- * Caso seja passado um ponteiro nulo, cada nome será separado
- * por um espaço.
- * @endparblock
- * @param flag_map Mapa entre flags no formato hexadecimal e respectivos nomes.
- * @return String com nomes de flags separadas por `sep`.
+ * @brief Calcula quantos dígitos possui um inteiro não negativo.
+ *
+ * A função divide repetidamente o número por 10 até que reste apenas um dígito,
+ * incrementando um contador a cada iteração.
+ *
+ * Exemplo:
+ * ```
+ * n = 2048 → retorna 4
+ * ```
+ *
+ * @param n Inteiro não negativo.
+ * @return Número de dígitos de `n`.
  */
-char *parse_flags(u2, size_t, const char *, const FlagMap[]);
+unsigned int num_digits(unsigned int n);
 
 /**
- * @brief Converte o nome de um atributo no seu respectivo valor enumerado.
- * 
- * Essa função retorna um valor enumerado (`attribute_name`) a partir do nome de um atributo, como
- * definido pela especificação da JVM 8.
- * 
- * @param name Nome do atributo.
- * @return Valor enumerado correspondente ao nome do atributo.
+ * @brief Concatena nomes de flags presentes em um conjunto de bits.
+ *
+ * A função interpreta um campo de flags de 16 bits e, com base no mapa fornecido,
+ * gera uma string contendo os nomes das flags ativas, separadas por `sep`.
+ *
+ * Regras:
+ * - Cada flag é comparada ao mapa (`FlagMap`).
+ * - Se a flag estiver presente no valor `flags`, seu nome é adicionado à saída.
+ * - Se `sep` for NULL, usa-se um espaço como separador.
+ *
+ * @param flags Valor de 16 bits com bits representando flags de acesso.
+ * @param n Quantidade de elementos no array `flag_map`.
+ * @param sep String separadora entre os nomes das flags (ou espaço se NULL).
+ * @param flag_map Array contendo pares `{mask, name}`.
+ * @return String dinâmica contendo os nomes concatenados das flags.
+ *
+ * @note A string retornada deve ser liberada pelo chamador.
  */
-const attribute_name *convert_attr_name(const char *);
+char *parse_flags(u2 flags, size_t n, const char *sep, const FlagMap flag_map[]);
 
 /**
- * @brief Converte um descritor na sua versão intelígivel (original),
- * de acordo com a especificação da JVM 8.
- * 
- * Essa função avalia um descritor com base na especificação da JVM 8 e monta uma _string_
- * com a versão intelígivel/original do descritor. \n
- * Um separador pode ser passado para ser inserido entre cada _token_ do descritor.
- * 
- * @param descriptor String do descritor de membro (campo ou método).
- * @param sep String a ser utilizada como separador entre cada símbolo do descritor.
- * @return String com a versão intelígivel do descritor.
+ * @brief Converte o nome textual de um atributo no seu valor enumerado (`attribute_name`).
+ *
+ * A JVM define diversos atributos (Code, SourceFile, Exceptions, etc.).
+ * Esta função mapeia o nome lido do constant pool para seu tipo enumerado interno.
+ *
+ * @param name Nome textual do atributo conforme armazenado no constant pool.
+ * @return Ponteiro para o valor enumerado correspondente, ou NULL se desconhecido.
  */
-char *parse_descriptor(const char *, char *);
+const attribute_name *convert_attr_name(const char *name);
 
-#endif
+/**
+ * @brief Converte um descritor da JVM para um formato legível para humanos.
+ *
+ * Descritores são cadeias compactas definidas pela JVM para representar tipos, campos e assinaturas de métodos.
+ * Esta função traduz esse formato para sua representação mais intuitiva.
+ *
+ * Exemplos:
+ * ```
+ * I → int
+ * [Ljava/lang/String; → java.lang.String[]
+ * (ID)V → void(int, double)
+ * ```
+ *
+ * @param descriptor Descritor segundo a especificação da JVM.
+ * @param sep Separador opcional entre os tokens traduzidos (pode ser NULL).
+ * @return String contendo o descritor convertido em formato legível.
+ *
+ * @note A string retornada deve ser liberada pelo chamador.
+ */
+char *parse_descriptor(const char *descriptor, char *sep);
+
+#endif /* UTILS_H_ */
