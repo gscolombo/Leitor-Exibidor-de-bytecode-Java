@@ -3,7 +3,7 @@
 
 #include "uinteger.h"
 #include "member.h"
-#include "constants.h"
+#include "types/cp/constants.h"
 
 /** @file
  * @brief Definição de estrutura Classfile para representação de um arquivo `.class`.
