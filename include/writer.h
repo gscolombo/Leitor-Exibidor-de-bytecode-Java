@@ -1,3 +1,13 @@
+/**
+ * @file writer.h
+ * @brief Declarações de funções para exibição de informações de um arquivo `.class`.
+ *
+ * Este módulo contém a função responsável por imprimir, em formato legível,
+ * todas as estruturas internas de um `ClassFile`, de forma semelhante ao comando
+ * `javap -v`. Ele percorre a constant pool, campos, métodos e atributos,
+ * exibindo informações detalhadas conforme a especificação da JVM 8.
+ */
+
 #ifndef WRITER_H
 #define WRITER_H
 
@@ -12,18 +22,22 @@
 #include "methods.h"
 #include "fields.h"
 
-/** @file
- *  @brief Declaração de função para exibição de informações do arquivo `.class`.
- */
-
 /**
- * @brief Exibe as informações de um `ClassFile`.
+ * @brief Exibe as informações detalhadas de um `ClassFile`.
  *
- * Essa função exibe as informações de um arquivo `.class` em um formato
- * similar à saída do comando `javap` com a _flag_ `-v`.
- * 
+ * A função imprime todas as seções da estrutura `ClassFile`, incluindo:
+ * - Magic number, versões e flags de acesso;
+ * - Constant pool com detalhes de cada entrada;
+ * - Interfaces implementadas;
+ * - Fields (campos) com seus atributos;
+ * - Methods (métodos) incluindo atributos como Code, Exceptions, etc.;
+ * - Atributos de classe.
+ *
+ * O formato de saída é propositalmente semelhante ao do comando
+ * `javap -v`, facilitando comparação com ferramentas oficiais.
+ *
  * @param cf Ponteiro para a estrutura `ClassFile` que será exibida.
  */
-void show_classfile(ClassFile *);
+void show_classfile(ClassFile *cf);
 
-#endif
+#endif /* WRITER_H */

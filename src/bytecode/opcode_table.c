@@ -1,5 +1,38 @@
+/**
+ * @file bytecode/opcode_table.c
+ * @brief Tabela global de opcodes e suas informações (mnemonic + handler).
+ *
+ * Este arquivo define a tabela `opcode_table` — um array indexado por opcode (0..201)
+ * contendo informações sobre cada instrução JVM suportada pelo interpretador.
+ *
+ * Cada entrada é do tipo `OpcodeInfo` (definido em `bytecode/opcode_table.h`) e contém:
+ *  - `mnemonic`: nome textual da instrução (ex.: "iload", "bipush");
+ *  - ponteiro para a função handler que implementa a semântica da instrução, ou `NULL`
+ *    se a implementação não estiver presente/necessária para a impressão.
+ *
+ * Observações importantes:
+ *  - A tabela tem tamanho 202 (valor escolhido pelo projeto para cobrir a faixa
+ *    de opcodes utilizados). Nem todos os opcodes na especificação JVM estão presentes;
+ *    entradas sem handler são permitidas e usadas, por exemplo, pelo disassembler.
+ *  - Handlers marcados em vários pontos do projeto seguem a convenção de assinatura
+ *    `void handler(Frame *f)` (ou similar) — ver `bytecode/*` para implementações.
+ *  - Alterações na ordem dos opcodes aqui devem corresponder às definições utilizadas
+ *    pelo leitor/interpretador; tipicamente os índices são os próprios valores de opcode.
+ */
+
 #include "opcode_table.h"
 
+/**
+ * @brief Tabela estática de opcodes do interpretador.
+ *
+ * Indexação: o índice no array corresponde ao byte de opcode lido do bytecode.
+ * Para cada opcode, fornecemos o mnemonic usado pelo disassembler e, quando
+ * implementado, um ponteiro para a rotina que executa a instrução em runtime.
+ *
+ * Entradas com handler NULL significam que não existe implementação (ou não é
+ * necessária) no contexto atual do projeto; o disassembler/print routines ainda
+ * podem usar o mnemonic para exibir o opcode.
+ */
 const OpcodeInfo opcode_table[202] = {
     /* Constants */
     {"nop", NULL},

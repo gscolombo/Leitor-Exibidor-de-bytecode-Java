@@ -1,5 +1,38 @@
+/**
+ * @file bytecode/impl/references.c
+ * @brief Handlers de instruções relacionadas a referências e campos (get/put/invoke/new/array).
+ *
+ * Implementa as instruções JVM que manipulam referências a campos e métodos, tais como:
+ *  - getstatic / putstatic / getfield / putfield
+ *  - invokespecial / invokevirtual / invokestatic / invokeinterface
+ *  - new / newarray / anewarray / arraylength
+ *
+ * O módulo também contém utilitários auxiliares locais para:
+ *  - resolver referências a campos/métodos a partir da runtime constant pool;
+ *  - montar o vetor de variáveis locais para invocação de métodos (set_local_vars);
+ *  - atualizar referências de classe presentes na pilha de frames após o carregamento
+ *    dinâmico de classes (update_frame_stack_class_references).
+ *
+ * Observações:
+ *  - Muitas operações assumem que a Constant Pool já foi resolvida para strings em
+ *    `Class.runtime_cp[*].value.strref` durante o carregamento da classe.
+ *  - Várias funções chamam `bootstrap_loader()` para carregar classes sob demanda e
+ *    utilizam a MethodArea para registrar referências a objetos/arrays alocados.
+ *  - O código faz uso de funções utilitárias como `initialize_var`, `allocref`,
+ *    `appendref`, `push_operand` e `pop_operand`.
+ */
+
 #include "bytecode/impl/references.h"
 
+/**
+ * @brief Resolve e copia o campo de referência (field_ref) apontado pelo operand do bytecode.
+ *
+ * Lê o índice imediato (u2) a partir do bytecode (posição pc+1/pc+2), busca a string
+ * resolvida na runtime constant pool da classe e copia para o buffer _field_ref.
+ *
+ * @param f Ponteiro para o Frame atual.
+ * @param _field_ref Buffer (pré-alocado) onde será copiada a string da referência (ex.: "pkg/Class.field:Type").
+ */
 static void get_field_ref(Frame *f, char *_field_ref)
 {
     u1 *code = f->method->bytecode.code;
@@ -10,6 +43,15 @@ static void get_field_ref(Frame *f, char *_field_ref)
     strcpy(_field_ref, field_ref);
 }
 
+/**
+ * @brief Atualiza o campo `class` dos frames encadeados a partir do frame corrente.
+ *
+ * Quando uma nova classe é carregada via bootstrap_loader, as estruturas Frame que
+ * guardam apenas o nome da classe (class_name) precisam ter o ponteiro `class`
+ * atualizado para apontar para a entrada correta na MethodArea.
+ *
+ * @param f Frame de onde a atualização começa (atualiza também frames anteriores encadeados).
+ */
 static void update_frame_stack_class_references(Frame *f)
 {
     Frame *fp = f;
@@ -21,6 +63,14 @@ static void update_frame_stack_class_references(Frame *f)
     }
 }
 
+/**
+ * @brief Implementa getstatic.
+ *
+ * Resolve a referência ao campo estático (index na runtime CP) e empilha seu valor.
+ * Tratamento especial para java/lang/System.out (simulação de System.out).
+ *
+ * @param f Frame atual.
+ */
 void getstatic(Frame *f)
 {
     char field_ref[255];
@@ -53,6 +103,13 @@ void getstatic(Frame *f)
     f->pc += 3;
 }
 
+/**
+ * @brief Implementa putstatic.
+ *
+ * Popa um valor da pilha de operandos e o armazena no campo estático correspondente.
+ *
+ * @param f Frame atual.
+ */
 void putstatic(Frame *f)
 {
     char field_ref[255];
@@ -76,6 +133,13 @@ void putstatic(Frame *f)
     f->pc += 3;
 }
 
+/**
+ * @brief Implementa getfield.
+ *
+ * Popa uma referência a objeto, resolve o field no objeto e empilha o valor do field.
+ *
+ * @param f Frame atual.
+ */
 void getfield(Frame *f)
 {
     char field_ref[255];
@@ -97,6 +161,13 @@ void getfield(Frame *f)
     f->pc += 3;
 }
 
+/**
+ * @brief Implementa putfield.
+ *
+ * Popa o valor e a referência ao objeto e armazena o valor no field do objeto.
+ *
+ * @param f Frame atual.
+ */
 void putfield(Frame *f)
 {
     char field_ref[255];
@@ -120,6 +191,19 @@ void putfield(Frame *f)
     f->pc += 3;
 }
 
+/**
+ * @brief Constrói array de variáveis locais pré-populado com argumentos do método.
+ *
+ * Retira os argumentos da pilha de operandos (na ordem inversa) e os coloca
+ * nos primeiros slots do array `local_variables`. Se include_this for true,
+ * considera um argumento adicional (this).
+ *
+ * @param f Frame atual (usado para pop_operand).
+ * @param method Ponteiro para Method cujo bytecode/metadata será usado.
+ * @param include_this Se true, considera 'this' como argumento extra.
+ * @return Ponteiro para vetor de dtype alocado (que deve ser liberado pelo chamador),
+ *         ou NULL se max_locals == 0.
+ */
 static dtype *set_local_vars(Frame *f, Method *method, bool include_this)
 {
     u2 max_locals = method->bytecode.max_locals;
@@ -144,6 +228,15 @@ static dtype *set_local_vars(Frame *f, Method *method, bool include_this)
     return NULL;
 }
 
+/**
+ * @brief Implementa invokespecial.
+ *
+ * Trata chamadas especiais (construtores, invocações privadas e super).
+ * Para alguns métodos conhecidos (Object.<init>, StringBuffer.<init>) realiza apenas
+ * o pop do objeto. Para outros, resolve a classe e o método e invoca via invoke_method.
+ *
+ * @param f Frame atual.
+ */
 void invokespecial(Frame *f)
 {
     u1 *code = f->method->bytecode.code;
@@ -188,6 +281,16 @@ void invokespecial(Frame *f)
     f->pc += 3;
 }
 
+/**
+ * @brief Implementa invokevirtual.
+ *
+ * Trata chamadas de métodos virtuais. Possui tratamento especial para:
+ *  - java/io/PrintStream.print/println (usa _print);
+ *  - java/lang/StringBuffer.append / toString (usa strbuf helpers).
+ * Para outros casos, resolve a classe e método e invoca via invoke_method.
+ *
+ * @param f Frame atual.
+ */
 void invokevirtual(Frame *f)
 {
     u1 *code = f->method->bytecode.code;
@@ -248,6 +351,14 @@ void invokevirtual(Frame *f)
     f->pc += 3;
 }
 
+/**
+ * @brief Implementa invokestatic.
+ *
+ * Resolve a classe (usando bootstrap_loader), valida que o método é estático,
+ * prepara variáveis locais (sem 'this') e invoca o método.
+ *
+ * @param f Frame atual.
+ */
 void invokestatic(Frame *f)
 {
     u1 *code = f->method->bytecode.code;
@@ -295,6 +406,14 @@ void invokestatic(Frame *f)
     }
 }
 
+/**
+ * @brief Implementa invokeinterface.
+ *
+ * Resolve método de interface, busca a implementação no objeto (objectref) e invoca.
+ * Faz validações de existência e índice. Avança pc em 5 bytes (opcode + 4 operands).
+ *
+ * @param f Frame atual.
+ */
 void invokeinterface(Frame *f)
 {
     u1 *code = f->method->bytecode.code;
@@ -347,6 +466,14 @@ void invokeinterface(Frame *f)
     f->pc += 5;
 }
 
+/**
+ * @brief Implementa newarray.
+ *
+ * Popa o tamanho, aloca array de tipo primitivo apropriado, registra referência
+ * em MethodArea e empilha um objeto de referência que descreve o array.
+ *
+ * @param f Frame atual.
+ */
 void newarray(Frame *f)
 {
     u1 atype = f->method->bytecode.code[f->pc + 1];
@@ -413,6 +540,14 @@ void newarray(Frame *f)
     f->pc += 2;
 }
 
+/**
+ * @brief Implementa anewarray.
+ *
+ * Cria um array de referências para a classe referenciada na runtime CP (idx),
+ * inicializa um bloco de referências e empilha a referência.
+ *
+ * @param f Frame atual.
+ */
 void anewarray(Frame *f)
 {
     u1 *code = f->method->bytecode.code;
@@ -443,6 +578,13 @@ void anewarray(Frame *f)
     f->pc += 3;
 }
 
+/**
+ * @brief Implementa arraylength.
+ *
+ * Retorna (empilha) o tamanho (int) do array referenciado no topo da pilha.
+ *
+ * @param f Frame atual.
+ */
 void _arraylength(Frame *f)
 {
     dtype length = initialize_var(INT, f);
@@ -451,6 +593,15 @@ void _arraylength(Frame *f)
     f->pc++;
 }
 
+/**
+ * @brief Inicializa campos estáticos constantes da classe recém-instanciada.
+ *
+ * Procura por static fields com atributo ConstantValue e inicializa seus valores
+ * usando os dados em runtime_cp (que já contém os valores resolvidos).
+ *
+ * @param f Frame atual (usado para inicializar referências quando necessário).
+ * @param cls Ponteiro para a classe cujo fields serão inicializados.
+ */
 static void initialize_constant_fields(Frame *f, Class *cls)
 {
     for (u2 i = 0; i < cls->field_count; i++)
@@ -511,6 +662,18 @@ static void initialize_constant_fields(Frame *f, Class *cls)
         }
 }
 
+/**
+ * @brief Implementa new (alocação de objeto).
+ *
+ * Para classes conhecidas (ex.: java/lang/StringBuffer) executa inicialização específica.
+ * Para outras classes:
+ *  - carrega a Class via bootstrap_loader;
+ *  - aloca e copia a estrutura Class/fields para representar a instância;
+ *  - inicializa campos constantes;
+ *  - empilha a referência ao objeto criado.
+ *
+ * @param f Frame atual.
+ */
 void new(Frame *f)
 {
     u1 b1 = f->method->bytecode.code[f->pc + 1];

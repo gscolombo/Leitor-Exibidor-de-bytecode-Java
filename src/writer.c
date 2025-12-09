@@ -1,13 +1,30 @@
+/**
+ * @file writer.c
+ * @brief Funções para exibição (dump) de informações de um arquivo `.class`.
+ *
+ * Este módulo contém rotinas que imprimem informações legíveis do conteúdo
+ * de um ClassFile, incluindo flags de classe, constantes, campos, métodos
+ * e atributos. É usado para depuração e para exibir uma representação
+ * textual do bytecode e metadados lidos pelo leitor de .class.
+ *
+ * Principais responsabilidades:
+ *  - Mapeamento de flags para nomes legíveis;
+ *  - Impressão de atributos específicos (ex.: SourceFile, InnerClasses);
+ *  - Exibição do cabeçalho da classe, constant pool, fields, methods e atributos.
+ */
+
 #include "writer.h"
 #include <string.h>
 #include "types/cp/constants.h"
 #include "types/attributes/attribute_info.h"
 #include "types/attributes/attributes.h"
 
-/** @file
- * @brief Declaração de função para exibição de informações do arquivo `.class`.
+/**
+ * @brief Mapeamento entre flags de acesso de classe e nomes simbólicos.
+ *
+ * Usado por parse_flags() para gerar uma string contendo as flags setadas
+ * em formato hex/nome (por exemplo: "ACC_PUBLIC, ACC_FINAL").
  */
-
 static const FlagMap class_flag_map[8] = {
     {0x0001, "ACC_PUBLIC"},
     {0x0010, "ACC_FINAL"},
@@ -18,6 +35,12 @@ static const FlagMap class_flag_map[8] = {
     {0x2000, "ACC_ANNOTATION"},
     {0x4000, "ACC_ENUM"}};
 
+/**
+ * @brief Mapeamento entre flags de acesso de classe e palavras-chave Java.
+ *
+ * Semelhante a `class_flag_map`, mas retorna palavras-chave mais próximas da
+ * sintaxe Java (por exemplo: "public final").
+ */
 static const FlagMap class_flag_kw_map[6] = {
     {0x0001, "public"},
     {0x0010, "final"},
@@ -26,6 +49,16 @@ static const FlagMap class_flag_kw_map[6] = {
     {0x2000, "@interface"},
     {0x4000, "enum"}};
 
+/**
+ * @brief Exibe atributos de nível de classe encontrados no ClassFile.
+ *
+ * Itera sobre `cf->attributes` e tenta resolver o nome do atributo usando a
+ * constant pool (UTF8). Para atributos conhecidos (ex.: SourceFile, InnerClasses)
+ * imprime detalhes interpretados; para atributos desconhecidos imprime um
+ * marcador genérico com o tamanho.
+ *
+ * @param cf Ponteiro para o ClassFile cujo atributos serão exibidos.
+ */
 static void show_class_attributes(ClassFile *cf)
 {
     if (cf->attributes_count == 0)
@@ -90,6 +123,20 @@ static void show_class_attributes(ClassFile *cf)
     }
 }
 
+/**
+ * @brief Imprime no stdout uma representação legível do ClassFile.
+ *
+ * A função imprime:
+ *  - declaração de classe com palavras-chave (ex.: "public class Foo")
+ *  - magic number e versão
+ *  - flags e índices this_class / super_class
+ *  - contagem de interfaces/fields/methods/attributes
+ *  - constant pool (delegando para show_constants)
+ *  - fields e methods (delegando para show_fields/show_methods)
+ *  - atributos de classe (através de show_class_attributes)
+ *
+ * @param cf Ponteiro para a estrutura ClassFile a ser exibida.
+ */
 void show_classfile(ClassFile *cf)
 {
     cp_info *cp = cf->constant_pool;
