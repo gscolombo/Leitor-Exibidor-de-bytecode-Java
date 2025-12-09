@@ -17,7 +17,7 @@
 
 #include <stdbool.h>
 #include "uinteger.h"
-#include "constants.h"
+#include "types/cp/constants.h"
 #include "Classfile.h"
 #include "MethodArea.h"
 #include "java_type.h"

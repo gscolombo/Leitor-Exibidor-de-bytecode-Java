@@ -84,6 +84,7 @@ static void show_class_attributes(ClassFile *cf)
             switch (*attr_enum)
             {
             case SourceFile:
+            {
                 u2 sourcefile_index = ai->info.SourceFile.sourcefile_index; // já vem parseado
                 if (sourcefile_index > 0 && sourcefile_index <= cf->constant_pool_count)
                 {
@@ -98,7 +99,9 @@ static void show_class_attributes(ClassFile *cf)
                     printf("SourceFile: <invalid cp index #%u>\n", sourcefile_index);
                 }
                 break;
+            }
             case InnerClasses:
+            {
                 u2 n = ai->info.InnerClasses.number_of_classes;
                 if (n > 0)
                 {
@@ -116,6 +119,7 @@ static void show_class_attributes(ClassFile *cf)
                     }
                 }
                 break;
+            }
             default:
                 printf("[%s: length=%u]\n", attr_name, ai->attribute_length);
                 break;

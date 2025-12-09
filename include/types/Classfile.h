@@ -17,7 +17,7 @@
 
 #include "uinteger.h"
 #include "member.h"
-#include "constants.h"
+#include "types/cp/constants.h"
 
 /**
  * @struct ClassFile

@@ -71,32 +71,37 @@ int main(const int argc, char *argv[])
         MethodArea method_area;
         method_area.num_classes = 0;
         method_area.ref_count = 0;
-        method_area.classes = (Class *)malloc(sizeof(Class));
-        if (method_area.classes == NULL)
-            exit(1);
+        method_area.classes = NULL;
+        method_area.refs = NULL;
 
         /* Carrega e faz o link da classe de entrada como classe inicial.
          * bootstrap_loader retorna um ponteiro para a estrutura Class carregada.
          */
         Class *initial_class = bootstrap_loader(argv[2], &method_area, NULL);
-        if (initial_class != NULL)
+        if (initial_class == NULL)
         {
-            /* Procura pelo método main na classe inicial.
+            fprintf(stderr, "Erro: não foi possível carregar a classe '%s'.\n", argv[2]);
+            cleanup(method_area);
+            return 1;
+        }
+
+        /* Procura pelo método main na classe inicial.
              *
              * A assinatura usada é "([Ljava/lang/String;)V" conforme padrão Java para public static void main(String[]).
              * Se o método não for encontrado, imprime mensagem e encerra com erro.
              */
-            Method *main_method = lookup_method("main", "([Ljava/lang/String;)V", initial_class);
-            if (!main_method)
-            {
-                printf("Método \"main\" não encontrado.\n");
-                exit(1);
-            }
+        Method *main_method = lookup_method("main", "([Ljava/lang/String;)V", initial_class);
+        if (!main_method)
+        {
+            printf("Método \"main\" não encontrado.\n");
+            cleanup(method_area);
+            return 1;
+        }
 
             /* Aloca vetor de variáveis locais conforme o número máximo de locais exigido pelo bytecode do método.
              * dtype é o tipo usado para representar valores locais e operandos no interpretador (definido em outro módulo).
              */
-            dtype *local_vars = (dtype *)calloc(main_method->bytecode.max_locals, sizeof(dtype));
+        dtype *local_vars = (dtype *)calloc(main_method->bytecode.max_locals, sizeof(dtype));
 
             /* Invoca o método main da classe inicial.
              *
@@ -107,8 +112,13 @@ int main(const int argc, char *argv[])
              * - NULL: (provavelmente) argumentos adicionais (por exemplo args) — aqui passado NULL.
              * - &method_area: referência à MethodArea para resolução de classes, métodos e campos durante a execução.
              */
-            invoke_method(initial_class, main_method, local_vars, NULL, &method_area);
+        if (local_vars == NULL)
+        {
+            fprintf(stderr, "Erro: falha ao alocar memória para variáveis locais.\n");
+            cleanup(method_area);
+            return 1;
         }
+        invoke_method(initial_class, main_method, local_vars, NULL, &method_area);
 
         /* Limpeza da MethodArea (liberação de memória, referências, etc.). */
         cleanup(method_area);
@@ -133,6 +143,11 @@ int main(const int argc, char *argv[])
 
             /* Libera memória alocada para a estrutura ClassFile */
             free_classfile(&cf);
+        }
+        else
+        {
+            fprintf(stderr, "Erro: não foi possível abrir o arquivo '%s'.\n", argv[2]);
+            return 1;
         }
     }
     else

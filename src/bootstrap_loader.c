@@ -27,8 +27,9 @@
  */
 
 #include "bootstrap_loader.h"
+#include <string.h>
 
-static const char *ROOT_FOLDER;
+static char ROOT_FOLDER[2048];
 
 /**
  * @brief Carrega (ou recupera) uma classe pelo nome usando a Method Area.
@@ -75,11 +76,25 @@ Class *bootstrap_loader(char *path, MethodArea *method_area, const char *class_n
             return cls;
 
         // Else, load and parse classfile...
+        if (ROOT_FOLDER[0] == '\0')
+        {
+            fprintf(stderr, "Erro: ROOT_FOLDER não foi inicializado.\n");
+            return NULL;
+        }
 
-        char path[255];
-        snprintf(path, strlen(ROOT_FOLDER) + 1 + strlen(class_name) + 6 + 1, "%s/%s.class", ROOT_FOLDER, class_name);
+        char class_path[2048];
+        int ret = snprintf(class_path, sizeof(class_path), "%s/%s.class", ROOT_FOLDER, class_name);
+        
+        // Check for truncation
+        if (ret < 0 || (size_t)ret >= sizeof(class_path))
+        {
+            fprintf(stderr, "Erro: caminho da classe muito longo.\n");
+            return NULL;
+        }
 
-        cls = create_and_load_class(path);
+        cls = create_and_load_class(class_path);
+        if (cls == NULL)
+            return NULL;
 
         // ...then add to method area
         method_area->classes = (Class *)realloc(method_area->classes, sizeof(Class) * (1 + method_area->num_classes));
@@ -93,21 +108,51 @@ Class *bootstrap_loader(char *path, MethodArea *method_area, const char *class_n
             free(cls);
             return &method_area->classes[i];
         }
+        else
+        {
+            free(cls);
+            return NULL;
+        }
     }
     else // Load initial class
     {
         cls = create_and_load_class(path);
+        if (cls == NULL)
+            return NULL;
 
-        ROOT_FOLDER = strtok(path, "/");
-
-        if (method_area->classes != NULL)
+        // Extract root folder from path (copy before strtok modifies it)
+        char path_copy[2048];
+        strncpy(path_copy, path, sizeof(path_copy) - 1);
+        path_copy[sizeof(path_copy) - 1] = '\0';
+        
+        char *last_slash = strrchr(path_copy, '/');
+        if (last_slash != NULL)
         {
-            method_area->num_classes = 1;
-            method_area->classes[0] = *cls;
-            free(cls);
-            return &method_area->classes[0];
+            *last_slash = '\0';
+            strncpy(ROOT_FOLDER, path_copy, sizeof(ROOT_FOLDER) - 1);
+            ROOT_FOLDER[sizeof(ROOT_FOLDER) - 1] = '\0';
         }
-    }
+        else
+        {
+            // No slash found, use current directory
+            ROOT_FOLDER[0] = '.';
+            ROOT_FOLDER[1] = '\0';
+        }
 
-    return NULL;
+        // Allocate classes array if not already allocated
+        if (method_area->classes == NULL)
+        {
+            method_area->classes = (Class *)malloc(sizeof(Class));
+            if (method_area->classes == NULL)
+            {
+                free(cls);
+                return NULL;
+            }
+        }
+
+        method_area->num_classes = 1;
+        method_area->classes[0] = *cls;
+        free(cls);
+        return &method_area->classes[0];
+    }
 }

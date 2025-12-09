@@ -74,28 +74,38 @@ void _print(Frame *f, const char *descriptor, char rettype, char e)
         // TODO: Define logic for class references
         break;
     case 'I':
+    {
         int32_t i = pop_operand(f).value.t._int;
         printf("%i%c", i, e);
         break;
+    }
     case 'J':
+    {
         int64_t l = pop_operand(f).value.t._long;
         printf("%lli%c", l, e);
         break;
+    }
     case 'F':
+    {
         float _f = pop_operand(f).value.t._float;
         printf("%.1f%c", _f, e);
         break;
+    }
     case 'D':
+    {
         double _d = pop_operand(f).value.t._double;
         if (_d == (int64_t)_d)
             printf("%.1f%c", _d, e);
         else
             printf("%.16g%c", _d, e);
         break;
+    }
     case 'C':
+    {
         u2 c = pop_operand(f).value.t._char;
         printf("%c%c", c, e);
         break;
+    }
     // TODO: Define logic for other cases
     default:
         printf("%c", e);

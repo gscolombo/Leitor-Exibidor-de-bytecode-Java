@@ -5,8 +5,8 @@
 #include <stdlib.h>
 #include <math.h>
 
+#include "types/cp/constants.h"
 #include "reader.h"
-#include "constants.h"
 
 /** @file parser.h
  *  @brief Funções para leitura do _pool_ de constantes e decodificação de _bytes_ de constantes.

@@ -141,6 +141,7 @@ void show_constants(u2 count, cp_info *_cp)
             break;
         }
         case CONSTANT_UTF8:
+        {
             char *str = cp->info.UTF8.str;
 
             str = replace_newlines(str);
@@ -148,6 +149,7 @@ void show_constants(u2 count, cp_info *_cp)
             printf("%s#%u = UTF-8\t\t\t%s\n", pad, i, str);
             free(str);
             break;
+        }
         case CONSTANT_MethodHandle:
             printf("%s#%u = MethodHandle\n", pad, i);
             break;
@@ -227,11 +229,13 @@ char *get_constant_UTF8_value(u2 i, const cp_info *cp)
         break;
     }
     case CONSTANT_String:
+    {
         char *str = get_constant_UTF8_value(cp[i].info.String.string_index, cp);
         s = (char *)malloc((strlen(str) + 1) * sizeof(char));
         strcpy(s, str);
         free(str);
         break;
+    }
     case CONSTANT_Integer:
     case CONSTANT_Float:
     case CONSTANT_Long:

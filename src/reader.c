@@ -19,6 +19,7 @@
  */
 
 #include "reader.h"
+#include <errno.h>
 
 /**
  * @brief Lê 1 byte (`u1`) do arquivo `.class`.
@@ -101,14 +102,25 @@ FILE *open_classfile(const char *path)
 
         if (strcmp(ext, ".class") != 0)
         {
-            printf("Wrong file format. Give the path of a \".class\" file.\n");
-            exit(1);
+            fprintf(stderr, "Erro: formato de arquivo inválido. Forneça o caminho de um arquivo \".class\".\n");
+            return NULL;
         }
 
-        return fopen(path, "rb");
+        FILE *fptr = fopen(path, "rb");
+        if (fptr == NULL)
+        {
+            fprintf(stderr, "Erro: não foi possível abrir o arquivo '%s'. ", path);
+            if (errno == ENOENT)
+                fprintf(stderr, "Arquivo não encontrado.\n");
+            else if (errno == EACCES)
+                fprintf(stderr, "Permissão negada.\n");
+            else
+                fprintf(stderr, "Erro: %s\n", strerror(errno));
+        }
+        return fptr;
     }
 
-    printf("Invalid path.\n");
+    fprintf(stderr, "Erro: caminho inválido.\n");
     return NULL;
 }
 
@@ -351,6 +363,7 @@ void read_attributes(const cp_info *cp, u2 n, FILE *fptr, attribute *attr)
                     break;
                 }
                 case InnerClasses:
+                {
                     u2 n = read_u2(fptr);
 
                     attr[i].info.InnerClasses.number_of_classes = n;
@@ -372,6 +385,7 @@ void read_attributes(const cp_info *cp, u2 n, FILE *fptr, attribute *attr)
                         }
                     }
                     break;
+                }
                 default:
                     /* Tipo de atributo não tratado explicitamente: pula os bytes do atributo. */
                     fseek(fptr, attr[i].attribute_length, SEEK_CUR);

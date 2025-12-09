@@ -256,6 +256,11 @@ static void set_class_methods(Class *cls, ClassFile *cf)
 Class *create_and_load_class(const char *path)
 {
     FILE *fptr = open_classfile(path);
+    if (fptr == NULL)
+    {
+        // open_classfile already prints error message
+        return NULL;
+    }
     ClassFile cf = read_classfile(fptr, false);
 
     Class *cls = (Class *)malloc(sizeof(Class));
@@ -286,40 +291,73 @@ Class *create_and_load_class(const char *path)
  */
 void cleanup(MethodArea method_area)
 {
-    for (size_t i = 0; i < method_area.ref_count; i++)
-        free(method_area.refs[i]);
-    free(method_area.refs);
-
-    for (size_t i = 0; i < method_area.num_classes; i++)
+    // Clean up references
+    if (method_area.refs != NULL)
     {
-        Class cls = method_area.classes[i];
-        free(cls.name);
-        free(cls.super);
-
-        for (size_t j = 0; j < cls.constants_count; j++)
+        for (size_t i = 0; i < method_area.ref_count; i++)
         {
-            if ((cls.runtime_cp[j].type >= 7 && cls.runtime_cp[j].type <= 11) ||
-                cls.runtime_cp[j].type >= 15)
-                free(cls.runtime_cp[j].value.strref);
+            if (method_area.refs[i] != NULL)
+                free(method_area.refs[i]);
         }
-        free(cls.runtime_cp);
-
-        for (u2 j = 0; j < cls.field_count; j++)
-        {
-            free(cls.fields[j].name);
-            free(cls.fields[j].type);
-        }
-        free(cls.fields);
-
-        for (u2 j = 0; j < cls.method_count; j++)
-        {
-            free(cls.methods[j].name);
-            free(cls.methods[j].descriptor);
-            free(cls.methods[j].params);
-            free(cls.methods[j].rettype);
-            free(cls.methods[j].bytecode.code);
-        }
-        free(method_area.classes[i].methods);
+        free(method_area.refs);
     }
-    free(method_area.classes);
+
+    // Clean up classes
+    if (method_area.classes != NULL)
+    {
+        for (size_t i = 0; i < method_area.num_classes; i++)
+        {
+            Class cls = method_area.classes[i];
+            
+            if (cls.name != NULL)
+                free(cls.name);
+            if (cls.super != NULL)
+                free(cls.super);
+
+            if (cls.runtime_cp != NULL)
+            {
+                for (size_t j = 0; j < cls.constants_count; j++)
+                {
+                    if ((cls.runtime_cp[j].type >= 7 && cls.runtime_cp[j].type <= 11) ||
+                        cls.runtime_cp[j].type >= 15)
+                    {
+                        if (cls.runtime_cp[j].value.strref != NULL)
+                            free(cls.runtime_cp[j].value.strref);
+                    }
+                }
+                free(cls.runtime_cp);
+            }
+
+            if (cls.fields != NULL)
+            {
+                for (u2 j = 0; j < cls.field_count; j++)
+                {
+                    if (cls.fields[j].name != NULL)
+                        free(cls.fields[j].name);
+                    if (cls.fields[j].type != NULL)
+                        free(cls.fields[j].type);
+                }
+                free(cls.fields);
+            }
+
+            if (cls.methods != NULL)
+            {
+                for (u2 j = 0; j < cls.method_count; j++)
+                {
+                    if (cls.methods[j].name != NULL)
+                        free(cls.methods[j].name);
+                    if (cls.methods[j].descriptor != NULL)
+                        free(cls.methods[j].descriptor);
+                    if (cls.methods[j].params != NULL)
+                        free(cls.methods[j].params);
+                    if (cls.methods[j].rettype != NULL)
+                        free(cls.methods[j].rettype);
+                    if (cls.methods[j].bytecode.code != NULL)
+                        free(cls.methods[j].bytecode.code);
+                }
+                free(cls.methods);
+            }
+        }
+        free(method_area.classes);
+    }
 }
