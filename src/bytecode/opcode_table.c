@@ -15,7 +15,7 @@
  *    de opcodes utilizados). Nem todos os opcodes na especificação JVM estão presentes;
  *    entradas sem handler são permitidas e usadas, por exemplo, pelo disassembler.
  *  - Handlers marcados em vários pontos do projeto seguem a convenção de assinatura
- *    `void handler(Frame *f)` (ou similar) — ver `bytecode/*` para implementações.
+ *    `void handler(Frame *f)` (ou similar) — ver `bytecode/\*` para implementações.
  *  - Alterações na ordem dos opcodes aqui devem corresponder às definições utilizadas
  *    pelo leitor/interpretador; tipicamente os índices são os próprios valores de opcode.
  */
